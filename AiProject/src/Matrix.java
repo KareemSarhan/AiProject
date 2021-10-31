@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Vector;
 
 public class Matrix {
@@ -15,7 +14,7 @@ public class Matrix {
      * ∗ M and N represent the width and height of the grid respectively.
      * ∗ C is the maximum number of members Neo can carry at a time.
      * ∗ NeoX and NeoY represent the x and y starting positions of Neo.
-     * ∗ TelephoneX and TelephoneY represent the x and y positions of the telephone booth.
+     * ∗ TelephoneX and TelephoneY represent the x and y positions of the telephone booth.
      * ∗ AgentXi
      * ,AgentYi represent the x and y position of agent i where 1 ≤ i ≤ k
      * and k is the total number of agents.
@@ -24,7 +23,7 @@ public class Matrix {
      * g is the total number of pills.
      * ∗ StartPadXi
      * ,StartPadYi represent the x and y position of pad i where 1 ≤
-     * i ≤ l and l is the total number of pads. Moreover FinishPadXi
+     * i ≤ l and l is the total number of pads. Moreover, FinishPadXi
      * ,FinishPadYi
      * represent the x and y position of the target pad stated by StartPadXi and
      * StartPadYi
@@ -47,7 +46,7 @@ public class Matrix {
         }
         int carryLimit = getRandom(1,4);
         int numOfPills = getRandom(1,numOfHostages);
-        Vector<int []> emptySlots = new Vector<int []>();
+        Vector<int []> emptySlots = new Vector<>();
         for (int i = 0; i < gridX; i++) {
             for (int j = 0; j < gridY; j++) {
                 emptySlots.add(new int[]{i,j});
