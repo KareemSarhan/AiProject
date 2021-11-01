@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Vector;
 
 public class Matrix {
@@ -11,27 +12,23 @@ public class Matrix {
      * StartPadXl,StartPadYl,FinishPadXl,FinishPadYl;
      * HostageX1,HostageY1,HostageDamage1, ...,HostageXw,HostageYw,HostageDamagew
      * where:
-     * ∗ M and N represent the width and height of the grid respectively.
-     * ∗ C is the maximum number of members Neo can carry at a time.
-     * ∗ NeoX and NeoY represent the x and y starting positions of Neo.
-     * ∗ TelephoneX and TelephoneY represent the x and y positions of the telephone booth.
-     * ∗ AgentXi
-     * ,AgentYi represent the x and y position of agent i where 1 ≤ i ≤ k
-     * and k is the total number of agents.
-     * ∗ PillXi
-     * ,PillYi represent the x and y position of pill i where 1 ≤ i ≤ g and
-     * g is the total number of pills.
-     * ∗ StartPadXi
-     * ,StartPadYi represent the x and y position of pad i where 1 ≤
-     * i ≤ l and l is the total number of pads. Moreover, FinishPadXi
-     * ,FinishPadYi
-     * represent the x and y position of the target pad stated by StartPadXi and
-     * StartPadYi
-     * . For example, if StartPadX = 1, StartPadY = 2, FinishPadX
-     * = 3, and FinishPadY = 4, this means that Neo can fly directly from cell
-     * (1, 2) to cell (3, 4). Further, if 1, 2, 3, 4 is in the string, then the string must
-     * also contain 3, 4, 1, 2. That is, Neo could fly from cell (3, 4) to cell (1, 2)
-     * instantly.
+     * 	M and N represent the width and height of the grid respectively.
+     * 	C is the maximum number of members Neo can carry at a time.
+     * 	NeoX and NeoY represent the x and y starting positions of Neo.
+     * 	TelephoneX and TelephoneY represent the x and y positions of the telephone booth.
+     * 	AgentXi , AgentYi represent the x and y position of agent i where 1 <= i <= k
+     * 	and k is the total number of agents.
+     * 	PillXi, PillYi represent the x and y position of pill i where 1 <= i <= g and
+     * 	g is the total number of pills.
+     * 	StartPadXi, StartPadYi represent the x and y position of pad i where 1 <=
+     * 	i <= l and l is the total number of pads. 
+     * 	Moreover, FinishPadXi, FinishPadYi represent the x and y position of the target pad stated by StartPadXi and
+     * 	StartPadYi.
+     *  For example, if StartPadX = 1, StartPadY = 2, 
+     *  FinishPadX = 3, and FinishPadY = 4, this means that Neo can fly directly from cell
+     * 	(1, 2) to cell (3, 4). Further, if 1, 2, 3, 4 is in the string, then the string must
+     * 	also contain 3, 4, 1, 2. That is, Neo could fly from cell (3, 4) to cell (1, 2)
+     * 	instantly.
      * Example Output Grid:
      * 5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80
      */
@@ -67,13 +64,13 @@ public class Matrix {
         for (int i = 0; i < numOfHostages; i++) {
             hostageCells[i] = emptySlots.remove(getRandom(0,emptySlots.size()));
         }
-        int numOfAgents = getRandom(1,emptySlots.size()-1);
+        int numOfAgents = getRandom(1,(emptySlots.size()-1)/2);
         int[][] agentsCells = new int[numOfAgents][2];
         for (int i = 0; i < numOfAgents; i++) {
             agentsCells[i] = emptySlots.remove(getRandom(0,emptySlots.size()));
         }
         // TODO: 10/31/2021 Check if next line is right
-        int numOfPads = getRandom(1,emptySlots.size()-1)/2;
+        int numOfPads = getRandom(2,emptySlots.size()-1)/2;
         int[][] padsCells = new int[numOfPads][4];
         for (int i = 0; i < numOfPads; i++) {
             int[] padStartCell = emptySlots.remove(getRandom(0,emptySlots.size()));
@@ -107,7 +104,7 @@ public class Matrix {
             if (i < numOfHostages-1) {grid +=  ",";
             }
         }
-        /**
+
          // All Prints
         System.out.println("tele" + Arrays.toString(telephoneBoothCell));
         System.out.println("agents" + Arrays.deepToString(agentsCells));
@@ -116,7 +113,7 @@ public class Matrix {
         System.out.println("neo" + Arrays.toString(neoStartCell));
         System.out.println("hostages" + Arrays.deepToString(hostageCells));
         System.out.println("hostagesDmg" + Arrays.toString(damagePerHostage));
-         */
+
         return grid;
     }
 
@@ -127,14 +124,14 @@ public class Matrix {
      * @param visualize is a boolean parameter which, when set to true, results in your program’s side-effecting a visual presentation of the grid.
      * @return String of the following format: plan;deaths;kills;nodes
      * Where
-     * – plan is a string representing the operators Neo needs to follow separated by
+     * - Plan is a string representing the operators Neo needs to follow separated by
      * commas. The possible operator names are: up, down, left, right, carry,
      * drop, takePill, kill, and fly.
-     * – deaths is a number representing the number of dead hostages in the found
+     * - Deaths is a number representing the number of dead hostages in the found
      * goal state (whether they turned into agents or not).
-     * – kills is a number representing the number of killed agents in the found goal
+     * - Kills is a number representing the number of killed agents in the found goal
      * state (including the number of agents that were hostages before).
-     * – nodes is the number of nodes chosen for expansion during the search.
+     * - Nodes is the number of nodes chosen for expansion during the search.
      * Example Input Grid:
      * 5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80
      * Example Output:
