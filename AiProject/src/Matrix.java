@@ -140,6 +140,16 @@ public class Matrix {
      */
     public static String solve(String grid, String strategy, boolean visualize)
     {
+        Node Head = new Node(grid);
+        SearchProblem Search = new SearchProblem();
+        switch(strategy) {
+            case "BF":
+                Search.BreadthFirst(Head);
+                break;
+            case "DF":
+                // code block
+                break;
+        }
         return "";
     }
 
@@ -149,9 +159,37 @@ public class Matrix {
      */
     public static void Visualize(String grid)
     {
+        String[] gridArr = grid.split(";");
+        Vector<String[]> gridVec = new Vector<>();
+        for (int i = 0; i < gridArr.length; i++) {
+            String[] tempVec = gridArr[i].split(",");
+            gridVec.add(tempVec);
+        }
+        String[][] gridView = new String[Integer.parseInt(gridVec.get(0)[0])][Integer.parseInt(gridVec.get(0)[1])];
+        gridView[Integer.parseInt(gridVec.get(2)[0])][Integer.parseInt(gridVec.get(2)[1])] = "Neo";
+        gridView[Integer.parseInt(gridVec.get(3)[0])][Integer.parseInt(gridVec.get(3)[1])] = "TB";
+        gridView[Integer.parseInt(gridVec.get(3)[0])][Integer.parseInt(gridVec.get(3)[1])] = "TB";
+        String[] tempAgents = gridVec.get(4);
 
+        for (int i = 0; i < tempAgents.length; i = i +2) {
+            gridView[Integer.parseInt(tempAgents[i])][Integer.parseInt(tempAgents[i+1])] = "A";
+        }
+        String[] tempPills = gridVec.get(5);
+        for (int i = 0; i < tempPills.length; i = i +2) {
+            gridView[Integer.parseInt(tempPills[i])][Integer.parseInt(tempPills[i+1])] = "P";
+        }
+        String[] tempPads = gridVec.get(6);
+        System.out.println(Arrays.toString(tempPads));
+        for (int i = 0; i < tempPads.length/2; i = i +4) {
+            gridView[Integer.parseInt(tempPads[i])][Integer.parseInt(tempPads[i+1])] = "Pad (" + tempPads[(i+2)] +","+tempPads[(i+3)]+")";
+            gridView[Integer.parseInt(tempPads[i+2])][Integer.parseInt(tempPads[i+3])] = "Pad (" + tempPads[i] +","+tempPads[(i+1)]+")";
+        }
+        String[] tempHostages = gridVec.get(7);
+        for (int i = 0; i < tempPads.length; i = i +3) {
+            gridView[Integer.parseInt(tempHostages[i])][Integer.parseInt(tempHostages[i+1])] = "H (" +(tempHostages[i+2])+")";
+        }
+        System.out.println(Arrays.deepToString(gridView));
     }
-    // TODO: 10/31/2021 Check getRandom , Check if its used correctly
     public static int getRandom(int min, int max) {
         int rand = (int) ((Math.random() * (max - min)) + min);
         return rand;
