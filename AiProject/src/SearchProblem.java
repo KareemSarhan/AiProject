@@ -113,6 +113,9 @@ public class SearchProblem {
         }
         return false;
     }
+
+    // TODO: 11/11/2021 zwd en el hostages bymoto we byb2o agents we en da t2rebn mab7slsh low metshaleen
+
     public Node UpdateTimeStep(Node node)
     {
         String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");

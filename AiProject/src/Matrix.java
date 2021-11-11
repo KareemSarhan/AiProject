@@ -188,7 +188,15 @@ public class Matrix {
         for (int i = 0; i < tempPads.length; i = i +3) {
             gridView[Integer.parseInt(tempHostages[i])][Integer.parseInt(tempHostages[i+1])] = "H (" +(tempHostages[i+2])+")";
         }
+        /*
+        Different views
         System.out.println(Arrays.deepToString(gridView));
+        System.out.println(Arrays.deepToString(gridView).replace("], ", "]\n"));
+        */
+        System.out.println(Arrays.deepToString(gridView)
+                .replace("],", "\n").replace(",", "\t")
+                .replaceAll("[\\[\\]]", " "));
+
     }
     public static int getRandom(int min, int max) {
         int rand = (int) ((Math.random() * (max - min)) + min);
