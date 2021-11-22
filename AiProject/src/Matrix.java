@@ -2,8 +2,27 @@ import java.util.Arrays;
 import java.util.Vector;
 
 public class Matrix {
+    public static void main(String[] args) {
+        System.out.println("Welcome to the Matrix.");
+        //System.out.println(Matrix.genGrid());
+        // Matrix.printGrid("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80");
+        //Matrix.solve("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80","BF",false);
+    }
     /**
-     * Generates a random grid.
+     * genGrid() generates a random grid. The dimensions of the grid,
+     * the starting position of Neo and the telephone booth,
+     * as well as the number and locations of the
+     * hostages, agents, pills, and pads are to be randomly generated. You need to make
+     * sure that the dimensions of the generated grid is between 5×5 and 15×15 and the
+     * number of generated hostages is between 3 and 10. For every hostage,
+     * random starting damage between 1 and 99 should also be generated. Also, pads come in
+     * pairs. Meaning, pad P1 must be generated with another pad P2 where Neo can
+     * fly from P1 to P2 and vice versa. The number of hostages Neo can carry c should
+     * be randomly generated as well where c ≤ 4. The number of pills should be less
+     * than or equal to the number of hostages. There are no restrictions on the
+     * maximum number of agents or pads (as long as no overlapping occurs and
+     * there are enough cells in the grid).
+     * no overlapping occurs and there are enough cells in the grid.
      * @return String representing a grid.
      * M,N; C; NeoX,NeoY; TelephoneX,TelephoneY;
      * AgentX1,AgentY1, ...,AgentXk,AgentYk;
@@ -21,16 +40,23 @@ public class Matrix {
      * 	PillXi, PillYi represent the x and y position of pill i where 1 <= i <= g and
      * 	g is the total number of pills.
      * 	StartPadXi, StartPadYi represent the x and y position of pad i where 1 <=
-     * 	i <= l and l is the total number of pads. 
+     * 	i <= l and l is the total number of pads.
      * 	Moreover, FinishPadXi, FinishPadYi represent the x and y position of the target pad stated by StartPadXi and
      * 	StartPadYi.
-     *  For example, if StartPadX = 1, StartPadY = 2, 
+     *  For example, if StartPadX = 1, StartPadY = 2,
      *  FinishPadX = 3, and FinishPadY = 4, this means that Neo can fly directly from cell
      * 	(1, 2) to cell (3, 4). Further, if 1, 2, 3, 4 is in the string, then the string must
      * 	also contain 3, 4, 1, 2. That is, Neo could fly from cell (3, 4) to cell (1, 2)
      * 	instantly.
+     * 	HostageXi, HostageYi represent the x and y position of hostage i where 1 <= i <= w and
+     * 	w is the total number of hostages.
+     * 	HostageDamagei represents the damage of hostage i where 1 <= i <= w and w is the total
+     * 	number of hostages.
+     * 	For example, if HostageX = 1, HostageY = 2, HostageDamage = 3, then the hostage is
+     * 	in cell (1, 2) and has 3 damage.
      * Example Output Grid:
      * 5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80
+     *
      */
     public static String genGrid()
     {
@@ -105,7 +131,7 @@ public class Matrix {
             }
         }
 
-         // All Prints
+        // All Prints
         System.out.println("tele" + Arrays.toString(telephoneBoothCell));
         System.out.println("agents" + Arrays.deepToString(agentsCells));
         System.out.println("pads" + Arrays.deepToString(padsCells));
@@ -115,6 +141,10 @@ public class Matrix {
         System.out.println("hostagesDmg" + Arrays.toString(damagePerHostage));
 
         return grid;
+    }
+
+    private static int getRandom(int i, int i1) {
+        return (int) (Math.random() * (i1 - i) + i);
     }
 
     /**
@@ -137,7 +167,8 @@ public class Matrix {
      * Example Output:
      * left,fly,right,carry,left,fly,down,right,drop,left,left,kill,left,left
      * up,carry,down,down,kill,up,right,right,right,right,drop;1;2;1246837
-     */
+     */     
+        
     public static String solve(String grid, String strategy, boolean visualize)
     {
         Node Head = new Node(grid);
@@ -147,15 +178,18 @@ public class Matrix {
                 Search.BreadthFirst(Head);
                 break;
             case "DF":
-                // code block
+
+
                 break;
         }
         return "";
     }
 
     /**
-     * Prints a 2d representation of the grid.
-     * @param grid
+     * Method vesualize
+     * Prints a 2d table like representation of the grid with Neo representing Neo's postition, TB for telephone booth, A for agents , H(dmg) for hostages with thier damage, P for pads.
+     * @param grid string representation of the grid
+     * example input: "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80"
      */
     public static void Visualize(String grid)
     {
@@ -193,13 +227,11 @@ public class Matrix {
         System.out.println(Arrays.deepToString(gridView));
         System.out.println(Arrays.deepToString(gridView).replace("], ", "]\n"));
         */
+        System.out.println();
         System.out.println(Arrays.deepToString(gridView)
                 .replace("],", "\n").replace(",", "\t")
                 .replaceAll("[\\[\\]]", " "));
+    }
 
-    }
-    public static int getRandom(int min, int max) {
-        int rand = (int) ((Math.random() * (max - min)) + min);
-        return rand;
-    }
+
 }

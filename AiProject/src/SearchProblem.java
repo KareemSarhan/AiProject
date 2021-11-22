@@ -111,7 +111,7 @@ public class SearchProblem {
                 return NewPillArr;
             }
         }
-        return false;
+        return new String[]{};
     }
 
     // TODO: 11/11/2021 zwd en el hostages bymoto we byb2o agents we en da t2rebn mab7slsh low metshaleen
@@ -139,10 +139,10 @@ public class SearchProblem {
     private Node Pill(Node node)
     {
         String pillArr = GetSubString(node.GridString,5,6);
-        String pillPos = ExistAndRemoveInPillsArr(GetNeoPosition(node.GridString),pillArr.split(","));
-        if () {
+        String[] pillPos = ExistAndRemoveInPillsArr(GetNeoPosition(node.GridString),pillArr.split(","));
+        // if () {
 
-        }
+        // }
         String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
         for (int i = 0; i < HostagesArr.length; i+=3) {
             HostagesArr[i] = String.valueOf(Integer.parseInt(HostagesArr[i]) + 20);
@@ -154,14 +154,14 @@ public class SearchProblem {
         return node;
     }
 
-    private boolean CanCarry(Node node) {
-    }
+    // private boolean CanCarry(Node node) {
+    // }
 
-    private boolean CanDrop(Node node) {
-    }
+    // private boolean CanDrop(Node node) {
+    // }
 
-    private boolean CanKill(Node node) {
-    }
+    // private boolean CanKill(Node node) {
+    // }
     public Node MoveUp (Node node)
     {
         String[] position = GetNeoPosition(node.GridString);
@@ -201,7 +201,7 @@ public class SearchProblem {
 
     public Node[] TakeAction(Node node)
     {
-        String Action = node.getAction();
+        String Action = node.TakenActions;
         Node[] nodeArr = new Node[9];
         nodeArr[0] = MoveUp(node);
         nodeArr[1] = MoveDown(node);
@@ -209,26 +209,26 @@ public class SearchProblem {
         nodeArr[3] = MoveRight(node);
         nodeArr[4] = Fly(node);
 
-        if(CanPill(node))
-        {
+        // if(Pill(node))
+        // {
 
-        }
-        if(CanCarry(node))
-        {
+        // }
+        // if(CanCarry(node))
+        // {
 
-        }
-        if(CanDrop(node))
-        {
+        // }
+        // if(CanDrop(node))
+        // {
 
-        }
-        if(CanKill(node))
-        {
+        // }
+        // if(CanKill(node))
+        // {
 
-        }
+        // }
+        return null;
 
     }
 
-}
     public void BreadthFirst(Node node)
     {
         Queue.add(node);
@@ -255,6 +255,9 @@ public class SearchProblem {
     }
     public void AstarSearch(int heuristic)
     {
+
+    }
+    public void PrintResults() {
 
     }
 
