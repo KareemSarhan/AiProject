@@ -1,12 +1,14 @@
+package code;
+
 import java.util.Arrays;
 import java.util.Vector;
 
 public class Matrix {
     public static void main(String[] args) {
-        System.out.println("Welcome to the Matrix.");
-        //System.out.println(Matrix.genGrid());
-        // Matrix.printGrid("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80");
-        //Matrix.solve("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80","BF",false);
+        System.out.println("Welcome to the code.Matrix.");
+        //System.out.println(code.Matrix.genGrid());
+        // code.Matrix.printGrid("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80");
+        //code.Matrix.solve("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80","BF",false);
     }
     /**
      * genGrid() generates a random grid. The dimensions of the grid,
