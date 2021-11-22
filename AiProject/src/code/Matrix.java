@@ -52,7 +52,7 @@ public class Matrix {
      * 	instantly.
      * 	HostageXi, HostageYi represent the x and y position of hostage i where 1 <= i <= w and
      * 	w is the total number of hostages.
-     * 	HostageDamagei represents the damage of hostage i where 1 <= i <= w and w is the total
+     * 	HostageDamagei represents the damage done to hostage i where 1 <= i <= w and w is the total
      * 	number of hostages.
      * 	For example, if HostageX = 1, HostageY = 2, HostageDamage = 3, then the hostage is
      * 	in cell (1, 2) and has 3 damage.
