@@ -49,7 +49,7 @@ public class SearchProblem {
     {
 
         String NeoPosition= GetSubString(grid,2,3);
-        return `NeoPosition;
+        return NeoPosition;
     }
     public String GetGridSize(String grid)
     {
