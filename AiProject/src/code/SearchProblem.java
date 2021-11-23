@@ -64,23 +64,11 @@ public class SearchProblem {
 
 
     }
-    public String[] GetGridSize(String grid)
+    public String GetGridSize(String grid)
     {
-        int SemicolonCount = 0;
-        int subStringEnd = 0;
-        for (int i = 0; i < grid.length(); i++) {
-            if (grid.charAt(i) == ';')
-            {
-                SemicolonCount++;
-                if (SemicolonCount == 1) {
-                    subStringEnd = i;
-                    break;
-                }
+        String SizeMN=GetSubString(grid,0,1);
 
-            }
-        }
-
-        return grid.substring(0,subStringEnd).split(",");
+        return SizeMN;
     }
     private boolean ExistInArr(String[] Key,String[] Arr)
     {
@@ -231,7 +219,7 @@ public class SearchProblem {
     {
         String[] position = GetNeoPosition(node.GridString);
         position[1] = String.valueOf(Integer.parseInt(position[1]) + 1);
-        if (Integer.parseInt(position[1]) < Integer.parseInt(GetGridSize(node.GridString)[1])) {
+        if (Integer.parseInt(position[1]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[1])) {
             node.setGridString(UpdateState(node.GridString, Arrays.toString(position),2,3));
         }
         return node;
@@ -240,7 +228,7 @@ public class SearchProblem {
     {
         String[] position = GetNeoPosition(node.GridString);
         position[0] = String.valueOf(Integer.parseInt(position[0]) + 1);
-        if (Integer.parseInt(position[0]) < Integer.parseInt(GetGridSize(node.GridString)[0])) {
+        if (Integer.parseInt(position[0]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[0])) {
             node.setGridString(UpdateState(node.GridString, Arrays.toString(position),2,3));
         }
         return node;

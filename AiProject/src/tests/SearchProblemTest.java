@@ -40,8 +40,16 @@ SearchProblem sp= new SearchProblem();
 
     @Test
     public void getGridSizeTest() {
+        String ActualGrid =  "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
+        String ExpectedResult= "5,5";
+        assertEquals(ExpectedResult, sp.GetGridSize(ActualGrid));
     }
-
+    @Test
+    public void getGridSizeTest2() {
+        String ActualGrid =  "5,50;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
+        String ExpectedResult= "5,50";
+        assertEquals(ExpectedResult, sp.GetGridSize(ActualGrid));
+    }
     @Test
     public void NodeDamageTest()
     {
