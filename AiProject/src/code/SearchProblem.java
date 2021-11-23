@@ -20,7 +20,7 @@ public class SearchProblem {
             {
                 SemicolonCount++;
                 if (SemicolonCount == FirstSimiColon) {
-                    subStringStart = i;
+                    subStringStart = i+1;
                 }
                 if (SemicolonCount == LastSimiColon) {
                     subStringEnd = i;
@@ -51,7 +51,7 @@ public class SearchProblem {
             {
                 SemicolonCount++;
                 if (SemicolonCount == 2) {
-                    subStringStart = i;
+                    subStringStart = i+1;
                 }
                 if (SemicolonCount == 3) {
                     subStringEnd = i;

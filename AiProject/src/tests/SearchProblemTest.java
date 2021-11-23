@@ -1,14 +1,31 @@
 package tests;
 
 import code.Node;
+import code.SearchProblem;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class SearchProblemTest {
-
+SearchProblem sp= new SearchProblem();
     @Test
     public void getSubStringTest() {
+        String s1 =  "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
+        String s2 = "5,5";
+        assertEquals(s2, sp.GetSubString(s1,0,1));
+    }
+    @Test
+    public void getSubStringTest2() {
+        String s1 =  "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
+        String s2 = "2";
+        assertEquals(s2, sp.GetSubString(s1,1,2));
+    }
+
+    @Test
+    public void getSubStringTest3() {
+        String s1 =  "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
+        String s2 = "1,4";
+        assertEquals(s2, sp.GetSubString(s1,3,4));
     }
 
     @Test
