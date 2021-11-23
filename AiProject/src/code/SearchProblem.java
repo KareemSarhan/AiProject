@@ -298,7 +298,7 @@ public class SearchProblem {
             }
         }
     }
-    // breadth first search for the goal state.
+    // Depth first search for the goal state.
     //check if the node is the goal state with CheckGoal.
     public void DepthFirst(Node node)
     {
