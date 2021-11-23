@@ -45,7 +45,7 @@ public class SearchProblem {
         return grid.substring(0,subStringStart)+position+grid.substring(subStringEnd);
     }
 
-    public String[] GetNeoPosition(String grid)
+    public String GetNeoPosition(String grid)
     {
 
         String NeoPosition= GetSubString(grid,2,3);
@@ -135,7 +135,7 @@ public class SearchProblem {
     {
         String HostageString = GetSubString(node.GridString,7,8);
         System.out.println(HostageString);
-        String[] HostagePos = ExistInPadsArr(GetNeoPosition(node.GridString),HostageString.split(","));
+        String[] HostagePos = ExistInPadsArr(GetNeoPosition(node.GridString).split(","),HostageString.split(","));
         if (!HostagePos.equals(null)) {
             node.setGridString(UpdateState(node.GridString,HostageString,7,8));
         }
@@ -207,7 +207,7 @@ public class SearchProblem {
     {
         String[] position = GetNeoPosition(node.GridString).split(",");
         position[0] = String.valueOf(Integer.parseInt(position[0]) + 1);
-        if (Integer.parseInt(position[0]) < Integer.parseInt(GetGridSize(node.GridString)[0])) {
+        if (Integer.parseInt(position[0]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[0])) {
             System.out.println(Arrays.toString(position));
             node.setGridString(UpdateState(node.GridString, Arrays.toString(position),2,3));
         }
@@ -217,7 +217,7 @@ public class SearchProblem {
     {
         String[] position = GetNeoPosition(node.GridString).split(",");
         position[1] = String.valueOf(Integer.parseInt(position[1]) + 1);
-        if (Integer.parseInt(position[1]) < Integer.parseInt(GetGridSize(node.GridString)[1])) {
+        if (Integer.parseInt(position[1]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[1])) {
             node.setGridString(UpdateState(node.GridString, Arrays.toString(position),2,3));
         }
         return node;
