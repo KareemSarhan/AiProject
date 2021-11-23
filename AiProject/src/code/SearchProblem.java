@@ -1,12 +1,12 @@
 package code;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class SearchProblem {
     Queue<Node> Queue= new LinkedList<>();
-    public boolean GoalTest(Node node)
+    Stack<Node> Stack = new Stack<>();
+    //Check if node passed is goal state
+    public boolean CheckGoal(Node node)
     {
         return false;
     }
@@ -138,7 +138,7 @@ public class SearchProblem {
         return node;
     }
 
-    private Node Pill(Node node)
+    private Node TakePill(Node node)
     {
         String pillArr = GetSubString(node.GridString,5,6);
         String[] pillPos = ExistAndRemoveInPillsArr(GetNeoPosition(node.GridString),pillArr.split(","));
@@ -156,15 +156,69 @@ public class SearchProblem {
         return node;
     }
 
-    /*
-     private boolean CanCarry(Node node) {
+    private Node TakeHostage(Node node)
+    {
+        String HostageArr = GetSubString(node.GridString,7,8);
+        String[] HostagePos = ExistInPadsArr(GetNeoPosition(node.GridString),HostageArr.split(","));
+        if (!HostagePos.equals(null)) {
+            node.setGridString(UpdateState(node.GridString,HostageArr,7,8));
+        }
+        return node;
+    }
+     private boolean CanCarry(Node node)
+     {
+         String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
+         for (int i = 0; i < HostagesArr.length; i+=3) {
+             if (Integer.parseInt(HostagesArr[i]) > 0) {
+                 return true;
+             }
+         }
+         return false;
      }
-     private boolean CanDrop(Node node) {
-     }
-     private boolean CanKill(Node node) {
-     }
-    */
-    public Node MoveUp (Node node)
+
+   private boolean CanDropHostage(Node node)
+   {
+       String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
+       for (int i = 0; i < HostagesArr.length; i+=3) {
+           if (Integer.parseInt(HostagesArr[i]) > 0) {
+               return true;
+           }
+       }
+       return false;
+   }
+    private boolean CanFly(Node node)
+    {
+        String[] flyArr = GetSubString(node.GridString,6,7).split(",");
+        for (int i = 0; i < flyArr.length; i+=2) {
+            if (Integer.parseInt(flyArr[i]) > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean CanTakePill(Node node)
+    {
+        String[] pillArr = GetSubString(node.GridString,5,6).split(",");
+        for (int i = 0; i < pillArr.length; i+=2) {
+            if (Integer.parseInt(pillArr[i]) > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean CanTakeHostage(Node node)
+    {
+        String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
+        for (int i = 0; i < HostagesArr.length; i+=3) {
+            if (Integer.parseInt(HostagesArr[i]) > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+   public Node MoveUp (Node node)
     {
         String[] position = GetNeoPosition(node.GridString);
         position[1] = String.valueOf(Integer.parseInt(position[1]) - 1);
@@ -230,35 +284,85 @@ public class SearchProblem {
         return null;
 
     }
-
+    // breadth first search for the goal state
     public void BreadthFirst(Node node)
     {
         Queue.add(node);
-        while (Queue.size()>0)
-        {
-            TakeAction(Queue.remove());
+        while (Queue.size()>0) {
+            //loop over TakeAction output and add them to Queue
+            Node[] nodeArr = TakeAction(Queue.poll());
+            for (int i = 0; i < nodeArr.length; i++) {
+                if (nodeArr[i] != null) {
+                    Queue.add(nodeArr[i]);
+                }
+            }
         }
     }
-    public void DepthFirst()
+    // breadth first search for the goal state.
+    //check if the node is the goal state with CheckGoal.
+    public void DepthFirst(Node node)
+    {
+        Stack.add(node);
+        while (Stack.size()>0) {
+            //loop over TakeAction output and add them to Queue
+            Node[] nodeArr = TakeAction(Stack.pop());
+            for (int i = 0; i < nodeArr.length; i++) {
+                if (nodeArr[i] != null) {
+                    if (CheckGoal(nodeArr[i])) {
+                        System.out.println("Goal Found");
+                        return;
+                    }
+                    Stack.add(nodeArr[i]);
+                }
+            }
+        }
+    }
+    //Iterative Deepening search for the goal state
+    public void IterativeDeepening(Node node)
+    {
+        int depth = 0;
+        Stack.add(node);
+        while (Stack.size()>0) {
+            //loop over TakeAction output and add them to Queue
+            Node[] nodeArr = TakeAction(Stack.pop());
+            for (int i = 0; i < nodeArr.length; i++) {
+                if (nodeArr[i] != null) {
+                    if (CheckGoal(nodeArr[i])) {
+                        System.out.println("Goal Found");
+                        return;
+                    }
+                    Stack.add(nodeArr[i]);
+                }
+            }
+            depth++;
+        }
+    }
+    //UniformCostSearch for the goal state
+    public void UniformCostSearch(Node node)
+    {
+        PriorityQueue<Node> PriorityQueue = new PriorityQueue<>();
+        PriorityQueue.add(node);
+        while (PriorityQueue.size()>0) {
+            //loop over TakeAction output and add them to Queue
+            Node[] nodeArr = TakeAction(PriorityQueue.poll());
+            for (int i = 0; i < nodeArr.length; i++) {
+                if (nodeArr[i] != null) {
+                    if (CheckGoal(nodeArr[i])) {
+                        System.out.println("Goal Found");
+                        return;
+                    }
+                    PriorityQueue.add(nodeArr[i]);
+                }
+            }
+        }
+    }
+    //GreedySearch for the goal state
+    public void GreedySearch(Node node)
     {
 
     }
-    public void IterativeDeepening()
-    {
-
-    }
-    public void UniformCost()
-    {
-
-    }
-    public void GreedySearch(int heuristic)
-    {
-
-    }
-    public void AstarSearch(int heuristic)
-    {
-
-    }
+    //A star Search for the goal state
+    public void AstarSearch(){}
     public void PrintResults() {
 
     }
