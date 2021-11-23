@@ -41,28 +41,12 @@ public class SearchProblem {
 
         return grid.substring(0,subStringStart)+position+grid.substring(subStringEnd);
     }
-    public String[] GetNeoPosition(String grid)
+
+    public String GetNeoPosition(String grid)
     {
-        int SemicolonCount = 0;
-        int subStringStart = 0;
-        int subStringEnd = 0;
-        for (int i = 0; i < grid.length(); i++) {
-            if (grid.charAt(i) == ';')
-            {
-                SemicolonCount++;
-                if (SemicolonCount == 2) {
-                    subStringStart = i+1;
-                }
-                if (SemicolonCount == 3) {
-                    subStringEnd = i;
-                    break;
-                }
 
-            }
-        }
-        return grid.substring(subStringStart,subStringEnd).split(",");
-
-
+        String NeoPosition= GetSubString(grid,2,3);
+        return NeoPosition;
     }
     public String GetGridSize(String grid)
     {
@@ -118,7 +102,7 @@ public class SearchProblem {
 
     private Node Fly(Node node) {
         String flyArr = GetSubString(node.GridString,6,7);
-        String[] newPos = ExistInPadsArr(GetNeoPosition(node.GridString),flyArr.split(","));
+        String[] newPos = ExistInPadsArr(GetNeoPosition(node.GridString).split(","),flyArr.split(","));
         if (!newPos.equals(null)) {
             node.setGridString(UpdateState(node.GridString,flyArr,6,7));
         }
@@ -129,7 +113,7 @@ public class SearchProblem {
     private Node TakePill(Node node)
     {
         String pillArr = GetSubString(node.GridString,5,6);
-        String[] pillPos = ExistAndRemoveInPillsArr(GetNeoPosition(node.GridString),pillArr.split(","));
+        String[] pillPos = ExistAndRemoveInPillsArr(GetNeoPosition(node.GridString).split(","),pillArr.split(","));
         // if () {
 
         // }
@@ -139,7 +123,7 @@ public class SearchProblem {
         }
         node.setDamage(node.getDamage()- 20);
         node.GridString = UpdateState(node.GridString, String.valueOf(HostagesArr),7,8);
-        node.setGridString(UpdateState(node.GridString, Arrays.toString(GetNeoPosition(node.GridString)),2,3));
+        node.setGridString(UpdateState(node.GridString, Arrays.toString(GetNeoPosition(node.GridString).split(",")),2,3));
 
         return node;
     }
@@ -209,7 +193,7 @@ public class SearchProblem {
 
    public Node MoveUp (Node node)
     {
-        String[] position = GetNeoPosition(node.GridString);
+        String[] position = GetNeoPosition(node.GridString).split(",");
         position[1] = String.valueOf(Integer.parseInt(position[1]) - 1);
         if (Integer.parseInt(position[1]) > 0) {
             node.setGridString(UpdateState(node.GridString, Arrays.toString(position),2,3));
@@ -218,7 +202,7 @@ public class SearchProblem {
     }
     public Node MoveDown (Node node)
     {
-        String[] position = GetNeoPosition(node.GridString);
+        String[] position = GetNeoPosition(node.GridString).split(",");
         position[1] = String.valueOf(Integer.parseInt(position[1]) + 1);
         if (Integer.parseInt(position[1]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[1])) {
             node.setGridString(UpdateState(node.GridString, Arrays.toString(position),2,3));
@@ -227,7 +211,7 @@ public class SearchProblem {
     }
     public Node MoveRight (Node node)
     {
-        String[] position = GetNeoPosition(node.GridString);
+        String[] position = GetNeoPosition(node.GridString).split(",");
         position[0] = String.valueOf(Integer.parseInt(position[0]) + 1);
         if (Integer.parseInt(position[0]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[0])) {
             node.setGridString(UpdateState(node.GridString, Arrays.toString(position),2,3));
@@ -236,7 +220,7 @@ public class SearchProblem {
     }
     public Node MoveLeft (Node node)
     {
-        String[] position = GetNeoPosition(node.GridString);
+        String[] position = GetNeoPosition(node.GridString).split(",");
         position[0] = String.valueOf(Integer.parseInt(position[0]) - 1);
         if (Integer.parseInt(position[0]) > 0) {
             node.setGridString(UpdateState(node.GridString, Arrays.toString(position),2,3));
