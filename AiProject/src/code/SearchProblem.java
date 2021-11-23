@@ -42,7 +42,7 @@ public class SearchProblem {
         return grid.substring(0,subStringStart)+position+grid.substring(subStringEnd);
     }
 
-    public String GetNeoPosition(String grid)
+    public String[] GetNeoPosition(String grid)
     {
 
         String NeoPosition= GetSubString(grid,2,3);
