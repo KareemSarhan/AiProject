@@ -1,5 +1,7 @@
 package code;
 
+import java.util.Objects;
+
 public class Node {
     String GridString;
     public String TakenActions;
@@ -13,6 +15,15 @@ public class Node {
         GridString = gridString;
         Damage = damage;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Node)) return false;
+        Node node = (Node) o;
+        return Damage == node.Damage && GridString.equals(node.GridString) && TakenActions.equals(node.TakenActions);
+    }
+
 
     @Override
     public String toString() {
