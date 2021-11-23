@@ -7,6 +7,11 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class SearchProblemTest {
+    SearchProblem s = new SearchProblem();
+
+
+
+
 SearchProblem sp= new SearchProblem();
     @Test
     public void getSubStringTest() {
@@ -30,6 +35,7 @@ SearchProblem sp= new SearchProblem();
 
     @Test
     public void getNeoPositionTest() {
+
     }
 
     @Test
@@ -53,9 +59,11 @@ SearchProblem sp= new SearchProblem();
     @Test
     public void MoveUpTest()
     {
-        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node expected = new Node("5,5;2;0,4;0,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+            0);
+        Node actual = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(null, n.TakenActions);
+        assertEquals(expected, s.MoveUp(actual));
     }
     @Test
     public void MoveUpBorderTest()
@@ -139,6 +147,12 @@ SearchProblem sp= new SearchProblem();
     }
     @Test
     public void CheckGoalTest()
+    {
+        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(null, n.TakenActions);
+    }
+    public void CanFlyTest()
     {
         Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
