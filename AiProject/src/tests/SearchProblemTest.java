@@ -8,11 +8,7 @@ import static org.junit.Assert.*;
 
 public class SearchProblemTest {
     SearchProblem s = new SearchProblem();
-
-
-
-
-SearchProblem sp= new SearchProblem();
+    SearchProblem sp= new SearchProblem();
     @Test
     public void getSubStringTest() {
         String s1 =  "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
@@ -35,13 +31,30 @@ SearchProblem sp= new SearchProblem();
 
     @Test
     public void getNeoPositionTest() {
+        String ActualGrid =  "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
+        String NeoPosition= "0,4";
+        assertEquals(NeoPosition, sp.GetNeoPosition(ActualGrid));
+    }
 
+    @Test
+    public void getNeoPositionTest2() {
+        String ActualGrid =  "5,5;2;0,40;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
+        String NeoPosition= "0,40";
+        assertEquals(NeoPosition, sp.GetNeoPosition(ActualGrid));
     }
 
     @Test
     public void getGridSizeTest() {
+        String ActualGrid =  "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
+        String ExpectedResult= "5,5";
+        assertEquals(ExpectedResult, sp.GetGridSize(ActualGrid));
     }
-
+    @Test
+    public void getGridSizeTest2() {
+        String ActualGrid =  "5,50;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
+        String ExpectedResult= "5,50";
+        assertEquals(ExpectedResult, sp.GetGridSize(ActualGrid));
+    }
     @Test
     public void NodeDamageTest()
     {
@@ -69,20 +82,32 @@ SearchProblem sp= new SearchProblem();
                 0);
         Node MoveDownNode = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
+        sp.MoveUp(actual);
         Node MoveLeftNode = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
+        sp.MoveUp(actual);
         Node MoveRightNode = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
+        sp.MoveUp(actual);
         Node FlyNode = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
+        sp.MoveUp(actual);
+
         Node KillNode = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
+        sp.MoveUp(actual);
+
         Node PillNode = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
+        sp.MoveUp(actual);
+
         Node CarryNode = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
+        //sp.Carry(actual);
+
         Node DropNode = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
+        //sp.(actual);
 
 
     }
@@ -166,6 +191,14 @@ SearchProblem sp= new SearchProblem();
     {
         Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
+        assertEquals(null, n.TakenActions);
+    }
+    @Test
+    public void CarryTest()
+    {
+        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        
         assertEquals(null, n.TakenActions);
     }
     @Test
