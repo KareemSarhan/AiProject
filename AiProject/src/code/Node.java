@@ -3,9 +3,9 @@ package code;
 import java.util.Objects;
 
 public class Node {
-    String GridString;
+    public String GridString;
     public String TakenActions;
-    int Damage;
+    public int Damage;
 
     public Node(String gridString) {
         GridString = gridString;

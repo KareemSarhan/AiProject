@@ -1,5 +1,6 @@
 package code;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.util.*;
 
 public class SearchProblem {
@@ -12,6 +13,7 @@ public class SearchProblem {
     }
     public String GetSubString(String grid, int FirstSimiColon, int LastSimiColon)
     {
+        grid += ';';
         int SemicolonCount = 0;
         int subStringStart = 0;
         int subStringEnd = 0;
@@ -34,7 +36,8 @@ public class SearchProblem {
     public String UpdateState(String grid, String position,int subStringStart,int subStringEnd)
     {
 
-        return grid.substring(0,subStringStart)+position+grid.substring(subStringEnd);
+        return GetSubString(grid, 0, subStringStart) +";"+position+";"+ GetSubString(grid,subStringEnd, 8);
+        //return grid.substring(0,subStringStart)+position+grid.substring(subStringEnd);
     }
     public String RemovePill(String grid, String position,int subStringStart,int subStringEnd)
     {
@@ -43,44 +46,15 @@ public class SearchProblem {
     }
     public String[] GetNeoPosition(String grid)
     {
-        int SemicolonCount = 0;
-        int subStringStart = 0;
-        int subStringEnd = 0;
-        for (int i = 0; i < grid.length(); i++) {
-            if (grid.charAt(i) == ';')
-            {
-                SemicolonCount++;
-                if (SemicolonCount == 2) {
-                    subStringStart = i+1;
-                }
-                if (SemicolonCount == 3) {
-                    subStringEnd = i;
-                    break;
-                }
 
-            }
-        }
-        return grid.substring(subStringStart,subStringEnd).split(",");
-
-
+        String NeoPosition= GetSubString(grid,2,3);
+        return NeoPosition;
     }
-    public String[] GetGridSize(String grid)
+    public String GetGridSize(String grid)
     {
-        int SemicolonCount = 0;
-        int subStringEnd = 0;
-        for (int i = 0; i < grid.length(); i++) {
-            if (grid.charAt(i) == ';')
-            {
-                SemicolonCount++;
-                if (SemicolonCount == 1) {
-                    subStringEnd = i;
-                    break;
-                }
+        String SizeMN=GetSubString(grid,0,1);
 
-            }
-        }
-
-        return grid.substring(0,subStringEnd).split(",");
+        return SizeMN;
     }
     private boolean ExistInArr(String[] Key,String[] Arr)
     {
@@ -221,13 +195,26 @@ public class SearchProblem {
    public Node MoveUp (Node node)
     {
         String[] position = GetNeoPosition(node.GridString);
-        position[1] = String.valueOf(Integer.parseInt(position[1]) - 1);
-        if (Integer.parseInt(position[1]) > 0) {
+        position[0] = String.valueOf(Integer.parseInt(position[0]) - 1);
+
+        if (Integer.parseInt(position[0]) >= 0) {
+            System.out.println(Arrays.toString(position));
             node.setGridString(UpdateState(node.GridString, Arrays.toString(position),2,3));
         }
         return node;
     }
     public Node MoveDown (Node node)
+    {
+        String[] position = GetNeoPosition(node.GridString);
+        position[0] = String.valueOf(Integer.parseInt(position[0]) + 1);
+        if (Integer.parseInt(position[0]) < Integer.parseInt(GetGridSize(node.GridString)[0])) {
+            System.out.println(Arrays.toString(position));
+
+            node.setGridString(UpdateState(node.GridString, Arrays.toString(position),2,3));
+        }
+        return node;
+    }
+    public Node MoveRight (Node node)
     {
         String[] position = GetNeoPosition(node.GridString);
         position[1] = String.valueOf(Integer.parseInt(position[1]) + 1);
@@ -236,20 +223,11 @@ public class SearchProblem {
         }
         return node;
     }
-    public Node MoveRight (Node node)
-    {
-        String[] position = GetNeoPosition(node.GridString);
-        position[0] = String.valueOf(Integer.parseInt(position[0]) + 1);
-        if (Integer.parseInt(position[0]) < Integer.parseInt(GetGridSize(node.GridString)[0])) {
-            node.setGridString(UpdateState(node.GridString, Arrays.toString(position),2,3));
-        }
-        return node;
-    }
     public Node MoveLeft (Node node)
     {
         String[] position = GetNeoPosition(node.GridString);
-        position[0] = String.valueOf(Integer.parseInt(position[0]) - 1);
-        if (Integer.parseInt(position[0]) > 0) {
+        position[1] = String.valueOf(Integer.parseInt(position[1]) - 1);
+        if (Integer.parseInt(position[1]) > 0) {
             node.setGridString(UpdateState(node.GridString, Arrays.toString(position),2,3));
         }
         return node;
