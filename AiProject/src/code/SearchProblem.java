@@ -146,10 +146,11 @@ public class SearchProblem {
 
     private Node TakeHostage(Node node)
     {
-        String HostageArr = GetSubString(node.GridString,7,8);
-        String[] HostagePos = ExistInPadsArr(GetNeoPosition(node.GridString),HostageArr.split(","));
+        String HostageString = GetSubString(node.GridString,7,8);
+        System.out.println(HostageString);
+        String[] HostagePos = ExistInPadsArr(GetNeoPosition(node.GridString),HostageString.split(","));
         if (!HostagePos.equals(null)) {
-            node.setGridString(UpdateState(node.GridString,HostageArr,7,8));
+            node.setGridString(UpdateState(node.GridString,HostageString,7,8));
         }
         return node;
     }

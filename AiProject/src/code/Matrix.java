@@ -173,6 +173,8 @@ public class Matrix {
         
     public static String solve(String grid, String strategy, boolean visualize)
     {
+        for (int i = 0; i < grid.length(); i++) {
+        }
         Node Head = new Node(grid);
         SearchProblem Search = new SearchProblem();
         switch(strategy) {

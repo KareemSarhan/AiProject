@@ -161,6 +161,14 @@ public class SearchProblemTest {
         assertEquals(null, n.TakenActions);
     }
     @Test
+    public void CarryTest()
+    {
+        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        
+        assertEquals(null, n.TakenActions);
+    }
+    @Test
     public void CanCarryTest()
     {
         Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
