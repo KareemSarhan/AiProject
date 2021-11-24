@@ -203,6 +203,14 @@ public class SearchProblemTest {
     }
 
     @Test
+    public void CanKillTest2()
+    {
+        Node n = new Node("5,5;2;1,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(true, sp.CanKill(n));
+    }
+
+    @Test
     public void KillTest()
     {
         Node expected=new Node("5,5;2;0,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
@@ -233,7 +241,16 @@ public class SearchProblemTest {
     @Test
     public void CanCarryTest1()
     {
-        Node n = new Node("5,5;2;1,0;0,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+
+        assertEquals(true, sp.CanCarryHostage(n));
+    }
+
+    @Test
+    public void CanCarryTest2()
+    {
+        Node n = new Node("5,5;2;3,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
 
         assertEquals(true, sp.CanCarryHostage(n));
@@ -268,7 +285,7 @@ public class SearchProblemTest {
     @Test
     public void CanDropTest()
     {
-        Node n = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80;80",
                 0);
         assertEquals(true, sp.CanDropHostage(n));
     }
@@ -276,9 +293,9 @@ public class SearchProblemTest {
     @Test
     public void CanDropTest1()
     {
-        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
-        assertEquals(true, sp.CanDropHostage(n));
+        assertEquals(false, sp.CanDropHostage(n));
     }
 
 
