@@ -191,40 +191,126 @@ public class SearchProblemTest {
     {
         Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(null, n.TakenActions);
+        assertEquals(false, sp.CanKill(n));
     }
+
+    @Test
+    public void CanKillTest1()
+    {
+        Node n = new Node("5,5;2;0,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(true, sp.CanKill(n));
+    }
+
+    @Test
+    public void CanKillTest2()
+    {
+        Node n = new Node("5,5;2;1,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(true, sp.CanKill(n));
+    }
+
+    @Test
+    public void KillTest()
+    {
+        Node expected=new Node("5,5;2;0,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        Node n = new Node("5,5;2;0,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(expected, sp.Kill(n));
+    }
+
     @Test
     public void CarryTest()
     {
-        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node actual = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        
-        assertEquals(null, n.TakenActions);
+        Node expected = new Node("5,5;1;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;3,0,80,4,4,80;30",
+                0);
+        assertEquals(expected, s.CarryHostage(actual));
     }
     @Test
     public void CanCarryTest()
     {
+        Node n = new Node("5,5;2;1,0;4,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+
+        assertEquals(false, sp.CanCarryHostage(n));
+    }
+
+    @Test
+    public void CanCarryTest1()
+    {
+        Node n = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+
+        assertEquals(true, sp.CanCarryHostage(n));
+    }
+
+    @Test
+    public void CanCarryTest2()
+    {
+        Node n = new Node("5,5;2;3,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+
+        assertEquals(true, sp.CanCarryHostage(n));
+    }
+
+    @Test
+    public void CanTakePillTest()
+    {
+        Node n = new Node("5,5;2;1,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+
+        assertEquals(true, sp.CanTakePill(n));
+    }
+    @Test
+    public void CanTakePillTest1()
+    {
         Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(null, n.TakenActions);
+
+        assertEquals(false, sp.CanTakePill(n));
     }
+
+    @Test
+    public void CanTakePillTest2()
+    {
+        Node n = new Node("5,5;2;2,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+
+        assertEquals(true, sp.CanTakePill(n));
+    }
+
     @Test
     public void CanDropTest()
     {
-        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80;80",
                 0);
-        assertEquals(null, n.TakenActions);
+        assertEquals(true, sp.CanDropHostage(n));
     }
+
+    @Test
+    public void CanDropTest1()
+    {
+        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
+                0);
+        assertEquals(false, sp.CanDropHostage(n));
+    }
+
+
     @Test
     public void TakePillTest()
     {
-        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
-                0);
-        assertEquals(null, n.TakenActions);
+        Node expected =  new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,10,3,0,60,4,4,60",
+                50);
+        Node actual =  new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                70);
+        int ExpectedDamage=expected.getDamage();
+        assertEquals(expected,s.TakePill(actual));
+//        assertEquals(expected.getDamage(),s.TakePill(actual).getDamage());
     }
-    @Test
-    public void RemovePillTest() {
-    }
+
     @Test
     public void CheckGoalTest()
     {
@@ -232,11 +318,29 @@ public class SearchProblemTest {
                 0);
         assertEquals(null, n.TakenActions);
     }
+
+    @Test
     public void CanFlyTest()
     {
         Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(null, n.TakenActions);
+        assertEquals(false, sp.CanFly(n));
+    }
+
+    @Test
+    public void CanFlyTest1()
+    {
+        Node n = new Node("5,5;2;0,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(true, sp.CanFly(n));
+    }
+
+    @Test
+    public void CanFlyTest2()
+    {
+        Node n = new Node("5,5;2;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(true, sp.CanFly(n));
     }
 
     @Test
@@ -245,7 +349,7 @@ public class SearchProblemTest {
                 0);
         Node n1 = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(n1.GridString, sp.UpdateState(n.GridString,"1,4",2,3));
+        assertEquals(n1.GridString, sp.UpdateNeoPos(n.GridString,"1,4",2,3));
     }
 
     @Test
