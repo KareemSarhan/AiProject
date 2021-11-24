@@ -190,7 +190,7 @@ public class SearchProblem {
         String[] position = GetNeoPosition(node.GridString).split(",");
         position[0] = String.valueOf(Integer.parseInt(position[0]) - 1);
         if (Integer.parseInt(position[0]) >= 0) {
-            node.setGridString(UpdateState(node.GridString, position[0]+','+position[1],2,3));
+            node.setGridString(UpdateNeoPos(node.GridString, position[0]+','+position[1],2,3));
         }
         return node;
     }
@@ -199,7 +199,7 @@ public class SearchProblem {
         String[] position = GetNeoPosition(node.GridString).split(",");
         position[0] = String.valueOf(Integer.parseInt(position[0]) + 1);
         if (Integer.parseInt(position[0]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[0])) {
-            node.setGridString(UpdateState(node.GridString, position[0]+','+position[1],2,3));
+            node.setGridString(UpdateNeoPos(node.GridString, position[0]+','+position[1],2,3));
         }
         return node;
     }
@@ -208,7 +208,7 @@ public class SearchProblem {
         String[] position = GetNeoPosition(node.GridString).split(",");
         position[1] = String.valueOf(Integer.parseInt(position[1]) + 1);
         if (Integer.parseInt(position[1]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[1])) {
-            node.setGridString(UpdateState(node.GridString, position[0]+','+position[1],2,3));
+            node.setGridString(UpdateNeoPos(node.GridString, position[0]+','+position[1],2,3));
         }
         return node;
     }
@@ -217,7 +217,7 @@ public class SearchProblem {
         String[] position = GetNeoPosition(node.GridString).split(",");
         position[1] = String.valueOf(Integer.parseInt(position[1]) - 1);
         if (Integer.parseInt(position[1]) > 0) {
-            node.setGridString(UpdateState(node.GridString, position[0]+','+position[1],2,3));
+            node.setGridString(UpdateNeoPos(node.GridString, position[0]+','+position[1],2,3));
         }
         return node;
     }
