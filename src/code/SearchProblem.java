@@ -1,7 +1,5 @@
 package code;
 
-import sun.security.util.ArrayUtil;
-
 import java.util.*;
 
 public class SearchProblem {
