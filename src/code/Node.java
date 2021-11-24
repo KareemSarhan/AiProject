@@ -10,10 +10,12 @@ public class Node {
     public Node(String gridString) {
         GridString = gridString;
         Damage = 0;
+        TakenActions="";
     }
     public Node(String gridString, int damage) {
         GridString = gridString;
         Damage = damage;
+        TakenActions="";
     }
 
     @Override
