@@ -57,7 +57,7 @@ public class SearchProblem {
 
         return SizeMN;
     }
-    private boolean ExistInArr(String[] Key,String[] Arr)
+    public boolean ExistInArr(String[] Key,String[] Arr)
     {
         for (int i = 0; i < Arr.length; i += 2) {
             if(Key[0].equals(Arr[i]) && Key[0].equals(Arr[i+1]))
@@ -67,7 +67,7 @@ public class SearchProblem {
         }
         return false;
     }
-    private String[] ExistInPadsArr(String[] Key,String[] Arr)
+    public String[] ExistInPadsArr(String[] Key,String[] Arr)
     {
         for (int i = 0; i < Arr.length; i += 2) {
             if(Key[0].equals(Arr[i]) && Key[0].equals(Arr[i+1]))
@@ -77,7 +77,7 @@ public class SearchProblem {
         }
         return null;
     }
-    private String[] ExistAndRemoveInPillsArr(String[] Key,String[] Arr)
+    public String[] ExistAndRemoveInPillsArr(String[] Key,String[] Arr)
     {
         String[] NewPillArr = new String[Arr.length-1];
         for (int i = 0; i < Arr.length; i += 2) {
@@ -90,30 +90,31 @@ public class SearchProblem {
         }
         return new String[]{};
     }
-
-    // TODO: 11/11/2021 zwd en el hostages bymoto we byb2o agents we en da t2rebn mab7slsh low metshaleen
-
+    //loop on the hostage array and increase all their damage by 20 and if their damage reached 100 they get added to the end of the grid string
     public Node UpdateTimeStep(Node node)
     {
-        String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
-        for (int i = 0; i < HostagesArr.length; i+=3) {
-            HostagesArr[i] = String.valueOf(Integer.parseInt(HostagesArr[i]) + 2);
-        }
-        node.GridString = UpdateState(node.GridString, String.valueOf(HostagesArr),7,8);
-        return node;
-    }
+        String[] HostageArr = GetSubString(node.getGridString(), 8,9).split(";");
+        String[] NewHostageArr = new String[HostageArr.length];
+        for (int i = 0; i < HostageArr.length; i += 2) {
+            int damage = Integer.parseInt(HostageArr[i + 1]);
+            damage += 20;
+            if (damage >= 100) {
+                NewHostageArr[i] = HostageArr[i];
 
-    private Node Fly(Node node) {
+            }
+
+        }
+
+    public Node Fly(Node node) {
         String flyArr = GetSubString(node.GridString,6,7);
         String[] newPos = ExistInPadsArr(GetNeoPosition(node.GridString).split(","),flyArr.split(","));
         if (!newPos.equals(null)) {
             node.setGridString(UpdateState(node.GridString,flyArr,6,7));
         }
-
         return node;
     }
 
-    private Node TakePill(Node node)
+    public Node TakePill(Node node)
     {
         String pillArr = GetSubString(node.GridString,5,6);
         String[] pillPos = ExistAndRemoveInPillsArr(GetNeoPosition(node.GridString).split(","),pillArr.split(","));
@@ -131,7 +132,7 @@ public class SearchProblem {
         return node;
     }
 
-    private Node TakeHostage(Node node)
+    public Node CarryHostage(Node node)
     {
         String HostageString = GetSubString(node.GridString,7,8);
         System.out.println(HostageString);
@@ -141,7 +142,7 @@ public class SearchProblem {
         }
         return node;
     }
-     private boolean CanCarry(Node node)
+     public boolean CanCarryHostage(Node node)
      {
          String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
          for (int i = 0; i < HostagesArr.length; i+=3) {
@@ -152,7 +153,7 @@ public class SearchProblem {
          return false;
      }
 
-   private boolean CanDropHostage(Node node)
+   public boolean CanDropHostage(Node node)
    {
        String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
        for (int i = 0; i < HostagesArr.length; i+=3) {
@@ -162,7 +163,7 @@ public class SearchProblem {
        }
        return false;
    }
-    private boolean CanFly(Node node)
+    public boolean CanFly(Node node)
     {
         String[] flyArr = GetSubString(node.GridString,6,7).split(",");
         for (int i = 0; i < flyArr.length; i+=2) {
@@ -172,7 +173,7 @@ public class SearchProblem {
         }
         return false;
     }
-    private boolean CanTakePill(Node node)
+    public boolean CanTakePill(Node node)
     {
         String[] pillArr = GetSubString(node.GridString,5,6).split(",");
         for (int i = 0; i < pillArr.length; i+=2) {
@@ -182,18 +183,7 @@ public class SearchProblem {
         }
         return false;
     }
-    private boolean CanTakeHostage(Node node)
-    {
-        String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
-        for (int i = 0; i < HostagesArr.length; i+=3) {
-            if (Integer.parseInt(HostagesArr[i]) > 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
+    
    public Node MoveUp (Node node)
     {
         String[] position = GetNeoPosition(node.GridString).split(",");

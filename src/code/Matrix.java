@@ -173,8 +173,7 @@ public class Matrix {
         
     public static String solve(String grid, String strategy, boolean visualize)
     {
-        for (int i = 0; i < grid.length(); i++) {
-        }
+        grid += ";";
         Node Head = new Node(grid);
         SearchProblem Search = new SearchProblem();
         switch(strategy) {
@@ -190,8 +189,8 @@ public class Matrix {
     }
 
     /**
-     * Method vesualize
-     * Prints a 2d table like representation of the grid with Neo representing Neo's postition, TB for telephone booth, A for agents , H(dmg) for hostages with thier damage, P for pads.
+     * Method visualize
+     * Prints a 2d table like representation of the grid with Neo representing Neo's position, TB for telephone booth, A for agents , H(dmg) for hostages with thier damage, P for pads.
      * @param grid string representation of the grid
      * example input: "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80"
      */
