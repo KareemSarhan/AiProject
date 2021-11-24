@@ -196,10 +196,11 @@ public class SearchProblemTest {
     @Test
     public void CarryTest()
     {
-        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node actual = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        
-        assertEquals(null, n.TakenActions);
+        Node expected = new Node("5,5;1;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;3,0,80,4,4,80;30",
+                0);
+        assertEquals(expected, s.CarryHostage(actual));
     }
     @Test
     public void CanCarryTest()
@@ -218,13 +219,15 @@ public class SearchProblemTest {
     @Test
     public void TakePillTest()
     {
-        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
-                0);
-        assertEquals(null, n.TakenActions);
+        Node expected =  new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,10,3,0,60,4,4,60",
+                50);
+        Node actual =  new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                70);
+        int ExpectedDamage=expected.getDamage();
+        assertEquals(expected,s.TakePill(actual));
+        assertEquals(ExpectedDamage,s.TakePill(actual).getDamage());
     }
-    @Test
-    public void RemovePillTest() {
-    }
+
     @Test
     public void CheckGoalTest()
     {
@@ -245,10 +248,11 @@ public class SearchProblemTest {
                 0);
         Node n1 = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(n1.GridString, sp.UpdateState(n.GridString,"1,4",2,3));
+        assertEquals(n1.GridString, sp.UpdateNeoPos(n.GridString,"1,4",2,3));
     }
 
     @Test
     public void UpdateTimeStepTest() {
+
     }
 }
