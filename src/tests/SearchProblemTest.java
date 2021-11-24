@@ -203,6 +203,16 @@ public class SearchProblemTest {
     }
 
     @Test
+    public void KillTest()
+    {
+        Node expected=new Node("5,5;2;0,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        Node n = new Node("5,5;2;0,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(expected, sp.Kill(n));
+    }
+
+    @Test
     public void CarryTest()
     {
         Node actual = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
@@ -281,7 +291,7 @@ public class SearchProblemTest {
                 70);
         int ExpectedDamage=expected.getDamage();
         assertEquals(expected,s.TakePill(actual));
-        assertEquals(ExpectedDamage,s.TakePill(actual).getDamage());
+//        assertEquals(expected.getDamage(),s.TakePill(actual).getDamage());
     }
 
     @Test

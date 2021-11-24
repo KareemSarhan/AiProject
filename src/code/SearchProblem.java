@@ -32,17 +32,29 @@ public class SearchProblem {
         }
         return grid.substring(subStringStart,subStringEnd);
     }
+
     public String UpdateNeoPos(String grid, String position, int subStringStart, int subStringEnd)
     {
         return GetSubString(grid, 0, subStringStart) +";"+position+";"+ GetSubString(grid,subStringEnd, 8);
 //        return GetSubString(grid, 0, subStringStart) +";"+position+";"+ GetSubString(grid,subStringEnd, 8);
         //return grid.substring(0,subStringStart)+position+grid.substring(subStringEnd);
     }
-    public String RemovePill(String grid, String position,int subStringStart,int subStringEnd)
-    {
 
-        return grid.substring(0,subStringStart)+position+grid.substring(subStringEnd);
+    public String UpdateHostageState(String grid, String [] HostageArray)
+    {
+//        for(int i = 0 ; i <HostageArray.length;i++)
+//            System.out.print(HostageArray[i]);
+        String HostageNewInfo="";
+        for(int i = 0 ; i < HostageArray.length-1;i++) {
+            HostageNewInfo += HostageArray[i] + "" + ",";
+        }
+
+//        System.out.print(HostageNewInfo);
+        HostageNewInfo += HostageArray[HostageArray.length-1] + "";
+//        HostageNewInfo.substring(HostageNewInfo, 0, HostageNewInfo.length() - 1);
+        return GetSubString(grid, 0, 7) +";"+HostageNewInfo;
     }
+
 
     public String GetNeoPosition(String grid)
     {
@@ -113,6 +125,25 @@ public class SearchProblem {
         return node;
     }
 
+    //New Damage hyzeed 20
+    // All agents in the neighbouring cells should die
+    public Node Kill(Node node) {
+        int KilledAgentsNum=0;
+        String AgentStringPos = GetSubString(node.GridString,4,5);
+        int NewDamage = node.getDamage()+20;
+        System.out.println(NewDamage);
+        String[] AgentsArr = GetSubString(node.GridString,4,5).split(",");
+        for(int i = 0 ; i < AgentsArr.length;i++)
+        {
+
+        }
+
+        node.setDamage(NewDamage);
+
+
+        return node;
+    }
+
     public Node TakePill(Node node)
     {
         String pillArr = GetSubString(node.GridString,5,6);
@@ -122,15 +153,15 @@ public class SearchProblem {
             HostagesArr[i] = String.valueOf(Integer.parseInt(HostagesArr[i]) - 20);
         }
 
-        node.setDamage(node.getDamage()- 20);
-//        System.out.print("tl3naa bara el loop 1");
-
-        System.out.print("  1");
-        node.GridString = UpdateNeoPos(node.GridString, String.valueOf(HostagesArr), 7, 8);
-        node.setGridString(UpdateNeoPos(node.GridString, Arrays.toString(GetNeoPosition(node.GridString).split(",")),2,3));
-        System.out.print("  2");
+        int NewDamage = node.getDamage()-20;
+        System.out.println(NewDamage);
+        node.setDamage(NewDamage);
+//
+        node.GridString = UpdateHostageState(node.GridString, HostagesArr);
+//
         return node;
     }
+
 
     public Node CarryHostage(Node node)
     {
