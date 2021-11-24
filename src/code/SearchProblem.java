@@ -91,9 +91,8 @@ public class SearchProblem {
         return new String[]{};
     }
     //loop on the hostage array and increase all their damage by 20 and if their damage reached 100 they get added to the end of the grid string
-    public Node UpdateTimeStep(Node node)
-    {
-        String[] HostageArr = GetSubString(node.getGridString(), 8,9).split(";");
+    public Node UpdateTimeStep(Node node) {
+        String[] HostageArr = GetSubString(node.getGridString(), 8, 9).split(";");
         String[] NewHostageArr = new String[HostageArr.length];
         for (int i = 0; i < HostageArr.length; i += 2) {
             int damage = Integer.parseInt(HostageArr[i + 1]);
@@ -102,8 +101,9 @@ public class SearchProblem {
                 NewHostageArr[i] = HostageArr[i];
 
             }
-
         }
+    return new Node(node.getGridString() +  String.join(";", NewHostageArr), node.Damage);
+    }
 
     public Node Fly(Node node) {
         String flyArr = GetSubString(node.GridString,6,7);
