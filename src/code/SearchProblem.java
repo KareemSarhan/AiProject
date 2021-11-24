@@ -1,5 +1,7 @@
 package code;
 
+import sun.security.util.ArrayUtil;
+
 import java.util.*;
 
 public class SearchProblem {
@@ -32,6 +34,14 @@ public class SearchProblem {
         }
         return grid.substring(subStringStart,subStringEnd);
     }
+
+    public String[] removeFromArray(int index, String[] array){
+        for (int i = index; i < array.length - 1; i++) {
+            array[i] = array[i + 1];
+        }
+        return array;
+    }
+
     public String UpdateNeoPos(String grid, String position, int subStringStart, int subStringEnd)
     {
         return GetSubString(grid, 0, subStringStart) +";"+position+";"+ GetSubString(grid,subStringEnd, 8);
@@ -134,20 +144,42 @@ public class SearchProblem {
 
     public Node CarryHostage(Node node)
     {
-        String HostageString = GetSubString(node.GridString,7,8);
-//        System.out.println(HostageString);
+        //String HostageString = GetSubString(node.GridString,7,8);
+        String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
+        for(int i=0; i<HostagesArr.length;i+=3){
+            System.out.println(GetNeoPosition(node.GridString).substring(0,1));
+            System.out.println(GetNeoPosition(node.GridString).substring(2,3));
+            if(HostagesArr[i].equals(GetNeoPosition(node.GridString).substring(0,1)) && HostagesArr[i+1].equals(GetNeoPosition(node.GridString).substring(2,3))){
+                int count = Integer.parseInt(GetSubString(node.GridString,1,2));
+                count -= 1;
+                String damage = HostagesArr[i+2];
+                System.out.println(Arrays.toString(HostagesArr));
+                removeFromArray(i,HostagesArr);
+                removeFromArray(i+1,HostagesArr);
+                removeFromArray(i+2,HostagesArr);
+                String[] newHostagesArr = new String[0];
+                for(int j=0;j<HostagesArr.length-2;j++){
+                    newHostagesArr[j] = HostagesArr[j];
 
-        String[] HostagePos = ExistInPadsArr(GetNeoPosition(node.GridString).split(","),HostageString.split(","));
-        if (!HostagePos.equals(null)) {
-            node.setGridString(UpdateNeoPos(node.GridString,HostageString,7,8));
+                }
+                System.out.println(Arrays.toString(newHostagesArr));
+                node.GridString = GetSubString(node.GridString,0,1) + ';'+count+';' + GetSubString(node.GridString,2,7)+Arrays.toString(HostagesArr)+';'+damage;
+                HostagesArr[i+2] = null;
+                System.out.println(node.GridString);
+            }
         }
+
+//        String[] HostagePos = ExistInPadsArr(GetNeoPosition(node.GridString).split(","),HostageString.split(","));
+//        if (!HostagePos.equals(null)) {
+//            node.setGridString(UpdateNeoPos(node.GridString,HostageString,7,8));
+//        }
         return node;
     }
      public boolean CanCarryHostage(Node node)
      {
          String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
          for (int i = 0; i < HostagesArr.length; i+=3) {
-             if (Integer.parseInt(HostagesArr[i]) > 0) {
+             if (Integer.parseInt(HostagesArr[i]) == Integer.parseInt(GetNeoPosition(node.GridString).substring(0,1)) && Integer.parseInt(HostagesArr[i+1]) == Integer.parseInt(GetNeoPosition(node.GridString).substring(2,3))) {
                  return true;
              }
          }
@@ -156,19 +188,20 @@ public class SearchProblem {
 
    public boolean CanDropHostage(Node node)
    {
-       String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
-       for (int i = 0; i < HostagesArr.length; i+=3) {
-           if (Integer.parseInt(HostagesArr[i]) > 0) {
-               return true;
-           }
-       }
+       String[] CarriedHostagesArr = GetSubString(node.GridString,8,9).split(",");
+       int count = Integer.parseInt(GetSubString(node.GridString,1,2));
+       if (CarriedHostagesArr.length >0 && Integer.parseInt(GetNeoPosition(node.GridString).substring(0, 1)) == Integer.parseInt(GetSubString(node.GridString, 3,4).substring(0,1)) && Integer.parseInt(GetNeoPosition(node.GridString).substring(2, 3)) == Integer.parseInt(GetSubString(node.GridString, 3,4).substring(2,3)) ) {
+           count += CarriedHostagesArr.length/3;
+           node.GridString = GetSubString(node.GridString,0,1) + ';'+count+';' + GetSubString(node.GridString,2,8);
+           return true;
+               }
        return false;
    }
     public boolean CanFly(Node node)
     {
         String[] flyArr = GetSubString(node.GridString,6,7).split(",");
         for (int i = 0; i < flyArr.length; i+=2) {
-            if (Integer.parseInt(flyArr[i]) > 0) {
+            if (Integer.parseInt(flyArr[i]) == Integer.parseInt(GetNeoPosition(node.GridString).substring(0,1)) && Integer.parseInt(flyArr[i+1]) == Integer.parseInt(GetNeoPosition(node.GridString).substring(2,3))) {
                 return true;
             }
         }
@@ -178,7 +211,7 @@ public class SearchProblem {
     {
         String[] pillArr = GetSubString(node.GridString,5,6).split(",");
         for (int i = 0; i < pillArr.length; i+=2) {
-            if (Integer.parseInt(pillArr[i]) > 0) {
+            if (Integer.parseInt(pillArr[i]) == Integer.parseInt(GetNeoPosition(node.GridString).substring(0,1))  && Integer.parseInt(pillArr[i+1]) == Integer.parseInt(GetNeoPosition(node.GridString).substring(2,3)) ) {
                 return true;
             }
         }
@@ -334,8 +367,13 @@ public class SearchProblem {
 
     }
 
-    public boolean CanKill(Node n) {
-
-        return true;
+    public boolean CanKill(Node node) {
+        String[] agents = GetSubString(node.GridString,4,5).split(",");
+        for (int i = 0; i < agents.length; i+=2) {
+            if (Integer.parseInt(agents[i]) == Integer.parseInt(GetNeoPosition(node.GridString).substring(0,1))  && Integer.parseInt(agents[i+1]) == Integer.parseInt(GetNeoPosition(node.GridString).substring(2,3)) ) {
+                return true;
+            }
+        }
+        return false;
     }
 }
