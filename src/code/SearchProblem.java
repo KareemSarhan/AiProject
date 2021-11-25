@@ -351,7 +351,7 @@ public class SearchProblem {
         String newPositionUp = String.valueOf(Integer.parseInt(position[0]) - 1);
         String[] AgentsArr = GetSubString(node.GridString,4,5).split(",");
         String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
-        if(Integer.parseInt(newPositionUp)<=0)
+        if(Integer.parseInt(newPositionUp)<0)
             return false;
         for(int i=0;i<AgentsArr.length;i+=2){
             if(AgentsArr[i].equals(newPositionUp) && AgentsArr[i+1].equals(position[1])){
@@ -462,7 +462,7 @@ public class SearchProblem {
     {
         String[] position = GetNeoPosition(node.GridString).split(",");
         position[1] = String.valueOf(Integer.parseInt(position[1]) - 1);
-        if (Integer.parseInt(position[1]) > 0) {
+        if (Integer.parseInt(position[1]) >= 0) {
             node.setGridString(UpdateNeoPos(node.GridString, position[0]+','+position[1],2,3));
         }
         node.ConcatAction(Actions.LEFT);
