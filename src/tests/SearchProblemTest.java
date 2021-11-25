@@ -121,12 +121,65 @@ public class SearchProblemTest {
                 0);
         expectedDrop.ConcatAction(Actions.DROP);
         expectedArr.add(expectedDrop);
+        //Fly
+        Node expectedFly = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                0);
+        expectedFly.ConcatAction(Actions.FLY);
+        expectedArr.add(expectedFly);
+
+        assertEquals(expectedArr , sp.TakeAction(actual));
+    }
+    @Test
+    public void TakeActionTest2()
+    {
+        Node actual = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                20);
+        Vector<Node> expectedArr = new Vector<Node>();
+        //Move up
+        Node expectedUp = new Node("5,5;2;0,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                20);
+        expectedUp.ConcatAction(Actions.UP);
+        expectedArr.add(expectedUp);
+        //Move Down
+        Node expectedDown = new Node("5,5;2;2,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                20);
+        expectedDown.ConcatAction(Actions.DOWN);
+        expectedArr.add(expectedDown);
+        //Move Right
+        Node expectedRight = new Node("5,5;2;1,4;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                20);
+        expectedRight.ConcatAction(Actions.RIGHT);
+        expectedArr.add(expectedRight);
+        //Move Left
+        Node expectedLeft = new Node("5,5;2;1,2;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                20);
+        expectedLeft.ConcatAction(Actions.LEFT);
+        expectedArr.add(expectedLeft);
+        //Kill
+        Node expectedKill = new Node("5,5;2;1,3;1,4;0,1,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                40);
+        expectedKill.ConcatAction(Actions.KILL);
+        expectedArr.add(expectedKill);
+        //Pill
+        Node expectedPill = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,10,3,0,60,4,4,60;0",
+                0);
+        expectedPill.ConcatAction(Actions.PILL);
+        expectedArr.add(expectedPill);
+        //Carry Hostage
+        Node expectedCarry = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                0);
+        expectedCarry.ConcatAction(Actions.CARRY);
+        expectedArr.add(expectedCarry);
+        //Drop Hostage
+        Node expectedDrop = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                0);
+        expectedDrop.ConcatAction(Actions.DROP);
+        expectedArr.add(expectedDrop);
 
         assertEquals(expectedArr , sp.TakeAction(actual));
 
 
     }
-
     @Test
     public void CanMoveUpTest(){
         Node n = new Node("5,5;2;4,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",

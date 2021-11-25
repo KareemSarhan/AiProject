@@ -493,8 +493,6 @@ public class SearchProblem {
         {
             nodeArr.add(MoveRight(node.clone()));
         }
-        System.out.println(node);
-        System.out.println(CanMoveLeft(node));
         if(CanMoveLeft(node))
         {
             nodeArr.add(MoveLeft(node.clone()));
