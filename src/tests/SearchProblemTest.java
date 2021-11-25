@@ -106,6 +106,35 @@ public class SearchProblemTest {
 
 
     }
+
+    @Test
+    public void CanMoveUpTest(){
+        Node n = new Node("5,5;2;4,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(false, sp.CanMoveUp(n));
+    }
+
+    @Test
+    public void CanMoveUpTest1(){
+        Node n = new Node("5,5;2;4,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(true, sp.CanMoveUp(n));
+    }
+
+    @Test
+    public void CanMoveUpTest2(){
+        Node n = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(false, sp.CanMoveUp(n));
+    }
+
+    @Test
+    public void CanMoveUpTest3(){
+        Node n = new Node("5,5;2;4,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,3,4,100",
+                0);
+        assertEquals(false, sp.CanMoveUp(n));
+    }
+
     @Test
     public void MoveUpTest()
     {
@@ -124,6 +153,35 @@ public class SearchProblemTest {
                 0);
         assertEquals(n1, sp.MoveUp(n));
     }
+
+    @Test
+    public void CanMoveDownTest(){
+        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(true, sp.CanMoveDown(n));
+    }
+
+    @Test
+    public void CanMoveDownTest1(){
+        Node n = new Node("5,5;2;2,3;1,4;0,1,1,1,2,2,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(false, sp.CanMoveDown(n));
+    }
+
+    @Test
+    public void CanMoveDownTest2(){
+        Node n = new Node("5,5;2;4,3;1,4;0,1,1,1,2,2,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(false, sp.CanMoveDown(n));
+    }
+
+    @Test
+    public void CanMoveDownTest3(){
+        Node n = new Node("5,5;2;3,4;1,4;0,1,1,1,2,2,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,100",
+                0);
+        assertEquals(false, sp.CanMoveDown(n));
+    }
+
     @Test
     public void MoveDownTest()
     {
@@ -145,6 +203,35 @@ public class SearchProblemTest {
                 0);
         assertEquals(n1,sp.MoveDown(n) );
     }
+
+    @Test
+    public void CanMoveLeftTest(){
+        Node n = new Node("5,5;2;4,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(true,sp.CanMoveLeft(n));
+    }
+
+    @Test
+    public void CanMoveLeftTest1(){
+        Node n = new Node("5,5;2;3,2;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(false,sp.CanMoveLeft(n));
+    }
+
+    @Test
+    public void CanMoveLeftTest2(){
+        Node n = new Node("5,5;2;4,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,3,100",
+                0);
+        assertEquals(false,sp.CanMoveLeft(n));
+    }
+
+    @Test
+    public void CanMoveLeftTest3(){
+        Node n = new Node("5,5;2;1,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,3,100",
+                0);
+        assertEquals(false,sp.CanMoveLeft(n));
+    }
+
     @Test
     public void MoveLeftTest()
     {
@@ -163,6 +250,43 @@ public class SearchProblemTest {
                 0);
         assertEquals(n1, sp.MoveLeft(n));
     }
+
+    @Test
+    public void CanMoveRightTest(){
+        Node n = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(false,sp.CanMoveRight(n));
+    }
+
+    @Test
+    public void CanMoveRightTest1(){
+        Node n = new Node("5,5;2;0,2;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                0);
+        assertEquals(true,sp.CanMoveRight(n));
+    }
+
+    @Test
+    public void CanMoveRightTest2(){
+        Node n = new Node("5,5;2;4,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,100",
+                0);
+        assertEquals(false,sp.CanMoveRight(n));
+    }
+
+    @Test
+    public void CanMoveRightTest3(){
+        Node n = new Node("5,5;2;2,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,100",
+                0);
+        assertEquals(true,sp.CanMoveRight(n));
+    }
+
+    @Test
+    public void CanMoveRightTest4(){
+        Node n = new Node("5,5;2;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,100",
+                0);
+        assertEquals(false,sp.CanMoveRight(n));
+    }
+
+
     @Test
     public void MoveRightTest()
     {
@@ -239,6 +363,7 @@ public class SearchProblemTest {
                 0);
         assertEquals(expected, s.CarryHostage(actual));
     }
+
     @Test
     public void CanCarryTest()
     {
@@ -308,6 +433,21 @@ public class SearchProblemTest {
         assertEquals(false, sp.CanDropHostage(n));
     }
 
+    @Test
+    public void CanDropTest2()
+    {
+        Node actual = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                20);
+        assertEquals(false, sp.CanDropHostage(actual));
+    }
+
+    @Test
+    public void CanDropTest3()
+    {
+        Node actual = new Node("5,5;2;1,4;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
+                20);
+        assertEquals(false, sp.CanDropHostage(actual));
+    }
 
     @Test
     public void TakePillTest()
