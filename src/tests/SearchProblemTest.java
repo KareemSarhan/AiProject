@@ -150,8 +150,8 @@ public class SearchProblemTest {
     //Kill
     Node expectedKill = new Node("5,5;2;1,3;2,1;;2,3;1,3,4,3,4,3,1,3;1,4,32;",
     40);
-expectedKill.ConcatAction(Actions.KILL);
-expectedArr.add(expectedKill);
+           expectedKill.ConcatAction(Actions.KILL);
+           expectedArr.add(expectedKill);
 
         //Fly
         Node expectedFly = new Node("5,5;2;4,3;2,1;1,2,0,3;2,3;1,3,4,3,4,3,1,3;1,4,32;",
@@ -167,35 +167,40 @@ expectedArr.add(expectedKill);
     @Test
     public void TakeActionTest2()
     {
-        Node actual = new Node("5,5;2;1,3;2,1;1,2,0,3;2,3;1,3,4,3,4,3,1,3;1,4,30;",
+                            // size;carry;neo;TB;agents;pills;pads;hostages,damage;
+        Node actual = new Node("5,5;2;1,3;1,3;2,3;1,2;0,3,4,3,4,3,0,3;;30",
                 20);
         Vector<Node> expectedArr = new Vector<Node>();
         
-        //Move Down for a pill
-        Node expectedDown = new Node("5,5;2;2,3;2,1;1,2,0,3;2,3;1,3,4,3,4,3,1,3;1,4,32;",
-                20);
-        expectedDown.ConcatAction(Actions.DOWN);
-        expectedArr.add(expectedDown);
+           //Move up
+           Node expectedUp = new Node("5,5;2;0,3;1,3;2,3;1,2;0,3,4,3,4,3,0,3;;32",
+           20);
+           expectedUp.ConcatAction(Actions.UP);
+           expectedArr.add(expectedUp);
             
                //Move Right for a hostage
-               Node expectedRight = new Node("5,5;2;1,4;2,1;1,2,0,3;2,3;1,3,4,3,4,3,1,3;1,4,32;",
+               Node expectedRight = new Node("5,5;2;1,4;1,3;2,3;1,2;0,3,4,3,4,3,0,3;;32",
                20);
        expectedRight.ConcatAction(Actions.RIGHT);
        expectedArr.add(expectedRight);
 
-    //Kill
-    Node expectedKill = new Node("5,5;2;1,3;2,1;;2,3;1,3,4,3,4,3,1,3;1,4,32;",
-    40);
-expectedKill.ConcatAction(Actions.KILL);
-expectedArr.add(expectedKill);
+           //Move Left
+           Node expectedLeft = new Node("5,5;2;1,2;1,3;2,3;1,2;0,3,4,3,4,3,0,3;;32",
+           20);
+   expectedLeft.ConcatAction(Actions.LEFT);
+   expectedArr.add(expectedLeft);
 
-        //Fly
-        Node expectedFly = new Node("5,5;2;4,3;2,1;1,2,0,3;2,3;1,3,4,3,4,3,1,3;1,4,32;",
-        20);
-        expectedFly.ConcatAction(Actions.FLY);
-        expectedArr.add(expectedFly);
+       //Kill
+       Node expectedKill = new Node("5,5;2;1,3;1,3;;1,2;0,3,4,3,4,3,0,3;;32",
+        40);
+       expectedKill.ConcatAction(Actions.KILL);
+       expectedArr.add(expectedKill);
         
-    
+         //Drop Hostage
+         Node expectedDrop = new Node("5,5;3;1,3;1,3;2,3;1,2;0,3,4,3,4,3,0,3;;",
+         20);
+         expectedDrop.ConcatAction(Actions.DROP);
+         expectedArr.add(expectedDrop);
 
         assertEquals(expectedArr , sp.TakeAction(actual));
     }
