@@ -256,10 +256,7 @@ public class SearchProblem {
    public boolean CanDropHostage(Node node)
    {
        String[] CarriedHostagesArr = GetSubString(node.GridString,8,9).split(",");
-       int count = Integer.parseInt(GetSubString(node.GridString,1,2));
        if (CarriedHostagesArr.length >0 && Integer.parseInt(GetNeoPosition(node.GridString).substring(0, 1)) == Integer.parseInt(GetSubString(node.GridString, 3,4).substring(0,1)) && Integer.parseInt(GetNeoPosition(node.GridString).substring(2, 3)) == Integer.parseInt(GetSubString(node.GridString, 3,4).substring(2,3)) ) {
-           count += CarriedHostagesArr.length/3;
-           node.GridString = GetSubString(node.GridString,0,1) + ';'+count+';' + GetSubString(node.GridString,2,8);
            return true;
                }
        return false;
@@ -322,34 +319,42 @@ public class SearchProblem {
         return node;
     }
 
-    public Node[] TakeAction(Node node)
+    public Vector<Node> TakeAction(Node node)
     {
         String Action = node.TakenActions;
-        Node[] nodeArr = new Node[9];
-        nodeArr[0] = MoveUp(node);
-        nodeArr[1] = MoveDown(node);
-        nodeArr[2] = MoveLeft(node);
-        nodeArr[3] = MoveRight(node);
-        nodeArr[4] = Fly(node);
+        Vector<Node> nodeArr = new Vector<Node>();
+        nodeArr.add(MoveUp(node.clone()));
+        nodeArr.add(MoveDown(node.clone()));
+        nodeArr.add(MoveLeft(node.clone()));
+        nodeArr.add(MoveRight(node.clone()));
+        if (CanKill(node.clone())) {
+            nodeArr.add(Kill(node.clone()));
+        }
+        if (CanCarryHostage(node.clone()))
+        {
+            nodeArr.add(CarryHostage(node.clone()));
+        }
+        if (CanDropHostage(node.clone()))
+        {
+            nodeArr.add(DropHostage(node.clone()));
+        }
+        if (CanFly(node.clone()))
+        {
+            nodeArr.add(Fly(node.clone()));
+        }
+        if (CanTakePill(node.clone()))
+        {
+            nodeArr.add(TakePill(node.clone()));
+        }
 
-        // if(Pill(node))
-        // {
-
-        // }
-        // if(CanCarry(node))
-        // {
-
-        // }
-        // if(CanDrop(node))
-        // {
-
-        // }
-        // if(CanKill(node))
-        // {
-
-        // }
-        return null;
-
+        return nodeArr;
+    }
+    //removes all the carried hostages from the node which is saved at the last part of the grid string and resets CarryLimit
+    public Node DropHostage(Node node) {
+        int CarriedHostagesCount = GetSubString(node.GridString,8,9).split(",").length;
+        int CarryLimit = Integer.parseInt(GetSubString(node.GridString,1,2))+ CarriedHostagesCount;
+        node.setGridString(String.join(",", GetSubString(node.GridString,0,2))+";"+CarryLimit +";"+String.join(",", GetSubString(node.GridString,3,8)+";"));
+        return node;
     }
     // breadth first search for the goal state
     public void BreadthFirst(Node node)
@@ -357,10 +362,10 @@ public class SearchProblem {
         Queue.add(node);
         while (Queue.size()>0) {
             //loop over TakeAction output and add them to Queue
-            Node[] nodeArr = TakeAction(Queue.poll());
-            for (int i = 0; i < nodeArr.length; i++) {
-                if (nodeArr[i] != null) {
-                    Queue.add(nodeArr[i]);
+            Vector<Node> nodeArr = TakeAction(Queue.poll());
+            for (int i = 0; i < nodeArr.size(); i++) {
+                if (nodeArr.get(i) != null) {
+                    Queue.add(nodeArr.get(i));
                 }
             }
         }
@@ -372,7 +377,7 @@ public class SearchProblem {
         Stack.add(node);
         while (Stack.size()>0) {
             //loop over TakeAction output and add them to Queue
-            Node[] nodeArr = TakeAction(Stack.pop());
+            Node[] nodeArr = TakeAction(Stack.pop()).toArray(new Node[0]);
             for (int i = 0; i < nodeArr.length; i++) {
                 if (nodeArr[i] != null) {
                     if (CheckGoal(nodeArr[i])) {
@@ -391,7 +396,7 @@ public class SearchProblem {
         Stack.add(node);
         while (Stack.size()>0) {
             //loop over TakeAction output and add them to Queue
-            Node[] nodeArr = TakeAction(Stack.pop());
+            Node[] nodeArr = TakeAction(Stack.pop()).toArray(new Node[0]);
             for (int i = 0; i < nodeArr.length; i++) {
                 if (nodeArr[i] != null) {
                     if (CheckGoal(nodeArr[i])) {
@@ -411,7 +416,7 @@ public class SearchProblem {
         PriorityQueue.add(node);
         while (PriorityQueue.size()>0) {
             //loop over TakeAction output and add them to Queue
-            Node[] nodeArr = TakeAction(PriorityQueue.poll());
+            Node[] nodeArr = TakeAction(PriorityQueue.poll()).toArray(new Node[0]);
             for (int i = 0; i < nodeArr.length; i++) {
                 if (nodeArr[i] != null) {
                     if (CheckGoal(nodeArr[i])) {
