@@ -209,6 +209,21 @@ public class SearchProblemTest {
                 0);
         assertEquals(true, sp.CanKill(n));
     }
+    @Test
+    public void CanKillTest3()
+    {
+        Node n = new Node("5,5;2;1,1;1,4;5,5,2,2,4,4,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,1,2,100",
+                0);
+        assertEquals(true, sp.CanKill(n));
+    }
+    @Test
+    public void Remove()
+    {
+        String [] arr = {"1","2","3","4","5"};
+        int index =9;
+        String [] expected={"1","2","3","4","5"};
+        assertEquals(expected, sp.RemoveElement(arr , index));
+    }
 
     @Test
     public void KillTest()

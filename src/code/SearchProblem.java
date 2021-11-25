@@ -35,11 +35,25 @@ public class SearchProblem {
         return grid.substring(subStringStart,subStringEnd);
     }
 
+
     public String[] removeFromArray(int index, String[] array){
         for (int i = index; i < array.length - 1; i++) {
             array[i] = array[i + 1];
         }
         return array;
+    }
+
+    public String [] RemoveElement(String [] array, int index){
+        String [] NewArray = new String[array.length - 1];
+        int newArrayIdx = 0;
+        if(index > array.length)
+            return array;
+        for(int i = 0; i < array.length; i++){
+            if(i != index){
+                NewArray[newArrayIdx++] = array[i];
+            }
+        }
+        return NewArray;
     }
 
     public String UpdateNeoPos(String grid, String position, int subStringStart, int subStringEnd)
