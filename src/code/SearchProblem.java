@@ -1,7 +1,5 @@
 package code;
 
-import sun.security.util.ArrayUtil;
-
 import java.util.*;
 
 public class SearchProblem {
@@ -124,19 +122,44 @@ public class SearchProblem {
         }
         return new String[]{};
     }
-    //loop on the hostage array and increase all their damage by 20 and if their damage reached 100 they get added to the end of the grid string
+    //loop on the hostage array and Carried hostage array and increase them by 2
     public Node UpdateTimeStep(Node node) {
-        String[] HostageArr = GetSubString(node.getGridString(), 8, 9).split(";");
-        String[] NewHostageArr = new String[HostageArr.length];
-        for (int i = 0; i < HostageArr.length; i += 2) {
-            int damage = Integer.parseInt(HostageArr[i + 1]);
-            damage += 20;
-            if (damage >= 100) {
-                NewHostageArr[i] = HostageArr[i];
-
+        String HostageString = GetSubString(node.getGridString(), 7, 8);
+        String NewHostageString = "";
+        if (!HostageString.isEmpty()) {
+            String[] HostageArr = HostageString.split(",");
+            for (int i = 0; i < HostageArr.length; i += 3) {
+                int damage = Integer.parseInt(HostageArr[i + 2]);
+                damage += 2;
+                if (damage >= 100) {
+                    HostageArr[i + 2] = 100 + "";
+                } else {
+                    HostageArr[i + 2] = Integer.toString(damage);
+                }
             }
+            NewHostageString = String.join(",", HostageArr);
         }
-    return new Node(node.getGridString() +  String.join(";", NewHostageArr), node.Damage);
+        String CarriedHostageString = GetSubString(node.getGridString(), 8, 9);
+        String NewCarriedHostageString = "";
+        if (!CarriedHostageString.isEmpty()) {
+            String[] CarriedHostageArr = CarriedHostageString.split(",");
+            for (int i = 0; i < CarriedHostageArr.length; i +=1 ) {
+                int damage = Integer.parseInt(CarriedHostageArr[i]);
+                damage += 2;
+                if (damage >= 100) {
+                    CarriedHostageArr[i] =100+"";
+                }
+                else {
+                    CarriedHostageArr[i] = Integer.toString(damage);
+                }
+            }
+            NewCarriedHostageString = String.join(",", CarriedHostageArr);
+
+        }
+
+        String NewGridString = GetSubString(node.getGridString(),0,7) +";"+  NewHostageString +";"+  NewCarriedHostageString;
+        Node newNode =new Node(NewGridString, node.Damage);
+        return newNode;
     }
 
     public Node Fly(Node node) {
