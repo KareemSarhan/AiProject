@@ -647,15 +647,6 @@ public class SearchProblemTest {
     }
 
     @Test
-    public void UpdateStateTest() {
-        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
-                0);
-        Node n1 = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
-                0);
-        assertEquals(n1.GridString, sp.UpdateNeoPos(n.GridString,"1,4",2,3));
-    }
-
-    @Test
     public void UpdateTimeStepTest() {
         Node actual = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,70,4,4,80;",
                 0);

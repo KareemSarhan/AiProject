@@ -1,7 +1,5 @@
 package code;
 
-import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.List;
 
@@ -9,12 +7,22 @@ public class SearchProblem {
     Queue<Node> Queue= new LinkedList<>();
     Stack<Node> Stack = new Stack<>();
 
-    //Check if node passed is goal state
+    //Check if node passed is in a goal state.
     public boolean CheckGoal(Node node)
     {
-
-
-
+        boolean IsNoRemainHostages = !GetSubString(node.GridString,7,8).isEmpty();
+        boolean IsNoRemainCarriedHostages = !GetSubString(node.GridString,8,9).isEmpty();
+        boolean IsAtTeleBooth = GetSubString(node.GridString,2,3).equals(GetSubString(node.GridString,3,4));
+        if (IsNoRemainHostages && IsNoRemainCarriedHostages && IsAtTeleBooth)
+            return true;
+        return false;
+    }
+    //Check if node passed is in an end state.
+    public boolean CheckGameOver(Node node)
+    {
+        boolean IsNeoDead = node.Damage >= 100;
+        if (IsNeoDead)
+            return true;
         return false;
     }
     public String GetSubString(String grid, int FirstSimiColon, int LastSimiColon) {
@@ -481,8 +489,10 @@ public class SearchProblem {
 
     public Vector<Node> TakeAction(Node node)
     {
-        String Action = node.TakenActions;
         Vector<Node> nodeArr = new Vector<Node>();
+        if (CheckGameOver(node)){
+            return nodeArr;
+        }
         if(CanMoveUp(node))
         {
             nodeArr.add(MoveUp(node.clone()));
@@ -531,18 +541,28 @@ public class SearchProblem {
     }
 
     // breadth first search for the goal state
-    public void BreadthFirst(Node node)
+    public Node BreadthFirst(Node node)
     {
         Queue.add(node);
         while (Queue.size()>0) {
             //loop over TakeAction output and add them to Queue
-            Vector<Node> nodeArr = TakeAction(Queue.poll());
+            Node ActionNode = Queue.poll();
+            if (CheckGameOver(ActionNode)) {
+                continue;
+            }
+            if (CheckGoal(ActionNode))
+            {
+                 System.out.println("Goal Found");
+                 return ActionNode;
+            }
+            Vector<Node> nodeArr = TakeAction(ActionNode);
             for (int i = 0; i < nodeArr.size(); i++) {
                 if (nodeArr.get(i) != null) {
                     Queue.add(nodeArr.get(i));
                 }
             }
         }
+        return null;
     }
     //Depth first search for the goal state.
     //check if the node is the goal state with CheckGoal.
