@@ -3,6 +3,8 @@ package tests;
 import code.Node;
 import code.SearchProblem;
 import org.junit.Test;
+import java.util.*;
+
 
 import static org.junit.Assert.*;
 
@@ -220,20 +222,43 @@ public class SearchProblemTest {
     public void Remove()
     {
         String [] arr = {"1","2","3","4","5"};
-        int index =9;
-        String [] expected={"1","2","3","4","5"};
+        int index =2;
+        String [] expected={"1","2","4","5"};
         assertEquals(expected, sp.RemoveElement(arr , index));
     }
 
+    //2 Agents to be killed
     @Test
     public void KillTest()
     {
-        Node expected=new Node("5,5;2;0,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
-                0);
-        Node n = new Node("5,5;2;0,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node expected=new Node("5,5;2;0,0;1,4;2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+                20);
+        Node n = new Node("5,5;2;0,0;1,4;0,1,1,0,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
         assertEquals(expected, sp.Kill(n));
     }
+
+    //2 Agents to be killed and 2 Mutants
+    @Test
+    public void KillTest2()
+    {
+        Node expected=new Node("5,5;2;0,0;1,4;2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;4,4,80",
+                20);
+        Node n = new Node("5,5;2;0,0;1,4;0,1,1,0,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,1,100,1,0,100,4,4,80",
+                0);
+        assertEquals(expected, sp.Kill(n));
+    }
+    //2 Mutants to be killed.
+    @Test
+    public void KillTest3()
+    {
+        Node expected=new Node("5,5;2;0,0;1,4;5,1,1,3,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;4,4,80",
+                20);
+        Node n = new Node("5,5;2;0,0;1,4;5,1,1,3,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,1,100,1,0,100,4,4,80",
+                0);
+        assertEquals(expected, sp.Kill(n));
+    }
+
 
     @Test
     public void CarryTest()
