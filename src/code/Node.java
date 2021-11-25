@@ -65,7 +65,7 @@ public class Node implements Cloneable {
             damage = 0;
 
     }
-    public void ConcatAction(String action)
+    public void ConcatAction(Actions action)
     {
         TakenActions+=action;
     }

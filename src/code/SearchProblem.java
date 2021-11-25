@@ -72,7 +72,7 @@ public class SearchProblem {
 
     public String UpdateNeoPos(String grid, String position, int subStringStart, int subStringEnd)
     {
-        return GetSubString(grid, 0, subStringStart) +";"+position+";"+ GetSubString(grid,subStringEnd, 8);
+        return GetSubString(grid, 0, subStringStart) +";"+position+";"+ GetSubString(grid,subStringEnd, 9);
     }
 
     public String UpdateHostageState(String grid, String [] HostageArray)
@@ -185,6 +185,7 @@ public class SearchProblem {
         if (!newPos.equals(null)) {
             node.setGridString(UpdateNeoPos(node.GridString,NewNeoPos,2,3));
         }
+        node.ConcatAction(Actions.FLY);
          return node;
     }
 
@@ -200,10 +201,8 @@ public class SearchProblem {
         {
 
         }
-
         node.setDamage(NewDamage);
-
-
+        node.ConcatAction(Actions.KILL);
         return node;
     }
 
@@ -219,6 +218,7 @@ public class SearchProblem {
         System.out.println(NewDamage);
         node.setDamage(NewDamage);
         node.GridString = UpdateHostageState(node.GridString, HostagesArr);
+        node.ConcatAction(Actions.PILL);
         return node;
     }
 
@@ -258,6 +258,7 @@ public class SearchProblem {
             }
             System.out.println(Arrays.toString(newHostages));
         }
+        node.ConcatAction(Actions.CARRY);
         return node;
     }
      public boolean CanCarryHostage(Node node)
@@ -321,16 +322,6 @@ public class SearchProblem {
         return true;
     }
 
-   public Node MoveUp (Node node)
-    {
-        String[] position = GetNeoPosition(node.GridString).split(",");
-        position[0] = String.valueOf(Integer.parseInt(position[0]) - 1);
-        if (Integer.parseInt(position[0]) >= 0) {
-            node.setGridString(UpdateNeoPos(node.GridString, position[0]+','+position[1],2,3));
-        }
-        return node;
-    }
-
     public Boolean CanMoveDown(Node node){
         String[] position = GetNeoPosition(node.GridString).split(",");
         String newPositionDown = String.valueOf(Integer.parseInt(position[0]) + 1);
@@ -345,26 +336,6 @@ public class SearchProblem {
         }
         for(int j=2;j< HostagesArr.length;j+=3){
             if(HostagesArr[j].equals("100") && HostagesArr[j-1].equals(position[1]) && HostagesArr[j-2].equals(newPositionDown)){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public Boolean CanMoveLeft(Node node){
-        String[] position = GetNeoPosition(node.GridString).split(",");
-        String newPositionLeft = String.valueOf(Integer.parseInt(position[1]) - 1);
-        String[] AgentsArr = GetSubString(node.GridString,4,5).split(",");
-        String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
-        if(Integer.parseInt(newPositionLeft)<0)
-            return false;
-        for(int i=1;i<AgentsArr.length;i+=2){
-            if(AgentsArr[i].equals(newPositionLeft) && AgentsArr[i-1].equals(position[0])){
-                return false;
-            }
-        }
-        for(int j=2;j< HostagesArr.length;j+=3){
-            if(HostagesArr[j].equals("100") && HostagesArr[j-1].equals(newPositionLeft) && HostagesArr[j-2].equals(position[0])){
                 return false;
             }
         }
@@ -391,6 +362,37 @@ public class SearchProblem {
         return true;
     }
 
+    public Boolean CanMoveLeft(Node node){
+        String[] position = GetNeoPosition(node.GridString).split(",");
+        String newPositionLeft = String.valueOf(Integer.parseInt(position[1]) - 1);
+        String[] AgentsArr = GetSubString(node.GridString,4,5).split(",");
+        String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
+        if(Integer.parseInt(newPositionLeft)<0)
+            return false;
+        for(int i=1;i<AgentsArr.length;i+=2){
+            if(AgentsArr[i].equals(newPositionLeft) && AgentsArr[i-1].equals(position[0])){
+                return false;
+            }
+        }
+        for(int j=2;j< HostagesArr.length;j+=3){
+            if(HostagesArr[j].equals("100") && HostagesArr[j-1].equals(newPositionLeft) && HostagesArr[j-2].equals(position[0])){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Node MoveUp (Node node)
+    {
+        String[] position = GetNeoPosition(node.GridString).split(",");
+        position[0] = String.valueOf(Integer.parseInt(position[0]) - 1);
+        if (Integer.parseInt(position[0]) >= 0) {
+            node.setGridString(UpdateNeoPos(node.GridString, position[0]+','+position[1],2,3));
+        }
+        node.ConcatAction(Actions.UP);
+        return node;
+    }
+
     public Node MoveDown (Node node)
     {
         String[] position = GetNeoPosition(node.GridString).split(",");
@@ -398,6 +400,7 @@ public class SearchProblem {
         if (Integer.parseInt(position[0]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[0])) {
             node.setGridString(UpdateNeoPos(node.GridString, position[0]+','+position[1],2,3));
         }
+        node.ConcatAction(Actions.DOWN);
         return node;
     }
     public Node MoveRight (Node node)
@@ -407,6 +410,7 @@ public class SearchProblem {
         if (Integer.parseInt(position[1]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[1])) {
             node.setGridString(UpdateNeoPos(node.GridString, position[0]+','+position[1],2,3));
         }
+        node.ConcatAction(Actions.RIGHT);
         return node;
     }
     public Node MoveLeft (Node node)
@@ -416,6 +420,7 @@ public class SearchProblem {
         if (Integer.parseInt(position[1]) > 0) {
             node.setGridString(UpdateNeoPos(node.GridString, position[0]+','+position[1],2,3));
         }
+        node.ConcatAction(Actions.LEFT);
         return node;
     }
 
@@ -423,10 +428,24 @@ public class SearchProblem {
     {
         String Action = node.TakenActions;
         Vector<Node> nodeArr = new Vector<Node>();
-        nodeArr.add(MoveUp(node.clone()));
-        nodeArr.add(MoveDown(node.clone()));
-        nodeArr.add(MoveLeft(node.clone()));
-        nodeArr.add(MoveRight(node.clone()));
+        if(CanMoveUp(node))
+        {
+            nodeArr.add(MoveUp(node.clone()));
+        }
+        if(CanMoveDown(node))
+        {
+            nodeArr.add(MoveDown(node.clone()));
+        }
+        if(CanMoveRight(node))
+        {
+            nodeArr.add(MoveRight(node.clone()));
+        }
+        System.out.println(node);
+        System.out.println(CanMoveLeft(node));
+        if(CanMoveLeft(node))
+        {
+            nodeArr.add(MoveLeft(node.clone()));
+        }
         if (CanKill(node)) {
             nodeArr.add(Kill(node.clone()));
         }

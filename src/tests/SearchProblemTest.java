@@ -1,5 +1,6 @@
 package tests;
 
+import code.Actions;
 import code.Node;
 import code.SearchProblem;
 import org.junit.Test;
@@ -79,29 +80,46 @@ public class SearchProblemTest {
                 20);
         Vector<Node> expectedArr = new Vector<Node>();
         //Move up
-        expectedArr.add(new Node("5,5;2;0,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
-                20));
+        Node expectedUp = new Node("5,5;2;0,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                20);
+        expectedUp.ConcatAction(Actions.UP);
+        expectedArr.add(expectedUp);
         //Move Down
-        expectedArr.add(new Node("5,5;2;2,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
-                20));
+        Node expectedDown = new Node("5,5;2;2,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                20);
+        expectedDown.ConcatAction(Actions.DOWN);
+        expectedArr.add(expectedDown);
         //Move Right
-        expectedArr.add(new Node("5,5;2;1,4;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
-                20));
+        Node expectedRight = new Node("5,5;2;1,4;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                20);
+        expectedRight.ConcatAction(Actions.RIGHT);
+        expectedArr.add(expectedRight);
         //Move Left
-        expectedArr.add(new Node("5,5;2;1,2;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
-                20));
+        Node expectedLeft = new Node("5,5;2;1,2;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                20);
+        expectedLeft.ConcatAction(Actions.LEFT);
+        expectedArr.add(expectedLeft);
         //Kill
-        expectedArr.add(new Node("5,5;2;1,3;1,4;0,1,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
-                40));
+        Node expectedKill = new Node("5,5;2;1,3;1,4;0,1,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                40);
+        expectedKill.ConcatAction(Actions.KILL);
+        expectedArr.add(expectedKill);
         //Pill
-        expectedArr.add(new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,10,3,0,60,4,4,60;0",
-                0));
+        Node expectedPill = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,10,3,0,60,4,4,60;0",
+                0);
+        expectedPill.ConcatAction(Actions.PILL);
+        expectedArr.add(expectedPill);
         //Carry Hostage
-        expectedArr.add(new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
-                0));
+        Node expectedCarry = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                0);
+        expectedCarry.ConcatAction(Actions.CARRY);
+        expectedArr.add(expectedCarry);
         //Drop Hostage
-        expectedArr.add(new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
-                0));
+        Node expectedDrop = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                0);
+        expectedDrop.ConcatAction(Actions.DROP);
+        expectedArr.add(expectedDrop);
+
         assertEquals(expectedArr , sp.TakeAction(actual));
 
 
@@ -138,10 +156,11 @@ public class SearchProblemTest {
     @Test
     public void MoveUpTest()
     {
-        Node n = new Node("5,5;2;1,4;0,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n = new Node("5,5;2;1,4;0,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
             0);
-        Node n1 = new Node("5,5;2;0,4;0,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n1 = new Node("5,5;2;0,4;0,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
+        n1.ConcatAction(Actions.UP);
         assertEquals(n1, sp.MoveUp(n));
     }
     @Test
@@ -351,6 +370,7 @@ public class SearchProblemTest {
                 0);
         Node n = new Node("5,5;2;0,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
+
         assertEquals(expected, sp.Kill(n));
     }
 
