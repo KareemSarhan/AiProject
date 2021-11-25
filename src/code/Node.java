@@ -17,7 +17,11 @@ public class Node implements Cloneable {
         Damage = damage;
         TakenActions="";
     }
-
+    public Node(String gridString, int damage, String takenActions) {
+        GridString = gridString;
+        Damage = damage;
+        TakenActions=takenActions;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
