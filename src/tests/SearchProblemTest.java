@@ -173,11 +173,11 @@ public class SearchProblemTest {
                 20);
         Vector<Node> expectedArr = new Vector<Node>();
 
-        //Move up
-        Node expectedUp = new Node("5,5;2;0,3;1,3;2,3;1,2;0,3,4,3,4,3,0,3;;32",
-                20);
-        expectedUp.ConcatAction(Actions.UP);
-        expectedArr.add(expectedUp);
+           //Move Left
+           Node expectedLeft = new Node("5,5;2;1,2;1,3;2,3;1,2;0,3,4,3,4,3,0,3;;32",
+           20);
+       expectedLeft.ConcatAction(Actions.LEFT);
+       expectedArr.add(expectedLeft);
 
         //Move Right for a hostage
         Node expectedRight = new Node("5,5;2;1,4;1,3;2,3;1,2;0,3,4,3,4,3,0,3;;32",
