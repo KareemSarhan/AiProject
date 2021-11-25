@@ -5,9 +5,13 @@ import java.util.*;
 public class SearchProblem {
     Queue<Node> Queue= new LinkedList<>();
     Stack<Node> Stack = new Stack<>();
+
     //Check if node passed is goal state
     public boolean CheckGoal(Node node)
     {
+
+
+
         return false;
     }
     public String GetSubString(String grid, int FirstSimiColon, int LastSimiColon)
@@ -69,7 +73,7 @@ public class SearchProblem {
     public String[] ExistInPadsArr(String[] Key,String[] Arr)
     {
         for (int i = 0; i < Arr.length; i += 2) {
-            if(Key[0].equals(Arr[i]) && Key[0].equals(Arr[i+1]))
+            if(Key[0].equals(Arr[i]) && Key[1].equals(Arr[i+1]))
             {
                 return new String[]{Arr[i+2], Arr[i + 3]};
             }
@@ -105,12 +109,17 @@ public class SearchProblem {
     }
 
     public Node Fly(Node node) {
+        String NewNeoPos="";
         String flyArr = GetSubString(node.GridString,6,7);
         String[] newPos = ExistInPadsArr(GetNeoPosition(node.GridString).split(","),flyArr.split(","));
+        // for (int i=0; i<newPos.length; i++){
+           NewNeoPos = newPos[0] + ","+ newPos[1];
+        
+        //}
         if (!newPos.equals(null)) {
-            node.setGridString(UpdateNeoPos(node.GridString,flyArr,6,7));
+            node.setGridString(UpdateNeoPos(node.GridString,NewNeoPos,2,3));
         }
-        return node;
+         return node;
     }
 
     public Node TakePill(Node node)
