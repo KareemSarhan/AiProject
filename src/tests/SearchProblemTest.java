@@ -221,10 +221,12 @@ public class SearchProblemTest {
     @Test
     public void MoveUpBorderTest()
     {
-        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
-        Node n1 = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n1 = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
+        n1.ConcatAction(Actions.UP);
+
         assertEquals(n1, sp.MoveUp(n));
     }
 
@@ -259,11 +261,11 @@ public class SearchProblemTest {
     @Test
     public void MoveDownTest()
     {
-        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
-        Node n2 = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n2 = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
-
+        n2.ConcatAction(Actions.DOWN);
         assertEquals(n2, sp.MoveDown(n));
 //        assertEquals(n2.TakenActions,sp.MoveDown(n).TakenActions );
 //        assertEquals(n2.Damage,sp.MoveDown(n).Damage );
@@ -271,10 +273,11 @@ public class SearchProblemTest {
     @Test
     public void MoveDownBorderTest()
     {
-        Node n = new Node("5,5;2;4,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n = new Node("5,5;2;4,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
-        Node n1 = new Node("5,5;2;4,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n1 = new Node("5,5;2;4,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
+        n1.ConcatAction(Actions.DOWN);
         assertEquals(n1,sp.MoveDown(n) );
     }
 
@@ -323,19 +326,22 @@ public class SearchProblemTest {
     @Test
     public void MoveLeftTest()
     {
-        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
-        Node n1 = new Node("5,5;2;0,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n1 = new Node("5,5;2;0,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
+        n1.ConcatAction(Actions.LEFT);
+
         assertEquals(n1, sp.MoveLeft(n));
     }
     @Test
     public void MoveLeftBorderTest()
     {
-        Node n = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
-        Node n1 = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n1 = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
+        n1.ConcatAction(Actions.LEFT);
         assertEquals(n1, sp.MoveLeft(n));
     }
 
@@ -378,19 +384,21 @@ public class SearchProblemTest {
     @Test
     public void MoveRightTest()
     {
-        Node n = new Node("5,5;2;0,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n = new Node("5,5;2;0,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
-        Node n1 = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n1 = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
+        n1.ConcatAction(Actions.RIGHT);
         assertEquals(n1, sp.MoveRight(n));
     }
     @Test
     public void MoveRightBorderTest()
     {
-        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
-        Node n1 = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n1 = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
+        n1.ConcatAction(Actions.RIGHT);
         assertEquals(n1, sp.MoveRight(n));
     }
     @Test
@@ -423,23 +431,15 @@ public class SearchProblemTest {
                 0);
         assertEquals(true, sp.CanKill(n));
     }
-    @Test
-    public void Remove()
-    {
-        String [] arr = {"1","2","3","4","5"};
-        int index =2;
-        String [] expected={"1","2","4","5"};
-        assertEquals(expected, sp.RemoveElement(arr , index));
-    }
-
     //2 Agents to be killed
     @Test
     public void KillTest()
     {
-        Node expected=new Node("5,5;2;0,0;1,4;2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node expected=new Node("5,5;2;0,0;1,4;2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 20);
-        Node n = new Node("5,5;2;0,0;1,4;0,1,1,0,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node n = new Node("5,5;2;0,0;1,4;0,1,1,0,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;'",
                 0);
+        expected.ConcatAction(Actions.KILL);
         assertEquals(expected, sp.Kill(n));
     }
 
@@ -447,21 +447,22 @@ public class SearchProblemTest {
     @Test
     public void KillTest2()
     {
-        Node expected=new Node("5,5;2;0,0;1,4;2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;4,4,80",
+        Node expected=new Node("5,5;2;0,0;1,4;2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;4,4,80;",
                 20);
-        Node n = new Node("5,5;2;0,0;1,4;0,1,1,0,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,1,100,1,0,100,4,4,80",
+        Node n = new Node("5,5;2;0,0;1,4;0,1,1,0,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,1,100,1,0,100,4,4,80;",
                 0);
-
+        expected.ConcatAction(Actions.KILL);
         assertEquals(expected, sp.Kill(n));
     }
     //2 Mutants to be killed.
     @Test
     public void KillTest3()
     {
-        Node expected=new Node("5,5;2;0,0;1,4;5,1,1,3,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;4,4,80",
+        Node expected=new Node("5,5;2;0,0;1,4;5,1,1,3,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;4,4,80;",
                 20);
-        Node n = new Node("5,5;2;0,0;1,4;5,1,1,3,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,1,100,1,0,100,4,4,80",
+        Node n = new Node("5,5;2;0,0;1,4;5,1,1,3,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,1,100,1,0,100,4,4,80;",
                 0);
+        expected.ConcatAction(Actions.KILL);
         assertEquals(expected, sp.Kill(n));
     }
 
@@ -469,10 +470,11 @@ public class SearchProblemTest {
     @Test
     public void CarryTest()
     {
-        Node actual = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,1,80,4,2,90",
+        Node actual = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,1,80,4,2,90;",
                 0);
-        Node expected = new Node("5,5;1;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;3,1,80,4,2,90;30",
+        Node expected = new Node("5,5;1;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;3,1,80,4,2,90;30;",
                 0);
+        expected.ConcatAction(Actions.CARRY);
         assertEquals(expected, s.CarryHostage(actual));
     }
 
@@ -564,11 +566,11 @@ public class SearchProblemTest {
     @Test
     public void TakePillTest()
     {
-        Node expected =  new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,10,3,0,60,4,4,60",
+        Node expected =  new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,10,3,0,60,4,4,60;",
                 50);
-        Node actual =  new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node actual =  new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 70);
-        int ExpectedDamage=expected.getDamage();
+        expected.ConcatAction(Actions.PILL);
         assertEquals(expected,s.TakePill(actual));
 //        assertEquals(expected.getDamage(),s.TakePill(actual).getDamage());
     }
@@ -581,6 +583,7 @@ public class SearchProblemTest {
                 0);
         Node Expected=new Node("5,5;7;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;0,0,30,3,0,80,4,4,80;",
         0);
+        Expected.ConcatAction(Actions.DROP);
         assertEquals(Expected, sp.DropHostage(Actual));
     }
 
@@ -591,15 +594,39 @@ public class SearchProblemTest {
                 0);
         Node Expected=new Node("5,5;11;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;0,0,30,3,0,80,4,4,80;",
         0);
+        Expected.ConcatAction(Actions.DROP);
         assertEquals(Expected, sp.DropHostage(Actual));
     }
 
     @Test
+    //yng7
     public void CheckGoalTest()
     {
-        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node actual = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;;",
                 0);
-        assertEquals(null, n.TakenActions);
+        assertEquals(true, s.CheckGoal(actual));
+    }
+    @Test
+    //fail neo not at the telephone booth and there are no hostages carried nor in the grid
+    public void CheckGoalTest1()
+    {
+        Node actual = new Node("5,5;2;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;;",
+                0);
+        assertEquals(false, s.CheckGoal(actual));
+    }
+    @Test
+    //fail Still Carried Hostages but at the telephone booth and no hostages in the grid.
+    public void CheckGoalTest2()
+    {
+        Node actual = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;;",
+                0);
+        assertEquals(false, s.CheckGoal(actual));
+    } @Test
+    //fail Still  Hostages in the grid and neo at the telephone booth
+    public void CheckGoalTest3() {
+        Node actual = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80;",
+                0);
+        assertEquals(false, s.CheckGoal(actual));
     }
 
     @Test
