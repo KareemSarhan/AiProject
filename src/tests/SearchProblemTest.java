@@ -463,11 +463,23 @@ public class SearchProblemTest {
 
 
     @Test
-    public void DropTest()
+    public void DropHostageTest()
     {
-        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
+        Node Actual = new Node("5,5;2;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;0,0,30,3,0,80,4,4,80;3,3,2,4,1",
                 0);
-        assertEquals(false, sp.CanDropHostage(n));
+        Node Expected=new Node("5,5;7;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;0,0,30,3,0,80,4,4,80;",
+        0);
+        assertEquals(Expected, sp.DropHostage(Actual));
+    }
+
+    @Test
+    public void DropHostageTest1()
+    {
+        Node Actual = new Node("5,5;2;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;0,0,30,3,0,80,4,4,80;3,3,2,4,1,4,9,5,8",
+                0);
+        Node Expected=new Node("5,5;11;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;0,0,30,3,0,80,4,4,80;",
+        0);
+        assertEquals(Expected, sp.DropHostage(Actual));
     }
 
     @Test

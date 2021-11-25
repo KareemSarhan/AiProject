@@ -449,13 +449,15 @@ public class SearchProblem {
 
         return nodeArr;
     }
+    
     //removes all the carried hostages from the node which is saved at the last part of the grid string and resets CarryLimit
     public Node DropHostage(Node node) {
         int CarriedHostagesCount = GetSubString(node.GridString,8,9).split(",").length;
         int CarryLimit = Integer.parseInt(GetSubString(node.GridString,1,2))+ CarriedHostagesCount;
-        node.setGridString(String.join(",", GetSubString(node.GridString,0,2))+";"+CarryLimit +";"+String.join(",", GetSubString(node.GridString,3,8)+";"));
+        node.setGridString(String.join(",", GetSubString(node.GridString,0,1))+";"+CarryLimit +";"+String.join(",", GetSubString(node.GridString,2,8)+";"));
         return node;
     }
+
     // breadth first search for the goal state
     public void BreadthFirst(Node node)
     {
