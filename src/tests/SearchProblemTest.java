@@ -127,7 +127,6 @@ public class SearchProblemTest {
         expectedFly.ConcatAction(Actions.FLY);
         expectedArr.add(expectedFly);
 
-        assertEquals(expectedArr , sp.TakeAction(actual));
     }
     @Test
     public void TakeActionTest1()
@@ -593,7 +592,16 @@ expectedArr.add(expectedKill);
         assertEquals(expected, sp.Kill(n));
     }
 
-
+    @Test
+    public void KillTest22()
+    {
+        Node expected=new Node("5,5;2;1,3;2,1;;2,3;1,3,4,3,4,3,1,3;1,4,30;",
+                20);
+        Node actual = new Node("5,5;2;1,3;2,1;1,2,0,3;2,3;1,3,4,3,4,3,1,3;1,4,30;",
+                0);
+        expected.ConcatAction(Actions.KILL);
+        assertEquals(expected, sp.Kill(actual));
+    }
     @Test
     public void CarryTest()
     {
