@@ -57,22 +57,15 @@ public class SearchProblem {
     public String UpdateNeoPos(String grid, String position, int subStringStart, int subStringEnd)
     {
         return GetSubString(grid, 0, subStringStart) +";"+position+";"+ GetSubString(grid,subStringEnd, 8);
-//        return GetSubString(grid, 0, subStringStart) +";"+position+";"+ GetSubString(grid,subStringEnd, 8);
-        //return grid.substring(0,subStringStart)+position+grid.substring(subStringEnd);
     }
 
     public String UpdateHostageState(String grid, String [] HostageArray)
     {
-//        for(int i = 0 ; i <HostageArray.length;i++)
-//            System.out.print(HostageArray[i]);
         String HostageNewInfo="";
         for(int i = 0 ; i < HostageArray.length-1;i++) {
             HostageNewInfo += HostageArray[i] + "" + ",";
         }
-
-//        System.out.print(HostageNewInfo);
         HostageNewInfo += HostageArray[HostageArray.length-1] + "";
-//        HostageNewInfo.substring(HostageNewInfo, 0, HostageNewInfo.length() - 1);
         return GetSubString(grid, 0, 7) +";"+HostageNewInfo;
     }
 
@@ -172,7 +165,7 @@ public class SearchProblem {
     }
 
     //New Damage hyzeed 20
-    // All agents in the neighbouring cells should die
+    //All agents in the neighbouring cells should die
     public Node Kill(Node node) {
         int KilledAgentsNum=0;
         String AgentStringPos = GetSubString(node.GridString,4,5);
@@ -198,20 +191,16 @@ public class SearchProblem {
         for (int i = 2; i < HostagesArr.length; i+=3) {
             HostagesArr[i] = String.valueOf(Integer.parseInt(HostagesArr[i]) - 20);
         }
-
         int NewDamage = node.getDamage()-20;
         System.out.println(NewDamage);
         node.setDamage(NewDamage);
-//
         node.GridString = UpdateHostageState(node.GridString, HostagesArr);
-//
         return node;
     }
 
 
     public Node CarryHostage(Node node)
     {
-        //String HostageString = GetSubString(node.GridString,7,8);
         String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
         for(int i=0; i<HostagesArr.length;i+=3){
             System.out.println(GetNeoPosition(node.GridString).substring(0,1));
@@ -227,7 +216,6 @@ public class SearchProblem {
                 String[] newHostagesArr = new String[0];
                 for(int j=0;j<HostagesArr.length-2;j++){
                     newHostagesArr[j] = HostagesArr[j];
-
                 }
                 System.out.println(Arrays.toString(newHostagesArr));
                 node.GridString = GetSubString(node.GridString,0,1) + ';'+count+';' + GetSubString(node.GridString,2,7)+Arrays.toString(HostagesArr)+';'+damage;
@@ -235,11 +223,6 @@ public class SearchProblem {
                 System.out.println(node.GridString);
             }
         }
-
-//        String[] HostagePos = ExistInPadsArr(GetNeoPosition(node.GridString).split(","),HostageString.split(","));
-//        if (!HostagePos.equals(null)) {
-//            node.setGridString(UpdateNeoPos(node.GridString,HostageString,7,8));
-//        }
         return node;
     }
      public boolean CanCarryHostage(Node node)
@@ -327,22 +310,22 @@ public class SearchProblem {
         nodeArr.add(MoveDown(node.clone()));
         nodeArr.add(MoveLeft(node.clone()));
         nodeArr.add(MoveRight(node.clone()));
-        if (CanKill(node.clone())) {
+        if (CanKill(node)) {
             nodeArr.add(Kill(node.clone()));
         }
-        if (CanCarryHostage(node.clone()))
+        if (CanCarryHostage(node))
         {
             nodeArr.add(CarryHostage(node.clone()));
         }
-        if (CanDropHostage(node.clone()))
+        if (CanDropHostage(node))
         {
             nodeArr.add(DropHostage(node.clone()));
         }
-        if (CanFly(node.clone()))
+        if (CanFly(node))
         {
             nodeArr.add(Fly(node.clone()));
         }
-        if (CanTakePill(node.clone()))
+        if (CanTakePill(node))
         {
             nodeArr.add(TakePill(node.clone()));
         }
@@ -370,7 +353,7 @@ public class SearchProblem {
             }
         }
     }
-    // Depth first search for the goal state.
+    //Depth first search for the goal state.
     //check if the node is the goal state with CheckGoal.
     public void DepthFirst(Node node)
     {
