@@ -207,6 +207,7 @@ public class SearchProblem {
         String[] Hostages = GetSubString(node.GridString,7,8).split(",");
         ArrayList<String> AgentsPos=new ArrayList<String>();
         ArrayList<String> HostagesPos=new ArrayList<String>();
+        ArrayList<Integer> AgentIndcies=new ArrayList<Integer>();
         String NewStringAgents="";
         String NewStringHostages="";
 
@@ -223,23 +224,43 @@ public class SearchProblem {
         int NeoY=Integer.parseInt(GetNeoPosition(node.GridString).substring(2,3));
         int CountRemovedAgents = 0 ;
         int CountRemovedMutant = 0 ;
-        for (int i = 0; i < AgentsPos.size()-CountRemovedAgents; i+=2) {
+
+//        for(int i = 0 ; i< agents.length;i++)
+//        System.out.println(i);
+
+        for (int i = 0; i < AgentsPos.size(); i+=2) {
             int AgentX=Integer.parseInt(AgentsPos.get(i));
             int AgentY=Integer.parseInt(AgentsPos.get(i+1));
+//            System.out.println("Neo Position  " + NeoX + "  " + NeoY);
+
             if ((AgentX == NeoX+1  && AgentY == NeoY)||
                     (AgentX == NeoX-1  && AgentY == NeoY)||
                     (AgentX == NeoX  && AgentY== NeoY+1)||
                     (AgentX == NeoX  && AgentY == NeoY-1)) {
-                AgentsPos.remove(i);
-                AgentsPos.remove(i);
+                System.out.println(AgentX + " " + AgentY +"  Agents Position");
+                AgentIndcies.add(i);
+                AgentIndcies.add(i+1);
                 CountRemovedAgents+=2;
-                i-=2;
             }
 
         }
+//        for(int i = 0 ; i < AgentIndcies.size();i++)
+//        {
+//            System.out.println(AgentIndcies.get(i));
+//        }
+        for(int i = 0 ; i < AgentIndcies.size();i++)
+        {
+            int x = AgentIndcies.get(i);
+            System.out.println(x);
+            AgentsPos.remove(x);
+        }
+//        for(int i = 0 ; i < AgentsPos.size();i++)
+//            System.out.print(AgentsPos.get(i));
+
         for (int i = 0 ; i < AgentsPos.size()-1;i++)
             NewStringAgents+=AgentsPos.get(i) + ",";
         NewStringAgents+=AgentsPos.get(AgentsPos.size()-1) ;
+        System.out.println((NewStringAgents) + "  HELLOOOOO");
 
         for (int i = 0; i < Hostages.length-CountRemovedMutant; i+=3) {
             int HostageX=Integer.parseInt(HostagesPos.get(i));
@@ -261,6 +282,11 @@ public class SearchProblem {
         for (int i = 0 ; i < HostagesPos.size()-1;i++)
             NewStringHostages+=HostagesPos.get(i) + ",";
         NewStringHostages+=HostagesPos.get(HostagesPos.size()-1) ;
+<<<<<<<
+
+=======
+//        System.out.println((NewStringHostages));
+>>>>>>>
         node.setDamage(NewDamage);
         node.ConcatAction(Actions.KILL);
             node.setGridString(String.join(",", GetSubString(node.GridString,0,4))+";"+NewStringAgents +";"+String.join(",", GetSubString(node.GridString,5,7)+";"+NewStringHostages+";"));
@@ -274,9 +300,16 @@ public class SearchProblem {
         String[] pillPos = ExistAndRemoveInPillsArr(GetNeoPosition(node.GridString).split(","),pillArr.split(","));
         String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
         for (int i = 2; i < HostagesArr.length; i+=3) {
-            HostagesArr[i] = String.valueOf(Integer.parseInt(HostagesArr[i]) - 20);
+            int HostageDamage=Integer.parseInt(HostagesArr[i]) - 20;
+            if(HostageDamage<0){
+                HostageDamage=0;
+            }
+            HostagesArr[i] = String.valueOf(HostageDamage);
         }
         int NewDamage = node.getDamage()-20;
+        if(NewDamage<0){
+            NewDamage=0;
+        }
         node.setDamage(NewDamage);
         node.GridString = UpdateHostageState(node.GridString, HostagesArr);
         node.ConcatAction(Actions.PILL);

@@ -561,13 +561,14 @@ expectedArr.add(expectedKill);
     @Test
     public void KillTest()
     {
-        Node expected=new Node("5,5;2;0,0;1,4;2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
+        Node expected=new Node("5,5;2;1,3;2,1;;2,3;1,3,4,3,4,3,1,3;1,4,30;",
                 20);
-        Node n = new Node("5,5;2;0,0;1,4;0,1,1,0,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;'",
+        Node actual = new Node("5,5;2;1,3;2,1;1,2,0,3;2,3;1,3,4,3,4,3,1,3;1,4,30;",
                 0);
         expected.ConcatAction(Actions.KILL);
-        assertEquals(expected, sp.Kill(n));
+        assertEquals(expected, sp.Kill(actual));
     }
+
 
     //2 Agents to be killed and 2 Mutants
     @Test
@@ -651,6 +652,8 @@ expectedArr.add(expectedKill);
     @Test
     public void CanTakePillTest2()
     {
+
+
         Node n = new Node("5,5;2;2,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
 
@@ -692,10 +695,10 @@ expectedArr.add(expectedKill);
     @Test
     public void TakePillTest()
     {
-        Node expected =  new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,10,3,0,60,4,4,60;",
-                50);
-        Node actual =  new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
-                70);
+        Node expected =  new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,10,3,0,60,4,4,0;",
+                0);
+        Node actual =  new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,0;",
+                0);
         expected.ConcatAction(Actions.PILL);
         assertEquals(expected,s.TakePill(actual));
 //        assertEquals(expected.getDamage(),s.TakePill(actual).getDamage());
