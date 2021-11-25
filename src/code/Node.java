@@ -2,7 +2,7 @@ package code;
 
 import java.util.Objects;
 
-public class Node {
+public class Node implements Cloneable {
     public String GridString;
     public String TakenActions;
     public int Damage;
@@ -43,8 +43,16 @@ public class Node {
     public void setGridString(String gridString) {
         GridString = gridString;
     }
-
-
+    public Node clone()
+    {
+        Node t = null;
+        try {
+            t = (Node)super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return t;
+    }
     public int getDamage() {
         return Damage;
     }
@@ -57,7 +65,7 @@ public class Node {
             damage = 0;
 
     }
-    public void ConcatAction(String action)
+    public void ConcatAction(Actions action)
     {
         TakenActions+=action;
     }
