@@ -618,7 +618,7 @@ public class SearchProblemTest {
     //fail Still Carried Hostages but at the telephone booth and no hostages in the grid.
     public void CheckGoalTest2()
     {
-        Node actual = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;;",
+        Node actual = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;;80",
                 0);
         assertEquals(false, s.CheckGoal(actual));
     } @Test

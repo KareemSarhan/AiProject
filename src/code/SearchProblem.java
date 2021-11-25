@@ -10,8 +10,8 @@ public class SearchProblem {
     //Check if node passed is in a goal state.
     public boolean CheckGoal(Node node)
     {
-        boolean IsNoRemainHostages = !GetSubString(node.GridString,7,8).isEmpty();
-        boolean IsNoRemainCarriedHostages = !GetSubString(node.GridString,8,9).isEmpty();
+        boolean IsNoRemainHostages = GetSubString(node.GridString,7,8).isEmpty();
+        boolean IsNoRemainCarriedHostages = GetSubString(node.GridString,8,9).isEmpty();
         boolean IsAtTeleBooth = GetSubString(node.GridString,2,3).equals(GetSubString(node.GridString,3,4));
         if (IsNoRemainHostages && IsNoRemainCarriedHostages && IsAtTeleBooth)
             return true;
@@ -43,7 +43,8 @@ public class SearchProblem {
 
             }
         }
-        return grid.substring(subStringStart, subStringEnd);
+        String Output = grid.substring(subStringStart, subStringEnd);
+        return Output;
     }
 
     public String[] removeFromArray(String elementToBeDeleted, String[] arr){
