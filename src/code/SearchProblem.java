@@ -490,39 +490,36 @@ public class SearchProblem {
     public Vector<Node> TakeAction(Node node)
     {
         Vector<Node> nodeArr = new Vector<Node>();
-        if (CheckGameOver(node)){
-            return nodeArr;
-        }
         if(CanMoveUp(node))
         {
-            nodeArr.add(MoveUp(node.clone()));
+            nodeArr.add(UpdateTimeStep(MoveUp(node.clone())));
         }
         if(CanMoveDown(node))
         {
-            nodeArr.add(MoveDown(node.clone()));
+            nodeArr.add(UpdateTimeStep(MoveDown(node.clone())));
         }
         if(CanMoveRight(node))
         {
-            nodeArr.add(MoveRight(node.clone()));
+            nodeArr.add(UpdateTimeStep(MoveRight(node.clone())));
         }
         if(CanMoveLeft(node))
         {
-            nodeArr.add(MoveLeft(node.clone()));
+            nodeArr.add(UpdateTimeStep(MoveLeft(node.clone())));
         }
         if (CanKill(node)) {
-            nodeArr.add(Kill(node.clone()));
+            nodeArr.add(UpdateTimeStep(Kill(node.clone())));
         }
         if (CanCarryHostage(node))
         {
-            nodeArr.add(CarryHostage(node.clone()));
+            nodeArr.add(UpdateTimeStep(CarryHostage(node.clone())));
         }
         if (CanDropHostage(node))
         {
-            nodeArr.add(DropHostage(node.clone()));
+            nodeArr.add(UpdateTimeStep(DropHostage(node.clone())));
         }
         if (CanFly(node))
         {
-            nodeArr.add(Fly(node.clone()));
+            nodeArr.add(UpdateTimeStep(Fly(node.clone())));
         }
         if (CanTakePill(node))
         {
