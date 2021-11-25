@@ -233,9 +233,9 @@ public class SearchProblem {
                 count -= 1;
                 String damage = HostagesArr[i+2];
                 System.out.println(Arrays.toString(HostagesArr));
-                removeFromArray(i,HostagesArr);
-                removeFromArray(i+1,HostagesArr);
-                removeFromArray(i+2,HostagesArr);
+//                removeFromArray(i,HostagesArr);
+//                removeFromArray(i+1,HostagesArr);
+//                removeFromArray(i+2,HostagesArr);
                 String[] newHostagesArr = new String[0];
                 for(int j=0;j<HostagesArr.length-2;j++){
                     newHostagesArr[j] = HostagesArr[j];
