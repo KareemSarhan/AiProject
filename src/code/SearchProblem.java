@@ -400,7 +400,7 @@ public class SearchProblem {
         String[] AgentsArr = GetSubString(node.GridString,4,5).split(",");
         String[] HostagesArr = GetSubString(node.GridString,7,8).split(",");
         if(Integer.parseInt(newPositionRight) >= Integer.parseInt(GetSubString(node.GridString,0,1).split(",")[1]))
-            return false;
+        {   return false;
         }
         for(int i=1;i<AgentsArr.length;i+=2){
             if(AgentsArr[i].equals(newPositionRight) && AgentsArr[i-1].equals(position[0])){
