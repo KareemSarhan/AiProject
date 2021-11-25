@@ -106,8 +106,11 @@ public class SearchProblem {
     public String[] ExistInPadsArr(String[] Key,String[] Arr)
     {
         for (int i = 0; i < Arr.length; i += 2) {
-            if(Key[0].equals(Arr[i]) && Key[1].equals(Arr[i+1]))
+            if((Key[0].equals(Arr[i]) && Key[1].equals(Arr[i+1])))
             {
+                if(Key[0].equals(Arr[i+2]) && Key[1].equals(Arr[i+3])){
+                    return new String[]{Arr[i+4], Arr[i + 5]};
+                }
                 return new String[]{Arr[i+2], Arr[i + 3]};
             }
         }

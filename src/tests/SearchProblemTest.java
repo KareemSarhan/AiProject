@@ -321,6 +321,15 @@ public class SearchProblemTest {
 //        assertEquals(expected.getDamage(),s.TakePill(actual).getDamage());
     }
 
+
+    @Test
+    public void DropTest()
+    {
+        Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
+                0);
+        assertEquals(false, sp.CanDropHostage(n));
+    }
+
     @Test
     public void CheckGoalTest()
     {
@@ -366,9 +375,9 @@ public class SearchProblemTest {
     @Test
     public void FlyTest1()
     {
-        Node Actual = new Node("5,5;2;0,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node Actual = new Node("5,5;2;0,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;0,0,30,3,0,80,4,4,80",
         0);
-        Node Expected= new Node("5,5;2;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node Expected= new Node("5,5;2;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;0,0,30,3,0,80,4,4,80",
         0);
         assertEquals(Expected, sp.Fly(Actual));
     }
