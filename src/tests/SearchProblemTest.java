@@ -233,6 +233,20 @@ public class SearchProblemTest {
     }
 
     @Test
+    public void CanMoveLeftTest4(){
+        Node n = new Node("5,5;2;1,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,3,100",
+                0);
+        assertEquals(true,sp.CanMoveLeft(n));
+    }
+
+    @Test
+    public void CanMoveLeftTest5(){
+        Node actual = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
+                20);
+        assertEquals(false, sp.CanMoveLeft(actual));
+    }
+
+    @Test
     public void MoveLeftTest()
     {
         Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
@@ -357,9 +371,9 @@ public class SearchProblemTest {
     @Test
     public void CarryTest()
     {
-        Node actual = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
+        Node actual = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,1,80,4,2,90",
                 0);
-        Node expected = new Node("5,5;1;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;3,0,80,4,4,80;30",
+        Node expected = new Node("5,5;1;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;3,1,80,4,2,90;30",
                 0);
         assertEquals(expected, s.CarryHostage(actual));
     }
