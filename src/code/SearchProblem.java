@@ -96,7 +96,7 @@ public class SearchProblem {
             HostageNewInfo += HostageArray[i] + "" + ",";
         }
         HostageNewInfo += HostageArray[HostageArray.length-1] + "";
-        return GetSubString(grid, 0, 7) +";"+HostageNewInfo;
+        return GetSubString(grid, 0, 7) +";" + HostageNewInfo+ ";" + GetSubString(grid, 8, 9) ;
     }
 
 
@@ -211,7 +211,7 @@ public class SearchProblem {
         ArrayList<String> AgentsPos=new ArrayList<String>();
         ArrayList<String> HostagesPos=new ArrayList<String>();
         String NewStringAgents="";
-        String NewStringMutants="";
+        String NewStringHostages="";
 
 
         //Copying the array agents in arrayList the AgentsPos.
@@ -273,12 +273,14 @@ public class SearchProblem {
             }
         }
         for (int i = 0 ; i < HostagesPos.size()-1;i++)
-            NewStringMutants+=HostagesPos.get(i) + ",";
-        NewStringMutants+=HostagesPos.get(HostagesPos.size()-1) ;
-        System.out.println((NewStringMutants));
+            NewStringHostages+=HostagesPos.get(i) + ",";
+        NewStringHostages+=HostagesPos.get(HostagesPos.size()-1) ;
+        System.out.println((NewStringHostages));
         node.setDamage(NewDamage);
         node.ConcatAction(Actions.KILL);
-        node.setGridString(String.join(",", GetSubString(node.GridString,0,4))+";"+NewStringAgents +";"+String.join(",", GetSubString(node.GridString,5,7)+";"+NewStringMutants));
+//        System.out.println( GetSubString(node.GridString,8,9) + "koki");
+            node.setGridString(String.join(",", GetSubString(node.GridString,0,4))+";"+NewStringAgents +";"+String.join(",", GetSubString(node.GridString,5,7)+";"+NewStringHostages+";"));
+
         return node;
     }
 
@@ -315,7 +317,7 @@ public class SearchProblem {
                 //System.out.println(Hostages);
                 String h = Hostages.toString();
                 String newHostages = h.substring(1,h.length()-1).replaceAll("\\s+","");
-                node.GridString = GetSubString(node.GridString,0,1) + ';'+count+';' + GetSubString(node.GridString,2,7)+";"+newHostages+';'+damage;
+                node.GridString = GetSubString(node.GridString,0,1) + ';'+count+';' + GetSubString(node.GridString,2,7)+";"+newHostages+';'+damage + ";";
             }
         }
         node.ConcatAction(Actions.CARRY);
@@ -536,6 +538,7 @@ public class SearchProblem {
     public Node DropHostage(Node node) {
         int CarriedHostagesCount = GetSubString(node.GridString,8,9).split(",").length;
         int CarryLimit = Integer.parseInt(GetSubString(node.GridString,1,2))+ CarriedHostagesCount;
+        node.ConcatAction(Actions.DROP);
         node.setGridString(String.join(",", GetSubString(node.GridString,0,1))+";"+CarryLimit +";"+String.join(",", GetSubString(node.GridString,2,8)+";"));
         return node;
     }
