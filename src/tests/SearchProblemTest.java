@@ -299,6 +299,7 @@ public class SearchProblemTest {
         Node expectedKill = new Node("5,5;2;3,1;3,4;0,0,1,3,3,3;4,1;0,2,3,2,3,2,0,2;3,0,12,3,1,32;",
                 40);
         expectedKill.ConcatAction(Actions.kill);
+        expectedKill.CountDeadAgents = 1;
         expectedArr.add(expectedKill);
         //Pill
         Node expectedPill = new Node("5,5;2;3,1;3,4;0,0,1,3,2,1,3,3;4,1;0,2,3,2,3,2,0,2;3,0,0,3,1,10;",
@@ -348,6 +349,8 @@ public class SearchProblemTest {
         Node expectedKill = new Node("5,5;2;2,2;0,0;4,2;;0,3,4,3,4,3,0,3;0,1,92,2,2,100,1,3,22;",
                 40);
         expectedKill.ConcatAction(Actions.kill);
+        expectedKill.CountDeadAgents = 4;
+        expectedKill.CountDeadHostages= 1;
         expectedArr.add(expectedKill);
         //Pill
         Node expectedPill = new Node("5,5;2;2,2;0,0;1,2,2,1,2,3,3,2;4,2;;0,3,4,3,4,3,0,3;0,1,90,2,2,98,1,3,20;",
@@ -358,6 +361,7 @@ public class SearchProblemTest {
         Node expectedCarry = new Node("5,5;1;2,2;0,0;1,2,2,1,2,3,3,2,4,2;;0,3,4,3,4,3,0,3;0,1,92,1,3,22;100",
                 20);
         expectedCarry.ConcatAction(Actions.carry);
+        expectedCarry.CountDeadHostages = 1;
         expectedArr.add(expectedCarry);
         //Drop Hostage
         Node expectedDrop = new Node("5,5;2;2,2;4,4;0,0,1,0,4,0,0,4,3,4;2,2,3,1,1,4;1,2,4,2,4,2,1,2;0,2,80,1,3,20,2,3,10;",
@@ -630,6 +634,7 @@ public class SearchProblemTest {
         Node actual = new Node("5,5;2;1,3;2,1;1,2,0,3;2,3;1,3,4,3,4,3,1,3;1,4,30;",
                 0);
         expected.ConcatAction(Actions.kill);
+        expected.CountDeadAgents =2;
         assertEquals(expected, s.Kill(actual));
     }
 
@@ -641,7 +646,10 @@ public class SearchProblemTest {
                 20);
         Node n = new Node("5,5;2;0,0;1,4;0,1,1,0,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,1,100,1,0,100,4,4,80;",
                 0);
+        n.CountDeadHostages=2;
         expected.ConcatAction(Actions.kill);
+        expected.CountDeadAgents =4;
+        expected.CountDeadHostages=2;
         assertEquals(expected, s.Kill(n));
     }
 
@@ -652,7 +660,10 @@ public class SearchProblemTest {
                 20);
         Node n = new Node("5,5;2;0,0;1,4;5,1,1,3,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,1,100,1,0,100,4,4,80;",
                 0);
+        n.CountDeadHostages=2;
         expected.ConcatAction(Actions.kill);
+        expected.CountDeadHostages=2;
+        expected.CountDeadAgents=2;
         assertEquals(expected, s.Kill(n));
     }
 
@@ -663,6 +674,7 @@ public class SearchProblemTest {
         Node actual = new Node("5,5;2;1,3;2,1;1,2,0,3;2,3;1,3,4,3,4,3,1,3;1,4,30;",
                 0);
         expected.ConcatAction(Actions.kill);
+        expected.CountDeadAgents = 2;
         assertEquals(expected, s.Kill(actual));
     }
 
@@ -884,6 +896,7 @@ public class SearchProblemTest {
                 0);
         Node expected = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;;14,20,100",
                 0);
+        expected.CountDeadHostages=1;
         assertEquals(expected, s.UpdateTimeStep(actual));
     }
 

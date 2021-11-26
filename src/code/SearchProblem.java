@@ -300,18 +300,18 @@ public class SearchProblem {
             }
         }
         String PillString = GetSubString(node.GridString, 5, 6);
-        Vector<String> PillsArr = new Vector<>();
-        Collections.addAll(PillsArr, PillString.split(","));
+        String[] PillsArr = PillString.split(",");
         int NeoX = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[0]);
         int NeoY = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[1]);
-        for (int i = 0; i < PillsArr.size(); i+=2) {
-            if (Integer.parseInt(PillsArr.get(i)) == NeoX && Integer.parseInt(PillsArr.get(i+1)) == NeoY) {
-                PillsArr.remove(i);
-                PillsArr.remove(i);
+        for (int i = 0; i < PillsArr.length; i+=2) {
+            if (Integer.parseInt(PillsArr[i]) == NeoX && Integer.parseInt(PillsArr[i+1]) == NeoY) {
+                PillsArr[i]="";
+                PillsArr[i+1]="";
                 break;
             }
         }
         node.GridString = String.join(",", GetSubString(node.GridString, 0, 5)) + ";" + String.join(",", PillsArr) +";"+ GetSubString(node.GridString, 6, 7) +";" + String.join(",", HostagesArr) + ";" + String.join(",", CarriedHostagesArr) ;
+        node.GridString = node.GridString.replace(",,,", "").replace(",,", "");
         node.Damage = NewNeoDamage;
         node.ConcatAction(Actions.pill);
         return node;
@@ -321,19 +321,19 @@ public class SearchProblem {
     public Node CarryHostage(Node node) {
         String[] HostagesArr = GetSubString(node.GridString, 7, 8).split(",");
         for (int i = 0; i < HostagesArr.length; i += 3) {
-            List<String> Hostages = new ArrayList<>(Arrays.asList(HostagesArr));
             if (HostagesArr[i].equals(GetNeoPosition(node.GridString).substring(0, 1)) && HostagesArr[i + 1].equals(GetNeoPosition(node.GridString).substring(2, 3))) {
                 int count = Integer.parseInt(GetSubString(node.GridString, 1, 2));
                 count -= 1;
                 String damage = HostagesArr[i + 2];
-                Hostages.remove(i);
-                Hostages.remove(i);
-                Hostages.remove(i);
-                String h = Hostages.toString();
+                HostagesArr[i]= "";
+                HostagesArr[i+1]= "";
+                HostagesArr[i+2]= "";
+                String h = Arrays.toString(HostagesArr);
                 String newHostages = h.substring(1, h.length() - 1).replaceAll("\\s+", "");
                 node.GridString = GetSubString(node.GridString, 0, 1) + ';' + count + ';' + GetSubString(node.GridString, 2, 7) + ";" + newHostages + ';' + damage + ";";
             }
         }
+        node.GridString = node.GridString.replace(",,,", "").replace(",,", "");
         node.ConcatAction(Actions.carry);
         return node;
     }
