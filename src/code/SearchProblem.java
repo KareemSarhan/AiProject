@@ -643,18 +643,19 @@ public class SearchProblem {
             int HostageX = Integer.parseInt(Hostages[i]);
             int HostagesY = Integer.parseInt(Hostages[i + 1]);
             int HostageDamage = Integer.parseInt(Hostages[i + 2]);
-
-            if (HostageX + 1 == NeoX && HostagesY == NeoY && HostageDamage == 100) {
-                return true;
-            }
-            if (HostageX - 1 == NeoX && HostagesY == NeoY && HostageDamage == 100) {
-                return true;
-            }
-            if (HostageX == NeoX && HostagesY + 1 == NeoY && HostageDamage == 100) {
-                return true;
-            }
-            if (HostageX == NeoX && HostagesY - 1 == NeoY && HostageDamage == 100) {
-                return true;
+            if (HostageDamage == 100) {
+                if (HostageX + 1 == NeoX && HostagesY == NeoY ) {
+                    return true;
+                }
+                if (HostageX - 1 == NeoX && HostagesY == NeoY ) {
+                    return true;
+                }
+                if (HostageX == NeoX && HostagesY + 1 == NeoY ) {
+                    return true;
+                }
+                if (HostageX == NeoX && HostagesY - 1 == NeoY ) {
+                    return true;
+                }
             }
         }
         return false;
