@@ -239,7 +239,7 @@ public class SearchProblemTest {
         expectedKill.ConcatAction(Actions.KILL);
         //expectedArr.add(expectedKill);
         //Pill
-        Node expectedPill = new Node("5,5;2;2,2;4,4;0,0,1,0,4,0,0,4,3,4;2,2,3,1,1,4;1,2,4,2,4,2,1,2;0,2,60,1,3,0,2,3,0;",
+        Node expectedPill = new Node("5,5;2;2,2;4,4;0,0,1,0,4,0,0,4,3,4;3,1,1,4;1,2,4,2,4,2,1,2;0,2,60,1,3,0,2,3,0;",
                 0);
         expectedPill.ConcatAction(Actions.PILL);
         expectedArr.add(expectedPill);
@@ -743,13 +743,23 @@ public class SearchProblemTest {
 
     @Test
     public void TakePillTest() {
-        Node expected = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,10,3,0,60,4,4,0;",
+        Node expected = new Node("5,5;2;2,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0;0,3,4,3,4,3,0,3;0,0,10,3,0,60,4,4,0;",
                 0);
-        Node actual = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,0;",
+        Node actual = new Node("5,5;2;2,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,0;",
                 0);
         expected.ConcatAction(Actions.PILL);
         assertEquals(expected, s.TakePill(actual));
 //        assertEquals(expected.getDamage(),s.TakePill(actual).getDamage());
+    }
+
+    @Test
+    public void TakePillTest1() {
+        Node expected = new Node("5,5;2;2,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0;0,3,4,3,4,3,0,3;0,0,10,3,0,60,4,4,0;100,10",
+                0);
+        Node actual = new Node("5,5;2;2,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,0;100,30",
+                20);
+        expected.ConcatAction(Actions.PILL);
+        assertEquals(expected, s.TakePill(actual));
     }
 
 
