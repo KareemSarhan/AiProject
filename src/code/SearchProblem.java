@@ -77,6 +77,7 @@ public class SearchProblem {
 
     //loop on the hostage array and Carried hostage array and increase them by 2
     public Node UpdateTimeStep(Node node) {
+        node.GridString = node.GridString.replace("]","").replace("[","").replace(" ", "");
         int NewDeadHostage = 0;
         String HostageString = GetSubString(node.getGridString(), 7, 8);
         String NewHostageString = "";
@@ -92,7 +93,7 @@ public class SearchProblem {
                     HostageArr[i + 2] = Integer.toString(damage);
                 }
             }
-            NewHostageString = String.join(",", HostageArr);
+            NewHostageString = Arrays.toString(HostageArr).replace("[","").replace("]","").replace(" ","");
         }
         String CarriedHostageString = GetSubString(node.getGridString(), 8, 9);
         String NewCarriedHostageString = "";
@@ -108,11 +109,11 @@ public class SearchProblem {
                     CarriedHostageArr[i] = Integer.toString(damage);
                 }
             }
-            NewCarriedHostageString = String.join(",", CarriedHostageArr);
+            NewCarriedHostageString = Arrays.toString(CarriedHostageArr).replace("[","").replace("]","").replace(" ","");
 
         }
 
-        String NewGridString = GetSubString(node.getGridString(), 0, 7) + ";" + NewHostageString + ";" + NewCarriedHostageString;
+        String NewGridString = GetSubString(node.getGridString(), 0, 7) + ";" +NewHostageString + ";" + NewCarriedHostageString;
         node.GridString = NewGridString;
         node.CountDeadHostages = NewDeadHostage+node.CountDeadHostages;
         return node;
@@ -140,27 +141,31 @@ public class SearchProblem {
         int NeoY = Integer.parseInt(GetNeoPosition(node.GridString).split(",")[1]);
         String[] AgentsArr = new String[]{};
         String AgentsString = GetSubString(node.GridString, 4, 5);
+       // System.out.println(AgentsString);
         if (!AgentsString.isEmpty()) {
             AgentsArr = AgentsString.split(",");
+            //System.out.println(Arrays.toString(AgentsArr));
         }
         for (int i = 0; i < AgentsArr.length; i += 2) {
-            if ((Integer.parseInt(AgentsArr[i]) == NeoX - 1 && Integer.parseInt(AgentsArr[i + 1]) == NeoY)) {
-                AgentsArr[i] = "";
-                AgentsArr[i + 1] = "";
-                NewDeadAgents++;
-            } else if ((Integer.parseInt(AgentsArr[i]) == NeoX + 1 && Integer.parseInt(AgentsArr[i + 1]) == NeoY)) {
-                AgentsArr[i] = "";
-                AgentsArr[i + 1] = "";
-                NewDeadAgents++;
-            } else if ((Integer.parseInt(AgentsArr[i]) == NeoX && Integer.parseInt(AgentsArr[i + 1]) == NeoY + 1)) {
-                AgentsArr[i] = "";
-                AgentsArr[i + 1] = "";
-                NewDeadAgents++;
-            } else if ((Integer.parseInt(AgentsArr[i]) == NeoX && Integer.parseInt(AgentsArr[i + 1]) == NeoY - 1)) {
-                AgentsArr[i] = "";
-                AgentsArr[i + 1] = "";
-                NewDeadAgents++;
-            }
+           //if(!AgentsArr[i].isEmpty()) {
+                if ((Integer.parseInt(AgentsArr[i]) == NeoX - 1 && Integer.parseInt(AgentsArr[i + 1]) == NeoY)) {
+                    AgentsArr[i] = "";
+                    AgentsArr[i + 1] = "";
+                    NewDeadAgents++;
+                } else if ((Integer.parseInt(AgentsArr[i]) == NeoX + 1 && Integer.parseInt(AgentsArr[i + 1]) == NeoY)) {
+                    AgentsArr[i] = "";
+                    AgentsArr[i + 1] = "";
+                    NewDeadAgents++;
+                } else if ((Integer.parseInt(AgentsArr[i]) == NeoX && Integer.parseInt(AgentsArr[i + 1]) == NeoY + 1)) {
+                    AgentsArr[i] = "";
+                    AgentsArr[i + 1] = "";
+                    NewDeadAgents++;
+                } else if ((Integer.parseInt(AgentsArr[i]) == NeoX && Integer.parseInt(AgentsArr[i + 1]) == NeoY - 1)) {
+                    AgentsArr[i] = "";
+                    AgentsArr[i + 1] = "";
+                    NewDeadAgents++;
+                }
+           //}
 
         }
         String[] HostageArr = new String[]{};
@@ -196,11 +201,14 @@ public class SearchProblem {
                 }
             }
         }
-        String NewAgentsString = String.join(",", AgentsArr);
-        String NewHostageString = String.join(",", HostageArr);
+        String NewAgentsString = Arrays.toString(AgentsArr).replace("[","").replace("]","").replace(" ","").replace(",,","");
+       // System.out.println(NewAgentsString);
+        String NewHostageString = Arrays.toString(HostageArr).replace(", , , ","").replace("[","").replace("]","").replace(" ","");
+//        System.out.println(NewHostageString);
+//        System.out.println(Arrays.toString(HostageArr).replace(", , , ",""));
         node.ConcatAction(Actions.kill);
         String NewGrid = GetSubString(node.GridString, 0, 4) + ";" + NewAgentsString + ";" + GetSubString(node.GridString, 5, 7) + ";" + NewHostageString + ";" + GetSubString(node.GridString, 8, 9);
-        node.GridString = NewGrid;
+        node.GridString = NewGrid.replace(";,;",";;");
         node.Damage = NewDamage;
         node.CountDeadAgents = NewDeadAgents+node.CountDeadAgents;
         return node;
@@ -252,8 +260,10 @@ public class SearchProblem {
                 break;
             }
         }
-        node.GridString = String.join(",", GetSubString(node.GridString, 0, 5)) + ";" + String.join(",", PillsArr) +";"+ GetSubString(node.GridString, 6, 7) +";" + String.join(",", HostagesArr) + ";" + String.join(",", CarriedHostagesArr) ;
-        node.GridString = node.GridString.replace(",,,", "").replace(",,", "");
+        String newHostages = Arrays.toString(HostagesArr).replace("[","").replace("]","").replace(" ","").replace(",,,","");
+        String newPills = Arrays.toString(PillsArr).replace(", ,","").replace("[","").replace("]","").replace(" ","");
+        String newCarried = Arrays.toString(CarriedHostagesArr).replace("[","").replace("]","").replace(" ","");
+        node.GridString = GetSubString(node.GridString, 0, 5) + ";" + newPills +";"+ GetSubString(node.GridString, 6, 7) +";" + newHostages + ";" + newCarried ;
         node.Damage = NewNeoDamage;
         node.ConcatAction(Actions.pill);
         return node;
@@ -262,20 +272,23 @@ public class SearchProblem {
 
     public Node CarryHostage(Node node) {
         String[] HostagesArr = GetSubString(node.GridString, 7, 8).split(",");
+        int count=0;
+        String damage="";
+        String newHostages="";
+        //System.out.println(Arrays.toString(HostagesArr));
         for (int i = 0; i < HostagesArr.length; i += 3) {
             if (HostagesArr[i].equals(GetNeoPosition(node.GridString).substring(0, 1)) && HostagesArr[i + 1].equals(GetNeoPosition(node.GridString).substring(2, 3))) {
-                int count = Integer.parseInt(GetSubString(node.GridString, 1, 2));
+                count = Integer.parseInt(GetSubString(node.GridString, 1, 2));
                 count -= 1;
-                String damage = HostagesArr[i + 2];
+                damage = HostagesArr[i + 2];
                 HostagesArr[i]= "";
                 HostagesArr[i+1]= "";
                 HostagesArr[i+2]= "";
-                String h = Arrays.toString(HostagesArr);
-                String newHostages = h.substring(1, h.length() - 1).replaceAll("\\s+", "");
-                node.GridString = GetSubString(node.GridString, 0, 1) + ';' + count + ';' + GetSubString(node.GridString, 2, 7) + ";" + newHostages + ';' + damage + ";";
+                newHostages = Arrays.toString(HostagesArr).replace(", , , ","");
+                //System.out.println(newHostages);
             }
         }
-        node.GridString = node.GridString.replace(",,,", "").replace(",,", "");
+        node.GridString = GetSubString(node.GridString, 0, 1) + ';' + count + ';' + GetSubString(node.GridString, 2, 7) + ";" + newHostages.replace("[","").replace("]","").replace(" ","") + ';' + damage + ";";
         node.ConcatAction(Actions.carry);
         return node;
     }
@@ -450,6 +463,7 @@ public class SearchProblem {
     }
 
     public Vector<Node> TakeAction(Node node) {
+        node.GridString = node.GridString.replace("]","").replace("[","").replace("[,","").replace(" ", "");
         Vector<Node> nodeArr = new Vector<Node>();
         if (CanMoveUp(node)) {
             nodeArr.add(UpdateTimeStep(MoveUp(node.clone())));
@@ -602,21 +616,25 @@ public class SearchProblem {
         }
         int NeoX = Integer.parseInt(GetNeoPosition(node.GridString).substring(0, 1));
         int NeoY = Integer.parseInt(GetNeoPosition(node.GridString).substring(2, 3));
-        for (int i = 0; i < agents.length; i += 2) {
-            int AgentX = Integer.parseInt(agents[i]);
-            int AgentY = Integer.parseInt(agents[i + 1]);
 
-            if (AgentX + 1 == NeoX && AgentY == NeoY) {
-                return true;
-            }
-            if (AgentX - 1 == NeoX && AgentY == NeoY) {
-                return true;
-            }
-            if (AgentX == NeoX && AgentY + 1 == NeoY) {
-                return true;
-            }
-            if (AgentX == NeoX && AgentY - 1 == NeoY) {
-                return true;
+        for (int i = 0; i < agents.length; i += 2) {
+
+            if (!agents[i].isEmpty()) {
+                int AgentX = Integer.parseInt(agents[i]);
+                int AgentY = Integer.parseInt(agents[i + 1]);
+
+                if (AgentX + 1 == NeoX && AgentY == NeoY) {
+                    return true;
+                }
+                if (AgentX - 1 == NeoX && AgentY == NeoY) {
+                    return true;
+                }
+                if (AgentX == NeoX && AgentY + 1 == NeoY) {
+                    return true;
+                }
+                if (AgentX == NeoX && AgentY - 1 == NeoY) {
+                    return true;
+                }
             }
         }
         for (int i = 0; i < Hostages.length; i += 3) {
