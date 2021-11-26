@@ -80,9 +80,10 @@ public class SearchProblemTest {
     }
 
     @Test
-    public void TakeActionTest() {
+    public void TakeActionCansTest() {
         Node actual = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
                 20);
+        Node expectedNode = actual.clone();
         Vector<Node> expectedArr = new Vector<Node>();
         //Move up
         Node expectedUp = new Node("5,5;2;0,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
@@ -130,6 +131,7 @@ public class SearchProblemTest {
         expectedFly.ConcatAction(Actions.FLY);
         expectedArr.add(expectedFly);
 
+        assertEquals(expectedNode,actual);
     }
 
     @Test

@@ -336,7 +336,6 @@ public class SearchProblem {
         String hostages = Arrays.toString(CarriedHostagesArr);
         String h = hostages.substring(1, hostages.length() - 1).replaceAll("\\s+", "");
         if (h.length() > 0 && !CarriedHostagesArr[0].equals(" ") && Integer.parseInt(GetNeoPosition(node.GridString).substring(0, 1)) == Integer.parseInt(GetSubString(node.GridString, 3, 4).substring(0, 1)) && Integer.parseInt(GetNeoPosition(node.GridString).substring(2, 3)) == Integer.parseInt(GetSubString(node.GridString, 3, 4).substring(2, 3))) {
-            node.GridString = GetSubString(node.GridString, 0, 8);
             return true;
         }
         return false;
