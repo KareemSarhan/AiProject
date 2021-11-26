@@ -128,18 +128,6 @@ public class SearchProblem {
         return null;
     }
 
-    public String[] ExistAndRemoveInPillsArr(String[] Key, String[] Arr) {
-        String[] NewPillArr = new String[Arr.length - 1];
-        for (int i = 0; i < Arr.length; i += 2) {
-            if (Key[0].equals(Arr[i]) && Key[0].equals(Arr[i + 1])) {
-                System.arraycopy(Arr, 0, NewPillArr, 0, i);
-                System.arraycopy(Arr, i + 1, NewPillArr, i, Arr.length - i - 1);
-                return NewPillArr;
-            }
-        }
-        return new String[]{};
-    }
-
     //loop on the hostage array and Carried hostage array and increase them by 2
     public Node UpdateTimeStep(Node node) {
         String HostageString = GetSubString(node.getGridString(), 7, 8);
@@ -262,22 +250,48 @@ public class SearchProblem {
     }
 
     public Node TakePill(Node node) {
-        String pillArr = GetSubString(node.GridString, 5, 6);
-        String[] pillPos = ExistAndRemoveInPillsArr(GetNeoPosition(node.GridString).split(","), pillArr.split(","));
-        String[] HostagesArr = GetSubString(node.GridString, 7, 8).split(",");
-        for (int i = 2; i < HostagesArr.length; i += 3) {
-            int HostageDamage = Integer.parseInt(HostagesArr[i]) - 20;
+        String CarriedHostageString = GetSubString(node.GridString, 8, 9);
+        String[] CarriedHostagesArr = new String[]{};
+        if (!CarriedHostageString.isEmpty()) {
+            CarriedHostagesArr = CarriedHostageString.split(",");
+        }
+        String HostagesString = GetSubString(node.GridString, 7, 8);
+        String[] HostagesArr = new String[]{};
+        if (!HostagesString.isEmpty()) {
+            HostagesArr = HostagesString.split(",");
+        }
+        int NewNeoDamage = node.Damage-20;
+        if (NewNeoDamage < 0) {
+            NewNeoDamage = 0;
+        }
+        for (int i = 0; i < HostagesArr.length; i += 3) {
+            int HostageDamage = Integer.parseInt(HostagesArr[i+2])-20;
             if (HostageDamage < 0) {
                 HostageDamage = 0;
             }
-            HostagesArr[i] = String.valueOf(HostageDamage);
+            HostagesArr[i+2] = HostageDamage+"";
         }
-        int NewDamage = node.getDamage() - 20;
-        if (NewDamage < 0) {
-            NewDamage = 0;
+        for (int i = 0; i < CarriedHostagesArr.length; i += 1) {
+            int CarriedHostageDamage = Integer.parseInt(CarriedHostagesArr[i])-20;
+            if (CarriedHostageDamage < 0) {
+                CarriedHostageDamage = 0;
+            }
+            CarriedHostagesArr[i] = CarriedHostageDamage+"";
         }
-        node.setDamage(NewDamage);
-        node.GridString = UpdateHostageState(node.GridString, HostagesArr);
+        String PillString = GetSubString(node.GridString, 5, 6);
+        Vector<String> PillsArr = new Vector<>();
+        Collections.addAll(PillsArr, PillString.split(","));
+        int NeoX = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[0]);
+        int NeoY = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[1]);
+        for (int i = 0; i < PillsArr.size(); i+=2) {
+            if (Integer.parseInt(PillsArr.get(i)) == NeoX && Integer.parseInt(PillsArr.get(i+1)) == NeoY) {
+                PillsArr.remove(i);
+                PillsArr.remove(i);
+                break;
+            }
+        }
+        node.GridString = String.join(",", GetSubString(node.GridString, 0, 5)) + ";" + String.join(",", PillsArr) +";"+ GetSubString(node.GridString, 6, 7) +";" + String.join(",", HostagesArr) + ";" + String.join(",", CarriedHostagesArr) ;
+        node.Damage = NewNeoDamage;
         node.ConcatAction(Actions.PILL);
         return node;
     }
