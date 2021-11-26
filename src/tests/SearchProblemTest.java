@@ -167,6 +167,7 @@ public class SearchProblemTest {
         Node expectedKill = new Node("5,5;2;1,3;2,1;;2,3;1,3,4,3,4,3,1,3;1,4,32;",
                 40);
         expectedKill.ConcatAction(Actions.kill);
+        expectedKill.CountDeadAgents=2;
         expectedArr.add(expectedKill);
 
         //Fly
@@ -208,6 +209,7 @@ public class SearchProblemTest {
         Node expectedKill = new Node("5,5;2;1,3;1,3;;1,2;0,3,4,3,4,3,0,3;;32",
                 40);
         expectedKill.ConcatAction(Actions.kill);
+        expectedKill.CountDeadAgents=1;
         expectedArr.add(expectedKill);
 
         //Drop Hostage
