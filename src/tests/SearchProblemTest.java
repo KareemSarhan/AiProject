@@ -872,4 +872,12 @@ public class SearchProblemTest {
                 0);
         assertEquals(expected, sp.UpdateTimeStep(actual));
     }
+
+    @Test
+    public void BFSTest()
+    {
+        Node actual = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",0);
+        String expected = "left,fly,right,carry,left,fly,down,right,drop,left,left,kill,left,left,up,carry,down,down,kill,up,right,right,right,right,drop";
+        //assertEquals(expected,s.BreadthFirst(actual).TakenActions);
+    }
 }
