@@ -306,7 +306,51 @@ public class SearchProblemTest {
 
     @Test
     public void TakeActionTest5() {
+        Node actual = new Node("5,5;2;2,2;0,0;1,2,2,1,2,3,3,2,4,2;;0,3,4,3,4,3,0,3;0,1,90,2,2,98,1,3,20;",
+                20);
+        Vector<Node> expectedArr = new Vector<Node>();
+        //Move up
+        Node expectedUp = new Node("5,5;2;2,2;0,0;1,2,2,1,2,3,3,2;4,2;;0,3,4,3,4,3,0,3;0,1,90,2,2,98,1,3,20;",
+                20);
+        expectedUp.ConcatAction(Actions.UP);
+        //expectedArr.add(expectedUp);
+        //Move Down
+        Node expectedDown = new Node("5,5;2;2,2;0,0;1,2,2,1,2,3,3,2;4,2;;0,3,4,3,4,3,0,3;0,1,90,2,2,98,1,3,20;",
+                20);
+        expectedDown.ConcatAction(Actions.DOWN);
+        //expectedArr.add(expectedDown);
+        //Move Right
+        Node expectedRight = new Node("5,5;2;2,2;0,0;1,2,2,1,2,3,3,2;4,2;;0,3,4,3,4,3,0,3;0,1,90,2,2,98,1,3,20;",
+                20);
+        expectedRight.ConcatAction(Actions.RIGHT);
+        //expectedArr.add(expectedRight);
+        //Move Left
+        Node expectedLeft = new Node("5,5;2;2,2;0,0;1,2,2,1,2,3,3,2;4,2;;0,3,4,3,4,3,0,3;0,1,90,2,2,98,1,3,20;",
+                20);
+        //expectedLeft.ConcatAction(Actions.LEFT);
+        //expectedArr.add(expectedLeft);
+        //Kill
+        Node expectedKill = new Node("5,5;2;2,2;0,0;4,2;;0,3,4,3,4,3,0,3;0,1,92,2,2,100,1,3,22;",
+                40);
+        expectedKill.ConcatAction(Actions.KILL);
+        expectedArr.add(expectedKill);
+        //Pill
+        Node expectedPill = new Node("5,5;2;2,2;0,0;1,2,2,1,2,3,3,2;4,2;;0,3,4,3,4,3,0,3;0,1,90,2,2,98,1,3,20;",
+                0);
+        expectedPill.ConcatAction(Actions.PILL);
+        //expectedArr.add(expectedPill);
+        //Carry Hostage
+        Node expectedCarry = new Node("5,5;1;2,2;0,0;1,2,2,1,2,3,3,2,4,2;;0,3,4,3,4,3,0,3;0,1,92,1,3,22;100",
+                20);
+        expectedCarry.ConcatAction(Actions.CARRY);
+        expectedArr.add(expectedCarry);
+        //Drop Hostage
+        Node expectedDrop = new Node("5,5;2;2,2;4,4;0,0,1,0,4,0,0,4,3,4;2,2,3,1,1,4;1,2,4,2,4,2,1,2;0,2,80,1,3,20,2,3,10;",
+                20);
+        expectedDrop.ConcatAction(Actions.DROP);
+        //expectedArr.add(expectedDrop);
 
+        assertEquals(expectedArr, sp.TakeAction(actual));
     }
 
     @Test
