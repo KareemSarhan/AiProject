@@ -214,8 +214,6 @@ public class SearchProblem {
         if (!HostageString.isEmpty()) {
             Collections.addAll(HostageArr, HostageString.split(","));
         }
-        System.out.println(AgentsArr.size());
-        System.out.println(HostageArr.size());
         for (int i = 0; i < AgentsArr.size(); i += 2) {
             if ((Integer.parseInt(AgentsArr.get(i)) == NeoX - 1 && Integer.parseInt(AgentsArr.get(i + 1)) == NeoY)) {
                 AgentsArr.remove(i);
@@ -611,9 +609,17 @@ public class SearchProblem {
     }
 
     public boolean CanKill(Node node) {
-        String[] agents = GetSubString(node.GridString, 4, 5).split(",");
-        String[] Hostages = GetSubString(node.GridString, 7, 8).split(",");
+        String agentsString = GetSubString(node.GridString, 4, 5);
+        String[] agents = new String[]{};
+        if (!agentsString.isEmpty()) {
+            agents = agentsString.split(",");
+        }
 
+        String HostagesString = GetSubString(node.GridString, 7, 8);
+        String[] Hostages = new String[]{};
+        if (!HostagesString.isEmpty()) {
+            Hostages = HostagesString.split(",");
+        }
         int NeoX = Integer.parseInt(GetNeoPosition(node.GridString).substring(0, 1));
         int NeoY = Integer.parseInt(GetNeoPosition(node.GridString).substring(2, 3));
         for (int i = 0; i < agents.length; i += 2) {
