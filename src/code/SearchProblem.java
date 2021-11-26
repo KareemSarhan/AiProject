@@ -184,13 +184,8 @@ public class SearchProblem {
         String NewNeoPos = "";
         String flyArr = GetSubString(node.GridString, 6, 7);
         String[] newPos = ExistInPadsArr(GetNeoPosition(node.GridString).split(","), flyArr.split(","));
-        // for (int i=0; i<newPos.length; i++){
         NewNeoPos = newPos[0] + "," + newPos[1];
-
-        //}
-        if (!newPos.equals(null)) {
-            node.setGridString(UpdateNeoPos(node.GridString, NewNeoPos, 2, 3));
-        }
+        node.setGridString(UpdateNeoPos(node.GridString, NewNeoPos, 2, 3));
         node.ConcatAction(Actions.FLY);
         return node;
     }
