@@ -265,18 +265,24 @@ public class SearchProblem {
             NewNeoDamage = 0;
         }
         for (int i = 0; i < HostagesArr.length; i += 3) {
-            int HostageDamage = Integer.parseInt(HostagesArr[i+2])-20;
-            if (HostageDamage < 0) {
-                HostageDamage = 0;
+            int HostageDamage = Integer.parseInt(HostagesArr[i+2]);
+            if (HostageDamage < 100) {
+                HostageDamage = HostageDamage - 20;
+                if (HostageDamage < 0) {
+                    HostageDamage = 0;
+                }
+                HostagesArr[i + 2] = HostageDamage + "";
             }
-            HostagesArr[i+2] = HostageDamage+"";
         }
         for (int i = 0; i < CarriedHostagesArr.length; i += 1) {
-            int CarriedHostageDamage = Integer.parseInt(CarriedHostagesArr[i])-20;
-            if (CarriedHostageDamage < 0) {
-                CarriedHostageDamage = 0;
+            int CarriedHostageDamage = Integer.parseInt(CarriedHostagesArr[i]);
+            if (CarriedHostageDamage < 100) {
+                CarriedHostageDamage = CarriedHostageDamage - 20;
+                if (CarriedHostageDamage < 0) {
+                    CarriedHostageDamage = 0;
+                }
+                CarriedHostagesArr[i] = CarriedHostageDamage + "";
             }
-            CarriedHostagesArr[i] = CarriedHostageDamage+"";
         }
         String PillString = GetSubString(node.GridString, 5, 6);
         Vector<String> PillsArr = new Vector<>();
