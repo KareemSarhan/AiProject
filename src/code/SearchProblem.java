@@ -7,6 +7,9 @@ public class SearchProblem {
     Queue<Node> Queue = new LinkedList<>();
     Stack<Node> Stack = new Stack<>();
 
+    public String FixString(String grid) {
+        return grid.replaceAll("\n", "").replace(" ", "").replace(",,,",",").replace(",,","").replace(";,",";").replace(",;",";");
+    }
     //Check if node passed is in a goal state.
     public boolean CheckGoal(Node node) {
         boolean IsNoRemainHostages = GetSubString(node.GridString, 7, 8).isEmpty();
@@ -195,10 +198,8 @@ public class SearchProblem {
         }
         String NewAgentsString = String.join(",", AgentsArr);
         String NewHostageString = String.join(",", HostageArr);
-        String NewGrid = String.join(",", GetSubString(node.GridString, 0, 4)) + ";" + NewAgentsString + ";" + String.join(",", GetSubString(node.GridString, 5, 7) + ";" + NewHostageString + ";" + GetSubString(node.GridString, 8, 9));
-        NewGrid = NewGrid.replace(",,,", "").replace(",,", "").replace(", ",",");
-        NewGrid = NewGrid.replace("\n", "");
         node.ConcatAction(Actions.kill);
+        String NewGrid = GetSubString(node.GridString, 0, 4) + ";" + NewAgentsString + ";" + GetSubString(node.GridString, 5, 7) + ";" + NewHostageString + ";" + GetSubString(node.GridString, 8, 9);
         node.GridString = NewGrid;
         node.Damage = NewDamage;
         node.CountDeadAgents = NewDeadAgents+node.CountDeadAgents;
@@ -485,7 +486,7 @@ public class SearchProblem {
         int CarriedHostagesCount = GetSubString(node.GridString, 8, 9).split(",").length;
         int CarryLimit = Integer.parseInt(GetSubString(node.GridString, 1, 2)) + CarriedHostagesCount;
         node.ConcatAction(Actions.drop);
-        node.setGridString(String.join(",", GetSubString(node.GridString, 0, 1)) + ";" + CarryLimit + ";" + String.join(",", GetSubString(node.GridString, 2, 8) + ";"));
+        node.setGridString(GetSubString(node.GridString, 0, 1) + ";" + CarryLimit + ";" + GetSubString(node.GridString, 2, 8) + ";");
         return node;
     }
 
