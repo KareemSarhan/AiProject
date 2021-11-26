@@ -304,7 +304,10 @@ public class SearchProblem {
     }
 
     public boolean CanCarryHostage(Node node) {
-        String[] HostagesArr = GetSubString(node.GridString, 7, 8).split(",");
+        String HostagesString = GetSubString(node.GridString,7,8);
+        if(HostagesString.isEmpty())
+            return false;
+        String[] HostagesArr = HostagesString.split(",");
         for (int i = 0; i < HostagesArr.length; i += 3) {
             if (Integer.parseInt(HostagesArr[i]) == Integer.parseInt(GetNeoPosition(node.GridString).substring(0, 1)) && Integer.parseInt(HostagesArr[i + 1]) == Integer.parseInt(GetNeoPosition(node.GridString).substring(2, 3))) {
                 return true;
@@ -317,7 +320,7 @@ public class SearchProblem {
         String pillsString = GetSubString(node.GridString,5,6);
         if(pillsString.isEmpty())
             return false;
-        String[] pillArr = GetSubString(node.GridString,5,6).split(",");
+        String[] pillArr = pillsString.split(",");
         for (int i = 0; i < pillArr.length; i+=2) {
             if (Integer.parseInt(pillArr[i]) == Integer.parseInt(GetNeoPosition(node.GridString).substring(0,1))  && Integer.parseInt(pillArr[i+1]) == Integer.parseInt(GetNeoPosition(node.GridString).substring(2,3)) ) {
                 return true;
@@ -326,7 +329,10 @@ public class SearchProblem {
         return false;
     }
     public boolean CanDropHostage(Node node) {
-        String[] CarriedHostagesArr = GetSubString(node.GridString, 8, 9).split(",");
+        String CarriedHostagesString = GetSubString(node.GridString,8,9);
+        if(CarriedHostagesString.isEmpty())
+            return false;
+        String[] CarriedHostagesArr = CarriedHostagesString.split(",");
         String hostages = Arrays.toString(CarriedHostagesArr);
         String h = hostages.substring(1, hostages.length() - 1).replaceAll("\\s+", "");
         if (h.length() > 0 && !CarriedHostagesArr[0].equals(" ") && Integer.parseInt(GetNeoPosition(node.GridString).substring(0, 1)) == Integer.parseInt(GetSubString(node.GridString, 3, 4).substring(0, 1)) && Integer.parseInt(GetNeoPosition(node.GridString).substring(2, 3)) == Integer.parseInt(GetSubString(node.GridString, 3, 4).substring(2, 3))) {
@@ -337,7 +343,10 @@ public class SearchProblem {
     }
 
     public boolean CanFly(Node node) {
-        String[] flyArr = GetSubString(node.GridString, 6, 7).split(",");
+        String FlyString = GetSubString(node.GridString,6,7);
+        if(FlyString.isEmpty())
+            return false;
+        String[] flyArr = FlyString.split(",");
         for (int i = 0; i < flyArr.length; i += 2) {
             if (Integer.parseInt(flyArr[i]) == Integer.parseInt(GetNeoPosition(node.GridString).substring(0, 1)) && Integer.parseInt(flyArr[i + 1]) == Integer.parseInt(GetNeoPosition(node.GridString).substring(2, 3))) {
                 return true;
