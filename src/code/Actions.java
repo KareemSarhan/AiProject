@@ -1,13 +1,13 @@
 package code;
 
 public enum Actions {
-    UP,
-    DOWN,
-    RIGHT,
-    LEFT,
-    CARRY,
-    DROP,
-    KILL,
-    PILL,
-    FLY
+    up,
+    down,
+    right,
+    left,
+    carry,
+    drop,
+    kill,
+    pill,
+    fly
 }

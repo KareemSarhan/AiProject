@@ -176,16 +176,19 @@ public class Matrix {
         grid += ";";
         Node Head = new Node(grid);
         SearchProblem Search = new SearchProblem();
+        Node Goal = null;
         switch(strategy) {
             case "BF":
-                Search.BreadthFirst(Head);
+                Goal = Search.BreadthFirst(Head);
                 break;
             case "DF":
-
-
+                Goal = Search.DepthFirst(Head);
                 break;
         }
-        return "";
+        if (Goal == null) {
+            return "The output actions do not lead to a goal state.";
+        }
+        return Goal.TakenActions+";"+Goal.CountDeadHostages+";"+Goal.CountDeadAgents+";"+Goal.ExpandedNodes;
     }
 
     /**

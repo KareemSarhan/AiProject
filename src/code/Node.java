@@ -6,37 +6,49 @@ public class Node implements Cloneable {
     public String GridString;
     public String TakenActions;
     public int Damage;
-
+    public int CountDeadHostages;
+    public int CountDeadAgents;
+    public int ExpandedNodes;
+    //public Node ParentNode;
     public Node(String gridString) {
         GridString = gridString;
         Damage = 0;
         TakenActions="";
+        CountDeadHostages=0;
+        CountDeadAgents=0;
     }
     public Node(String gridString, int damage) {
         GridString = gridString;
         Damage = damage;
         TakenActions="";
+        CountDeadHostages=0;
+        CountDeadAgents=0;
     }
     public Node(String gridString, int damage, String takenActions) {
         GridString = gridString;
         Damage = damage;
         TakenActions=takenActions;
+        CountDeadHostages=0;
+        CountDeadAgents=0;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Node)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Node node = (Node) o;
-        return Damage == node.Damage && GridString.equals(node.GridString) && TakenActions.equals(node.TakenActions);
+        return Damage == node.Damage && CountDeadHostages == node.CountDeadHostages && CountDeadAgents == node.CountDeadAgents && GridString.equals(node.GridString) && TakenActions.equals(node.TakenActions);
     }
-
 
     @Override
     public String toString() {
-        return "code.Node{" +
+        return "Node{" +
                 "GridString='" + GridString + '\'' +
                 ", TakenActions='" + TakenActions + '\'' +
                 ", Damage=" + Damage +
+                ", CountDeadHostages=" + CountDeadHostages +
+                ", CountDeadAgents=" + CountDeadAgents +
+                ", ExpandedNodes=" + ExpandedNodes +
                 '}';
     }
 
@@ -55,6 +67,7 @@ public class Node implements Cloneable {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
+        //t.ParentNode = this;
         return t;
     }
     public int getDamage() {
@@ -71,6 +84,9 @@ public class Node implements Cloneable {
     }
     public void ConcatAction(Actions action)
     {
-        TakenActions+=action;
+        if (TakenActions.length() == 0)
+            TakenActions+=action;
+        else
+            TakenActions+=","+action;
     }
 }

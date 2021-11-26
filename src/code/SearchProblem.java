@@ -130,6 +130,7 @@ public class SearchProblem {
 
     //loop on the hostage array and Carried hostage array and increase them by 2
     public Node UpdateTimeStep(Node node) {
+        int NewDeadHostage = 0;
         String HostageString = GetSubString(node.getGridString(), 7, 8);
         String NewHostageString = "";
         if (!HostageString.isEmpty()) {
@@ -139,6 +140,7 @@ public class SearchProblem {
                 damage += 2;
                 if (damage >= 100) {
                     HostageArr[i + 2] = 100 + "";
+                    NewDeadHostage++;
                 } else {
                     HostageArr[i + 2] = Integer.toString(damage);
                 }
@@ -154,6 +156,7 @@ public class SearchProblem {
                 damage += 2;
                 if (damage >= 100) {
                     CarriedHostageArr[i] = 100 + "";
+                    NewDeadHostage++;
                 } else {
                     CarriedHostageArr[i] = Integer.toString(damage);
                 }
@@ -163,9 +166,9 @@ public class SearchProblem {
         }
 
         String NewGridString = GetSubString(node.getGridString(), 0, 7) + ";" + NewHostageString + ";" + NewCarriedHostageString;
-        Node newNode = new Node(NewGridString, node.Damage, node.TakenActions);
-
-        return newNode;
+        node.GridString = NewGridString;
+        node.CountDeadHostages = NewDeadHostage+node.CountDeadHostages;
+        return node;
     }
 
     public Node Fly(Node node) {
@@ -174,7 +177,7 @@ public class SearchProblem {
         String[] newPos = ExistInPadsArr(GetNeoPosition(node.GridString).split(","), flyArr.split(","));
         NewNeoPos = newPos[0] + "," + newPos[1];
         node.setGridString(UpdateNeoPos(node.GridString, NewNeoPos, 2, 3));
-        node.ConcatAction(Actions.FLY);
+        node.ConcatAction(Actions.fly);
         return node;
     }
 
@@ -182,6 +185,7 @@ public class SearchProblem {
     //All agents in the neighbouring cells should die
     public Node Kill(Node node) {
         int NewDamage = node.getDamage() + 20;
+        int NewDeadAgents = 0;
         if (NewDamage > 100) {
             NewDamage = 100;
         }
@@ -202,18 +206,22 @@ public class SearchProblem {
                 AgentsArr.remove(i);
                 AgentsArr.remove(i);
                 i -= 2;
+                NewDeadAgents++;
             } else if ((Integer.parseInt(AgentsArr.get(i)) == NeoX + 1 && Integer.parseInt(AgentsArr.get(i + 1)) == NeoY)) {
                 AgentsArr.remove(i);
                 AgentsArr.remove(i);
                 i -= 2;
+                NewDeadAgents++;
             } else if ((Integer.parseInt(AgentsArr.get(i)) == NeoX && Integer.parseInt(AgentsArr.get(i + 1)) == NeoY + 1)) {
                 AgentsArr.remove(i);
                 AgentsArr.remove(i);
                 i -= 2;
+                NewDeadAgents++;
             } else if ((Integer.parseInt(AgentsArr.get(i)) == NeoX && Integer.parseInt(AgentsArr.get(i + 1)) == NeoY - 1)) {
                 AgentsArr.remove(i);
                 AgentsArr.remove(i);
                 i -= 2;
+                NewDeadAgents++;
             }
 
         }
@@ -224,29 +232,36 @@ public class SearchProblem {
                     HostageArr.remove(i);
                     HostageArr.remove(i);
                     i -= 3;
+                    NewDeadAgents++;
                 } else if ((Integer.parseInt(HostageArr.get(i)) == NeoX + 1 && Integer.parseInt(HostageArr.get(i + 1)) == NeoY)) {
                     HostageArr.remove(i);
                     HostageArr.remove(i);
                     HostageArr.remove(i);
                     i -= 3;
+                    NewDeadAgents++;
                 } else if ((Integer.parseInt(HostageArr.get(i)) == NeoX && Integer.parseInt(HostageArr.get(i + 1)) == NeoY + 1)) {
                     HostageArr.remove(i);
                     HostageArr.remove(i);
                     HostageArr.remove(i);
                     i -= 3;
+                    NewDeadAgents++;
                 } else if ((Integer.parseInt(HostageArr.get(i)) == NeoX && Integer.parseInt(HostageArr.get(i + 1)) == NeoY - 1)) {
                     HostageArr.remove(i);
                     HostageArr.remove(i);
                     HostageArr.remove(i);
                     i -= 3;
+                    NewDeadAgents++;
                 }
             }
         }
         String NewAgentsString = String.join(",", AgentsArr);
         String NewHostageString = String.join(",", HostageArr);
         String NewGrid = String.join(",", GetSubString(node.GridString, 0, 4)) + ";" + NewAgentsString + ";" + String.join(",", GetSubString(node.GridString, 5, 7) + ";" + NewHostageString + ";" + GetSubString(node.GridString, 8, 9));
-        node.ConcatAction(Actions.KILL);
-        return new Node(NewGrid, NewDamage, node.TakenActions);
+        node.ConcatAction(Actions.kill);
+        node.GridString = NewGrid;
+        node.Damage = NewDamage;
+        node.CountDeadAgents = NewDeadAgents+node.CountDeadAgents;
+        return node;
     }
 
     public Node TakePill(Node node) {
@@ -298,7 +313,7 @@ public class SearchProblem {
         }
         node.GridString = String.join(",", GetSubString(node.GridString, 0, 5)) + ";" + String.join(",", PillsArr) +";"+ GetSubString(node.GridString, 6, 7) +";" + String.join(",", HostagesArr) + ";" + String.join(",", CarriedHostagesArr) ;
         node.Damage = NewNeoDamage;
-        node.ConcatAction(Actions.PILL);
+        node.ConcatAction(Actions.pill);
         return node;
     }
 
@@ -319,7 +334,7 @@ public class SearchProblem {
                 node.GridString = GetSubString(node.GridString, 0, 1) + ';' + count + ';' + GetSubString(node.GridString, 2, 7) + ";" + newHostages + ';' + damage + ";";
             }
         }
-        node.ConcatAction(Actions.CARRY);
+        node.ConcatAction(Actions.carry);
         return node;
     }
 
@@ -462,7 +477,7 @@ public class SearchProblem {
         if (Integer.parseInt(position[0]) >= 0) {
             node.setGridString(UpdateNeoPos(node.GridString, position[0] + ',' + position[1], 2, 3));
         }
-        node.ConcatAction(Actions.UP);
+        node.ConcatAction(Actions.up);
         return node;
     }
 
@@ -472,7 +487,7 @@ public class SearchProblem {
         if (Integer.parseInt(position[0]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[0])) {
             node.setGridString(UpdateNeoPos(node.GridString, position[0] + ',' + position[1], 2, 3));
         }
-        node.ConcatAction(Actions.DOWN);
+        node.ConcatAction(Actions.down);
         return node;
     }
 
@@ -482,7 +497,7 @@ public class SearchProblem {
         if (Integer.parseInt(position[1]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[1])) {
             node.setGridString(UpdateNeoPos(node.GridString, position[0] + ',' + position[1], 2, 3));
         }
-        node.ConcatAction(Actions.RIGHT);
+        node.ConcatAction(Actions.right);
         return node;
     }
 
@@ -492,7 +507,7 @@ public class SearchProblem {
         if (Integer.parseInt(position[1]) >= 0) {
             node.setGridString(UpdateNeoPos(node.GridString, position[0] + ',' + position[1], 2, 3));
         }
-        node.ConcatAction(Actions.LEFT);
+        node.ConcatAction(Actions.left);
         return node;
     }
 
@@ -532,22 +547,25 @@ public class SearchProblem {
     public Node DropHostage(Node node) {
         int CarriedHostagesCount = GetSubString(node.GridString, 8, 9).split(",").length;
         int CarryLimit = Integer.parseInt(GetSubString(node.GridString, 1, 2)) + CarriedHostagesCount;
-        node.ConcatAction(Actions.DROP);
+        node.ConcatAction(Actions.drop);
         node.setGridString(String.join(",", GetSubString(node.GridString, 0, 1)) + ";" + CarryLimit + ";" + String.join(",", GetSubString(node.GridString, 2, 8) + ";"));
         return node;
     }
 
     // breadth first search for the goal state
     public Node BreadthFirst(Node node) {
+        int ExpandedNodes = 0;
         Queue.add(node);
         while (Queue.size() > 0) {
             //loop over TakeAction output and add them to Queue
             Node ActionNode = Queue.poll();
+            ExpandedNodes++;
             if (CheckGameOver(ActionNode)) {
                 continue;
             }
             if (CheckGoal(ActionNode)) {
                 System.out.println("Goal Found");
+                ActionNode.ExpandedNodes = ExpandedNodes;
                 return ActionNode;
             }
             Vector<Node> nodeArr = TakeAction(ActionNode);
@@ -562,7 +580,7 @@ public class SearchProblem {
 
     //Depth first search for the goal state.
     //check if the node is the goal state with CheckGoal.
-    public void DepthFirst(Node node) {
+    public Node DepthFirst(Node node) {
         Stack.add(node);
         while (Stack.size() > 0) {
             //loop over TakeAction output and add them to Queue
@@ -571,12 +589,13 @@ public class SearchProblem {
                 if (nodeArr[i] != null) {
                     if (CheckGoal(nodeArr[i])) {
                         System.out.println("Goal Found");
-                        return;
+                        return node;
                     }
                     Stack.add(nodeArr[i]);
                 }
             }
         }
+        return node;
     }
 
     //Iterative Deepening search for the goal state
