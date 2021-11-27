@@ -52,6 +52,7 @@ public class TestMatrixPublic {
     public void testa3() throws Exception {
         String solution = Matrix.solve(grid3, "BF", false);
         solution = solution.replace(" ", "");
+
         assertTrue("The output actions do not lead to a goal state.", applyPlan(grid3, solution));
     }
 

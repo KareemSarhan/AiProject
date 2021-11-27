@@ -124,7 +124,7 @@ public class SearchProblemTest {
         //Pill
         Node expectedPill = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,10,3,0,60,4,4,60;0",
                 0);
-        expectedPill.ConcatAction(Actions.pill);
+        expectedPill.ConcatAction(Actions.takePill);
         expectedArr.add(expectedPill);
         //Carry Hostage
         Node expectedCarry = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
@@ -254,7 +254,7 @@ public class SearchProblemTest {
         //Pill
         Node expectedPill = new Node("5,5;2;2,2;4,4;0,0,1,0,4,0,0,4,3,4;3,1,1,4;1,2,4,2,4,2,1,2;0,2,60,1,3,0,2,3,0;",
                 0);
-        expectedPill.ConcatAction(Actions.pill);
+        expectedPill.ConcatAction(Actions.takePill);
         expectedArr.add(expectedPill);
         //Carry Hostage
         Node expectedCarry = new Node("5,5;2;2,2;4,4;0,0,1,0,4,0,0,4,3,4;2,2,3,1,1,4;1,2,4,2,4,2,1,2;0,2,80,1,3,20,2,3,10;",
@@ -304,7 +304,7 @@ public class SearchProblemTest {
         //Pill
         Node expectedPill = new Node("5,5;2;3,1;3,4;0,0,1,3,2,1,3,3;4,1;0,2,3,2,3,2,0,2;3,0,0,3,1,10;",
                 0);
-        expectedPill.ConcatAction(Actions.pill);
+        expectedPill.ConcatAction(Actions.takePill);
         //expectedArr.add(expectedPill);
         //Carry Hostage
         Node expectedCarry = new Node("5,5;1;3,1;3,4;0,0,1,3,2,1,3,3;4,1;0,2,3,2,3,2,0,2;3,0,12;32",
@@ -355,7 +355,7 @@ public class SearchProblemTest {
         //Pill
         Node expectedPill = new Node("5,5;2;2,2;0,0;1,2,2,1,2,3,3,2;4,2;;0,3,4,3,4,3,0,3;0,1,90,2,2,98,1,3,20;",
                 0);
-        expectedPill.ConcatAction(Actions.pill);
+        expectedPill.ConcatAction(Actions.takePill);
         //expectedArr.add(expectedPill);
         //Carry Hostage
         Node expectedCarry = new Node("5,5;1;2,2;0,0;1,2,2,1,2,3,3,2,4,2;;0,3,4,3,4,3,0,3;0,1,92,1,3,22;100",
@@ -772,7 +772,7 @@ public class SearchProblemTest {
                 0);
         Node actual = new Node("5,5;2;2,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,0;",
                 0);
-        expected.ConcatAction(Actions.pill);
+        expected.ConcatAction(Actions.takePill);
         assertEquals(expected, s.TakePill(actual));
 //        assertEquals(expected.getDamage(),s.TakePill(actual).getDamage());
     }
@@ -783,7 +783,7 @@ public class SearchProblemTest {
                 0);
         Node actual = new Node("5,5;2;2,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,0;100,30",
                 20);
-        expected.ConcatAction(Actions.pill);
+        expected.ConcatAction(Actions.takePill);
         assertEquals(expected, s.TakePill(actual));
     }
 

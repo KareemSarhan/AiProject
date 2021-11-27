@@ -8,6 +8,6 @@ public enum Actions {
     carry,
     drop,
     kill,
-    pill,
+    takePill,
     fly
 }

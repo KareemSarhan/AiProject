@@ -9,7 +9,7 @@ public class Node implements Cloneable {
     public int CountDeadHostages;
     public int CountDeadAgents;
     public int ExpandedNodes;
-    //public Node ParentNode;
+    public Node ParentNode;
     public Node(String gridString) {
         GridString = gridString;
         Damage = 0;
@@ -49,6 +49,7 @@ public class Node implements Cloneable {
                 ", CountDeadHostages=" + CountDeadHostages +
                 ", CountDeadAgents=" + CountDeadAgents +
                 ", ExpandedNodes=" + ExpandedNodes +
+                ", ParentNode=" + ParentNode +
                 '}';
     }
 
@@ -67,7 +68,7 @@ public class Node implements Cloneable {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-        //t.ParentNode = this;
+        t.ParentNode = this;
         return t;
     }
     public int getDamage() {

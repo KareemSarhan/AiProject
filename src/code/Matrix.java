@@ -186,8 +186,10 @@ public class Matrix {
                 break;
         }
         if (Goal == null) {
-            return "The output actions do not lead to a goal state.";
+            System.out.println("No Solution");
+            return "No Solution";
         }
+        System.out.println("Solution Found");
         return Goal.TakenActions+";"+Goal.CountDeadHostages+";"+Goal.CountDeadAgents+";"+Goal.ExpandedNodes;
     }
 

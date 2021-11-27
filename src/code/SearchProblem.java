@@ -1,11 +1,11 @@
 package code;
 
 import java.util.*;
-import java.util.List;
 
 public class SearchProblem {
     Queue<Node> Queue = new LinkedList<>();
     Stack<Node> Stack = new Stack<>();
+    HashSet<String> VisitedHashSet = new HashSet<String>();
 
     public String FixString(String grid) {
         return grid.replaceAll("\n", "").replace(" ", "").replace(",,,",",").replace(",,","").replace(";,",";").replace(",;",";");
@@ -23,7 +23,28 @@ public class SearchProblem {
         boolean IsNeoDead = node.Damage >= 100;
         return IsNeoDead;
     }
+    public String GetAbsoluteGrid(String grid) {
 
+        String NewGrid = GetSubString(grid, 0, 7);
+        String Hostages = GetSubString(grid, 7, 8);
+        if (Hostages.isEmpty()) {
+            return NewGrid + ";" ;
+        }
+        String[] HostageArr = GetSubString(grid, 7, 8).split(",");
+        String[] NewHostageArr = new String[HostageArr.length];
+        for (int i = 0; i < HostageArr.length; i += 3) {
+            NewHostageArr[i] = HostageArr[i];
+            NewHostageArr[i + 1] = HostageArr[i + 1];
+            if (HostageArr[i + 2].equals("100")) {
+            NewHostageArr[i + 2] = "T";
+            }
+            else {
+                NewHostageArr[i + 2] = "F";
+            }
+        }
+        NewGrid += ";" + String.join(",", NewHostageArr);
+        return NewGrid;
+    }
     public String GetSubString(String grid, int FirstSimiColon, int LastSimiColon) {
         grid += ';';
         int SemicolonCount = 0;
@@ -86,7 +107,9 @@ public class SearchProblem {
             for (int i = 0; i < HostageArr.length; i += 3) {
                 int damage = Integer.parseInt(HostageArr[i + 2]);
                 damage += 2;
-                if (damage >= 100) {
+                if (damage == 102)
+                    HostageArr[i + 2] = 100 + "";
+                else if (damage >= 100) {
                     HostageArr[i + 2] = 100 + "";
                     NewDeadHostage++;
                 } else {
@@ -102,7 +125,9 @@ public class SearchProblem {
             for (int i = 0; i < CarriedHostageArr.length; i += 1) {
                 int damage = Integer.parseInt(CarriedHostageArr[i]);
                 damage += 2;
-                if (damage >= 100) {
+                if (damage == 102)
+                    CarriedHostageArr[i] = 100 + "";
+                else if (damage >= 100) {
                     CarriedHostageArr[i] = 100 + "";
                     NewDeadHostage++;
                 } else {
@@ -133,7 +158,7 @@ public class SearchProblem {
     //All agents in the neighbouring cells should die
     public Node Kill(Node node) {
         int NewDamage = node.getDamage() + 20;
-        int NewDeadAgents = 0;
+        int NewDeadAgents = node.CountDeadAgents;
         if (NewDamage > 100) {
             NewDamage = 100;
         }
@@ -210,7 +235,7 @@ public class SearchProblem {
         String NewGrid = GetSubString(node.GridString, 0, 4) + ";" + NewAgentsString + ";" + GetSubString(node.GridString, 5, 7) + ";" + NewHostageString + ";" + GetSubString(node.GridString, 8, 9);
         node.GridString = NewGrid.replace(";,;",";;");
         node.Damage = NewDamage;
-        node.CountDeadAgents = NewDeadAgents+node.CountDeadAgents;
+        node.CountDeadAgents = NewDeadAgents;
         return node;
     }
 
@@ -265,7 +290,7 @@ public class SearchProblem {
         String newCarried = Arrays.toString(CarriedHostagesArr).replace("[","").replace("]","").replace(" ","");
         node.GridString = GetSubString(node.GridString, 0, 5) + ";" + newPills +";"+ GetSubString(node.GridString, 6, 7) +";" + newHostages + ";" + newCarried ;
         node.Damage = NewNeoDamage;
-        node.ConcatAction(Actions.pill);
+        node.ConcatAction(Actions.takePill);
         return node;
     }
 
@@ -468,6 +493,11 @@ public class SearchProblem {
     public Vector<Node> TakeAction(Node node) {
         node.GridString = node.GridString.replace("]","").replace("[","").replace("[,","").replace(" ", "");
         Vector<Node> nodeArr = new Vector<Node>();
+        if (VisitedHashSet.contains(GetAbsoluteGrid(node.GridString))) {
+            return nodeArr;
+        }
+        VisitedHashSet.add(GetAbsoluteGrid(node.GridString));
+
         if (CanMoveUp(node)) {
             nodeArr.add(UpdateTimeStep(MoveUp(node.clone())));
         }
@@ -519,7 +549,6 @@ public class SearchProblem {
                 continue;
             }
             if (CheckGoal(ActionNode)) {
-                System.out.println("Goal Found");
                 ActionNode.ExpandedNodes = ExpandedNodes;
                 return ActionNode;
             }
@@ -536,21 +565,27 @@ public class SearchProblem {
     //Depth first search for the goal state.
     //check if the node is the goal state with CheckGoal.
     public Node DepthFirst(Node node) {
+        int ExpandedNodes = 0;
         Stack.add(node);
         while (Stack.size() > 0) {
             //loop over TakeAction output and add them to Queue
-            Node[] nodeArr = TakeAction(Stack.pop()).toArray(new Node[0]);
-            for (int i = 0; i < nodeArr.length; i++) {
-                if (nodeArr[i] != null) {
-                    if (CheckGoal(nodeArr[i])) {
-                        System.out.println("Goal Found");
-                        return node;
-                    }
-                    Stack.add(nodeArr[i]);
+            Node ActionNode = Stack.pop();
+            if (CheckGameOver(ActionNode)) {
+                continue;
+            }
+            if (CheckGoal(ActionNode)) {
+                ActionNode.ExpandedNodes = ExpandedNodes;
+                return node;
+            }
+            Vector<Node> nodeArr = TakeAction(ActionNode);
+            ExpandedNodes++;
+            for (int i = 0; i < nodeArr.size(); i++) {
+                if (nodeArr.get(i) != null) {
+                    Stack.add(nodeArr.get(i));
                 }
             }
         }
-        return node;
+        return null;
     }
 
     //Iterative Deepening search for the goal state
