@@ -354,7 +354,7 @@ public class SearchProblem {
             }
         }
         for (int j = 2; j < HostagesArr.length; j += 3) {
-            if (HostagesArr[j].equals("100") && HostagesArr[j - 1].equals(position[1]) && HostagesArr[j - 2].equals(newPositionUp)) {
+            if (HostagesArr[j].equals("100") && HostagesArr[j - 1].equals(position[1]) && HostagesArr[j - 2].equals(newPositionUp) || Integer.parseInt(HostagesArr[j]) >=98 && HostagesArr[j - 1].equals(position[1]) && HostagesArr[j - 2].equals(newPositionUp)) {
                 return false;
             }
         }
@@ -374,7 +374,7 @@ public class SearchProblem {
             }
         }
         for (int j = 2; j < HostagesArr.length; j += 3) {
-            if (HostagesArr[j].equals("100") && HostagesArr[j - 1].equals(position[1]) && HostagesArr[j - 2].equals(newPositionDown)) {
+            if (HostagesArr[j].equals("100") && HostagesArr[j - 1].equals(position[1]) && HostagesArr[j - 2].equals(newPositionDown) || Integer.parseInt(HostagesArr[j]) >= 98 && HostagesArr[j - 1].equals(position[1]) && HostagesArr[j - 2].equals(newPositionDown)) {
                 return false;
             }
         }
@@ -395,7 +395,7 @@ public class SearchProblem {
             }
         }
         for (int j = 2; j < HostagesArr.length; j += 3) {
-            if (HostagesArr[j].equals("100") && HostagesArr[j - 1].equals(newPositionRight) && HostagesArr[j - 2].equals(position[0])) {
+            if (HostagesArr[j].equals("100") && HostagesArr[j - 1].equals(newPositionRight) && HostagesArr[j - 2].equals(position[0]) || Integer.parseInt(HostagesArr[j]) >= 98 && HostagesArr[j - 1].equals(newPositionRight) && HostagesArr[j - 2].equals(position[0])) {
                 return false;
             }
         }
@@ -415,7 +415,7 @@ public class SearchProblem {
             }
         }
         for (int j = 2; j < HostagesArr.length; j += 3) {
-            if (HostagesArr[j].equals("100") && HostagesArr[j - 1].equals(newPositionLeft) && HostagesArr[j - 2].equals(position[0])) {
+            if (HostagesArr[j].equals("100") && HostagesArr[j - 1].equals(newPositionLeft) && HostagesArr[j - 2].equals(position[0]) || Integer.parseInt(HostagesArr[j]) >= 98 && HostagesArr[j - 1].equals(newPositionLeft) && HostagesArr[j - 2].equals(position[0])) {
                 return false;
             }
         }
