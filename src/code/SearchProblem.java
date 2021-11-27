@@ -295,6 +295,9 @@ public class SearchProblem {
 
     public boolean CanCarryHostage(Node node) {
         String HostagesString = GetSubString(node.GridString,7,8);
+        int count = Integer.parseInt(GetSubString(node.GridString, 1,2));
+        if(count == 0)
+            return false;
         if(HostagesString.isEmpty())
             return false;
         String[] HostagesArr = HostagesString.split(",");
