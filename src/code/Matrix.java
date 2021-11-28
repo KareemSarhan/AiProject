@@ -225,6 +225,9 @@ public class Matrix {
             return "No Solution";
         }
         System.out.println("Solution Found");
+        System.out.println("Plan: " + Goal.TakenActions);
+        System.out.println("DeadHostages: " + Goal.CountDeadHostages);
+        System.out.println("DeadAgents: " + Goal.CountDeadAgents);
         return Goal.TakenActions+";"+Goal.CountDeadHostages+";"+Goal.CountDeadAgents+";"+Goal.ExpandedNodes;
     }
 
