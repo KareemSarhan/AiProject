@@ -397,10 +397,8 @@ public class SearchProblem {
         int NeoY = Integer.parseInt(GetNeoPosition(node.GridString).split(",")[1]);
         String[] AgentsArr = new String[]{};
         String AgentsString = GetSubString(node.GridString, 4, 5);
-        // System.out.println(AgentsString);
         if (!AgentsString.isEmpty()) {
             AgentsArr = AgentsString.split(",");
-            //System.out.println(Arrays.toString(AgentsArr));
         }
         for (int i = 0; i < AgentsArr.length; i += 2) {
             //if(!AgentsArr[i].isEmpty()) {
@@ -458,10 +456,7 @@ public class SearchProblem {
             }
         }
         String NewAgentsString = Arrays.toString(AgentsArr).replace("[","").replace("]","").replace(" ","").replace(",,","");
-        // System.out.println(NewAgentsString);
         String NewHostageString = Arrays.toString(HostageArr).replace(", , , ","").replace("[","").replace("]","").replace(" ","");
-//        System.out.println(NewHostageString);
-//        System.out.println(Arrays.toString(HostageArr).replace(", , , ",""));
         String NewGrid = GetSubString(node.GridString, 0, 4) + ";" + NewAgentsString + ";" + GetSubString(node.GridString, 5, 7) + ";" + NewHostageString + ";" + GetSubString(node.GridString, 8, 9);
         node.GridString = NewGrid.replace(";,;",";;");
         node.Damage = NewDamage;
@@ -542,8 +537,19 @@ public class SearchProblem {
     public Node CarryHostage(Node node) {
         String[] HostagesArr = GetSubString(node.GridString, 7, 8).split(",");
         int count=0;
+        String CarriedHostageString = GetSubString(node.GridString, 8, 9);
+        String[] CarriedHostagesArr = new String[0];
+        String[] newCarriedHostages = new String[1];
+        if (!CarriedHostageString.isEmpty()) {
+            CarriedHostagesArr = CarriedHostageString.split(",");
+            newCarriedHostages = new String [CarriedHostagesArr.length+1];
+        }
+
         String damage="";
-        String newHostages="";
+        for (int i = 0; i < CarriedHostagesArr.length; i++) {
+            newCarriedHostages[i] = CarriedHostagesArr[i];
+        }
+        String newHostages = "";
         for (int i = 0; i < HostagesArr.length; i += 3) {
             if (HostagesArr[i].equals(GetNeoPosition(node.GridString).substring(0, 1)) && HostagesArr[i + 1].equals(GetNeoPosition(node.GridString).substring(2, 3))) {
                 count = Integer.parseInt(GetSubString(node.GridString, 1, 2));
@@ -555,7 +561,9 @@ public class SearchProblem {
                 newHostages = Arrays.toString(HostagesArr).replace(", , , ","");
                 break;}
         }
-        node.GridString = GetSubString(node.GridString, 0, 1) + ';' + count + ';' + GetSubString(node.GridString, 2, 7) + ";" + newHostages.replace("[","").replace("]","").replace(" ","") + ';' + damage + ";";
+        newCarriedHostages[newCarriedHostages.length-1] = damage;
+        String GridString = GetSubString(node.GridString, 0, 1) + ';' + count + ';' + GetSubString(node.GridString, 2, 7) + ";" + newHostages.replace("[","").replace("]","").replace(" ","") + ';' + Arrays.toString(newCarriedHostages).replace("]","").replace("[","") + ";";
+        node.GridString = GridString.replace(" ", "");
         SetHeuristic(node);
         node.ConcatAction(Actions.carry);
         return node;
