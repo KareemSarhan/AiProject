@@ -90,9 +90,40 @@ public class Node implements Cloneable {
     }
     public void ConcatAction(Actions action)
     {
+        Depth++;
         if (TakenActions.length() == 0)
             TakenActions+=action;
         else
             TakenActions+=","+action;
+        switch (action)
+        {
+            case up:
+            case down:
+            case left:
+            case right:
+                TotalCost+=3;
+                Cost+=3;
+                break;
+            case carry:
+                TotalCost+=0;
+                Cost+=0;
+                break;
+            case drop:
+                TotalCost+=1;
+                Cost+=1;
+                break;
+            case fly:
+                TotalCost+=2;
+                Cost+=2;
+                break;
+            case takePill:
+                TotalCost+=4;
+                Cost+=4;
+                break;
+            case kill:
+                TotalCost+=5;
+                Cost+=5;
+                break;
+        }
     }
 }
