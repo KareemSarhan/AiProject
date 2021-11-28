@@ -180,31 +180,47 @@ public class Matrix {
         switch(strategy) {
             case "BF":
                 Goal = Search.BreadthFirst(Head);
+                System.out.println("Breadth First");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
             case "DF":
-                Goal = Search.DepthFirst(Head);
+                Goal = Search.DepthLimited(Head,Integer.MAX_VALUE);
+                System.out.println("Depth First");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
             case "ID":
                 Goal = Search.IterativeDeepening(Head);
+                System.out.println("Iterative Deepening");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
             case "UC":
                 Goal = Search.UniformCost(Head);
+                System.out.println("Uniform Cost");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
             case "GR1":
                 Goal = Search.Greedy1(Head);
+                System.out.println("Greedy 1");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
             case "GR2":
                 Goal = Search.Greedy2(Head);
+                System.out.println("Greedy 2");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
             case "AS1":
                 Goal = Search.AStar1(Head);
+                System.out.println("A* 1");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
             case "AS2":
                 Goal = Search.AStar2(Head);
+                System.out.println("A* 2");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
 
         }
-        if (Goal == null) {
+        if (!Goal.IsSolution) {
             System.out.println("No Solution");
             return "No Solution";
         }
