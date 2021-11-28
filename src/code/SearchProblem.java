@@ -7,6 +7,14 @@ public class SearchProblem {
     Stack<Node> Stack = new Stack<>();
     HashSet<String> VisitedHashSet = new HashSet<String>();
 
+    public void SetHeuristic(Node node) {
+        String GridString = node.GridString;
+        String[] Hostages = GetSubString(GridString, 7, 8).split(",");
+        int HostagesCount = Hostages.length / 3;
+        String[] CarriedHostages = GetSubString(GridString, 8, 9).split(",");
+        int CarriedHostagesCount = CarriedHostages.length;
+        node.Heuristic = CarriedHostagesCount*2 + HostagesCount;
+    }
     public String FixString(String grid) {
         return grid.replaceAll("\n", "").replace(" ", "").replace(",,,",",").replace(",,","").replace(";,",";").replace(",;",";");
     }
@@ -35,12 +43,13 @@ public class SearchProblem {
         for (int i = 0; i < HostageArr.length; i += 3) {
             NewHostageArr[i] = HostageArr[i];
             NewHostageArr[i + 1] = HostageArr[i + 1];
-            if (HostageArr[i + 2].equals("100")) {
+            if (HostageArr[i + 2].equals("100")||HostageArr[i + 2].equals("99")||HostageArr[i + 2].equals("98")) {
             NewHostageArr[i + 2] = "T";
             }
             else {
                 NewHostageArr[i + 2] = "F";
             }
+            NewHostageArr[i + 2] = NewHostageArr[i + 2];
         }
         NewGrid += ";" + String.join(",", NewHostageArr);
         return NewGrid;
@@ -151,6 +160,10 @@ public class SearchProblem {
         NewNeoPos = newPos[0] + "," + newPos[1];
         node.setGridString(UpdateNeoPos(node.GridString, NewNeoPos, 2, 3));
         node.ConcatAction(Actions.fly);
+        node.Depth++;
+        node.TotalCost +=2;
+        node.Cost=2;
+        SetHeuristic(node);
         return node;
     }
 
@@ -236,6 +249,10 @@ public class SearchProblem {
         node.GridString = NewGrid.replace(";,;",";;");
         node.Damage = NewDamage;
         node.CountDeadAgents = NewDeadAgents;
+        node.Depth++;
+        node.TotalCost +=2;
+        node.Cost=2;
+        SetHeuristic(node);
         return node;
     }
 
@@ -278,19 +295,24 @@ public class SearchProblem {
         String[] PillsArr = PillString.split(",");
         int NeoX = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[0]);
         int NeoY = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[1]);
+        Vector<String> newPills = new Vector<>();
         for (int i = 0; i < PillsArr.length; i+=2) {
-            if (Integer.parseInt(PillsArr[i]) == NeoX && Integer.parseInt(PillsArr[i+1]) == NeoY) {
-                PillsArr[i]="";
-                PillsArr[i+1]="";
+            if (!(Integer.parseInt(PillsArr[i]) == NeoX && Integer.parseInt(PillsArr[i+1]) == NeoY)) {
+                newPills.add(PillsArr[i]);
+                newPills.add(PillsArr[i+1]);
                 break;
             }
         }
         String newHostages = Arrays.toString(HostagesArr).replace("[","").replace("]","").replace(" ","").replace(",,,","");
-        String newPills = Arrays.toString(PillsArr).replace(", ,","").replace("[","").replace("]","").replace(" ","");
         String newCarried = Arrays.toString(CarriedHostagesArr).replace("[","").replace("]","").replace(" ","");
-        node.GridString = GetSubString(node.GridString, 0, 5) + ";" + newPills +";"+ GetSubString(node.GridString, 6, 7) +";" + newHostages + ";" + newCarried ;
+        String NewGrid = GetSubString(node.GridString, 0, 5) + ";" + newPills.toString().replace("[","").replace("]","") +";"+ GetSubString(node.GridString, 6, 7) +";" + newHostages + ";" + newCarried ;
+        node.GridString = NewGrid;
         node.Damage = NewNeoDamage;
         node.ConcatAction(Actions.takePill);
+        node.Depth++;
+        node.TotalCost +=2;
+        node.Cost=2;
+        SetHeuristic(node);
         return node;
     }
 
@@ -300,7 +322,6 @@ public class SearchProblem {
         int count=0;
         String damage="";
         String newHostages="";
-        //System.out.println(Arrays.toString(HostagesArr));
         for (int i = 0; i < HostagesArr.length; i += 3) {
             if (HostagesArr[i].equals(GetNeoPosition(node.GridString).substring(0, 1)) && HostagesArr[i + 1].equals(GetNeoPosition(node.GridString).substring(2, 3))) {
                 count = Integer.parseInt(GetSubString(node.GridString, 1, 2));
@@ -310,11 +331,14 @@ public class SearchProblem {
                 HostagesArr[i+1]= "";
                 HostagesArr[i+2]= "";
                 newHostages = Arrays.toString(HostagesArr).replace(", , , ","");
-                //System.out.println(newHostages);
-            }
+                break;}
         }
         node.GridString = GetSubString(node.GridString, 0, 1) + ';' + count + ';' + GetSubString(node.GridString, 2, 7) + ";" + newHostages.replace("[","").replace("]","").replace(" ","") + ';' + damage + ";";
         node.ConcatAction(Actions.carry);
+        node.Depth++;
+        node.TotalCost +=0;
+        node.Cost=0;
+        SetHeuristic(node);
         return node;
     }
 
@@ -382,7 +406,7 @@ public class SearchProblem {
             }
         }
         for (int j = 2; j < HostagesArr.length; j += 3) {
-            if (HostagesArr[j].equals("100") && HostagesArr[j - 1].equals(position[1]) && HostagesArr[j - 2].equals(newPositionUp) || Integer.parseInt(HostagesArr[j]) >=98 && HostagesArr[j - 1].equals(position[1]) && HostagesArr[j - 2].equals(newPositionUp)) {
+            if ((HostagesArr[j].equals("100") || HostagesArr[j].equals("99") || HostagesArr[j].equals("98") )&& HostagesArr[j - 1].equals(position[1]) && HostagesArr[j - 2].equals(newPositionUp) ) {
                 return false;
             }
         }
@@ -402,7 +426,7 @@ public class SearchProblem {
             }
         }
         for (int j = 2; j < HostagesArr.length; j += 3) {
-            if (HostagesArr[j].equals("100") && HostagesArr[j - 1].equals(position[1]) && HostagesArr[j - 2].equals(newPositionDown) || Integer.parseInt(HostagesArr[j]) >= 98 && HostagesArr[j - 1].equals(position[1]) && HostagesArr[j - 2].equals(newPositionDown)) {
+            if ((HostagesArr[j].equals("100") || HostagesArr[j].equals("99") || HostagesArr[j].equals("98") )&& HostagesArr[j - 1].equals(position[1]) && HostagesArr[j - 2].equals(newPositionDown) ) {
                 return false;
             }
         }
@@ -423,7 +447,7 @@ public class SearchProblem {
             }
         }
         for (int j = 2; j < HostagesArr.length; j += 3) {
-            if (HostagesArr[j].equals("100") && HostagesArr[j - 1].equals(newPositionRight) && HostagesArr[j - 2].equals(position[0]) || Integer.parseInt(HostagesArr[j]) >= 98 && HostagesArr[j - 1].equals(newPositionRight) && HostagesArr[j - 2].equals(position[0])) {
+            if ((HostagesArr[j].equals("100") || HostagesArr[j].equals("99") || HostagesArr[j].equals("98") )&& HostagesArr[j - 1].equals(newPositionRight) && HostagesArr[j - 2].equals(position[0]) ) {
                 return false;
             }
         }
@@ -443,7 +467,7 @@ public class SearchProblem {
             }
         }
         for (int j = 2; j < HostagesArr.length; j += 3) {
-            if (HostagesArr[j].equals("100") && HostagesArr[j - 1].equals(newPositionLeft) && HostagesArr[j - 2].equals(position[0]) || Integer.parseInt(HostagesArr[j]) >= 98 && HostagesArr[j - 1].equals(newPositionLeft) && HostagesArr[j - 2].equals(position[0])) {
+            if ((HostagesArr[j].equals("100") || HostagesArr[j].equals("99") || HostagesArr[j].equals("98") )&& HostagesArr[j - 1].equals(newPositionLeft) && HostagesArr[j - 2].equals(position[0]) ) {
                 return false;
             }
         }
@@ -457,6 +481,10 @@ public class SearchProblem {
             node.setGridString(UpdateNeoPos(node.GridString, position[0] + ',' + position[1], 2, 3));
         }
         node.ConcatAction(Actions.up);
+        node.Depth++;
+        node.TotalCost +=3;
+        node.Cost=3;
+        SetHeuristic(node);
         return node;
     }
 
@@ -467,6 +495,10 @@ public class SearchProblem {
             node.setGridString(UpdateNeoPos(node.GridString, position[0] + ',' + position[1], 2, 3));
         }
         node.ConcatAction(Actions.down);
+        node.Depth++;
+        node.TotalCost +=3;
+        node.Cost=3;
+        SetHeuristic(node);
         return node;
     }
 
@@ -477,6 +509,10 @@ public class SearchProblem {
             node.setGridString(UpdateNeoPos(node.GridString, position[0] + ',' + position[1], 2, 3));
         }
         node.ConcatAction(Actions.right);
+        node.Depth++;
+        node.TotalCost +=3;
+        node.Cost=3;
+        SetHeuristic(node);
         return node;
     }
 
@@ -487,6 +523,10 @@ public class SearchProblem {
             node.setGridString(UpdateNeoPos(node.GridString, position[0] + ',' + position[1], 2, 3));
         }
         node.ConcatAction(Actions.left);
+        node.Depth++;
+        node.TotalCost +=3;
+        node.Cost=3;
+        SetHeuristic(node);
         return node;
     }
 
@@ -534,6 +574,9 @@ public class SearchProblem {
         int CarryLimit = Integer.parseInt(GetSubString(node.GridString, 1, 2)) + CarriedHostagesCount;
         node.ConcatAction(Actions.drop);
         node.setGridString(GetSubString(node.GridString, 0, 1) + ";" + CarryLimit + ";" + GetSubString(node.GridString, 2, 8) + ";");
+        node.Depth++;
+        node.TotalCost +=2;
+        node.Cost=2;
         return node;
     }
 
@@ -575,7 +618,7 @@ public class SearchProblem {
             }
             if (CheckGoal(ActionNode)) {
                 ActionNode.ExpandedNodes = ExpandedNodes;
-                return node;
+                return ActionNode;
             }
             Vector<Node> nodeArr = TakeAction(ActionNode);
             ExpandedNodes++;
@@ -587,53 +630,271 @@ public class SearchProblem {
         }
         return null;
     }
-
-    //Iterative Deepening search for the goal state
-    public void IterativeDeepening(Node node) {
-        int depth = 0;
+    //Limited Depth search for the goal state
+    public Node DepthLimited(Node node, int DepthLimit) {
+        int ExpandedNodes = 0;
         Stack.add(node);
         while (Stack.size() > 0) {
             //loop over TakeAction output and add them to Queue
-            Node[] nodeArr = TakeAction(Stack.pop()).toArray(new Node[0]);
-            for (int i = 0; i < nodeArr.length; i++) {
-                if (nodeArr[i] != null) {
-                    if (CheckGoal(nodeArr[i])) {
-                        System.out.println("Goal Found");
-                        return;
+            Node ActionNode = Stack.pop();
+            if (CheckGameOver(ActionNode)) {
+                continue;
+            }
+            if (CheckGoal(ActionNode)) {
+                ActionNode.ExpandedNodes = ExpandedNodes;
+                return ActionNode;
+            }
+            if (ActionNode.Depth < DepthLimit) {
+                Vector<Node> nodeArr = TakeAction(ActionNode);
+                ExpandedNodes++;
+                for (int i = 0; i < nodeArr.size(); i++) {
+                    if (nodeArr.get(i) != null) {
+                        Stack.add(nodeArr.get(i));
                     }
-                    Stack.add(nodeArr[i]);
                 }
             }
-            depth++;
+        }
+        return null;
+    }
+
+    //Iterative Deepening search for the goal state
+    public Node IterativeDeepening(Node node) {
+        int ExpandedNodes = 0;
+        int DepthLimit = 1;
+        while (true) {
+            VisitedHashSet.clear();
+            Stack.clear();
+            Node ActionNode = DepthLimited(node.clone(), DepthLimit);
+            if (ActionNode != null) {
+                ActionNode.ExpandedNodes = ExpandedNodes;
+                return ActionNode;
+            }
+            DepthLimit++;
         }
     }
 
-    //UniformCostSearch for the goal state
-    public void UniformCostSearch(Node node) {
-        PriorityQueue<Node> PriorityQueue = new PriorityQueue<>();
+    //UniformCost Search for the goal state
+    public Node UniformCost(Node node) {
+        int ExpandedNodes = 0;
+        PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
+                new Comparator<Node>(){
+
+                    //override compare method
+                    public int compare(Node i, Node j){
+                        if(i.TotalCost > j.TotalCost){
+                            return 1;
+                        }
+
+                        else if (i.TotalCost < j.TotalCost){
+                            return -1;
+                        }
+
+                        else{
+                            return 0;
+                        }
+                    }
+                }
+
+        );
         PriorityQueue.add(node);
         while (PriorityQueue.size() > 0) {
             //loop over TakeAction output and add them to Queue
-            Node[] nodeArr = TakeAction(PriorityQueue.poll()).toArray(new Node[0]);
-            for (int i = 0; i < nodeArr.length; i++) {
-                if (nodeArr[i] != null) {
-                    if (CheckGoal(nodeArr[i])) {
-                        System.out.println("Goal Found");
-                        return;
-                    }
-                    PriorityQueue.add(nodeArr[i]);
+            Node ActionNode = PriorityQueue.poll();
+            if (CheckGameOver(ActionNode)) {
+                continue;
+            }
+            if (CheckGoal(ActionNode)) {
+                ActionNode.ExpandedNodes = ExpandedNodes;
+                return ActionNode;
+            }
+            Vector<Node> nodeArr = TakeAction(ActionNode);
+            for (int i = 0; i < nodeArr.size(); i++) {
+                if (nodeArr.get(i) != null) {
+                    PriorityQueue.add(nodeArr.get(i));
                 }
             }
+            ExpandedNodes++;
         }
+        return null;
     }
 
     //GreedySearch for the goal state
-    public void GreedySearch(Node node) {
+    public Node Greedy1(Node node) {
+        int ExpandedNodes = 0;
+        PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
+                new Comparator<Node>(){
 
+                    //override compare method
+                    public int compare(Node i, Node j){
+                        if(i.Heuristic > j.Heuristic){
+                            return 1;
+                        }
+
+                        else if (i.Heuristic < j.Heuristic){
+                            return -1;
+                        }
+
+                        else{
+                            return 0;
+                        }
+                    }
+                }
+
+        );
+        PriorityQueue.add(node);
+        while (PriorityQueue.size() > 0) {
+            //loop over TakeAction output and add them to Queue
+            Node ActionNode = PriorityQueue.poll();
+            if (CheckGameOver(ActionNode)) {
+                continue;
+            }
+            if (CheckGoal(ActionNode)) {
+                ActionNode.ExpandedNodes = ExpandedNodes;
+                return ActionNode;
+            }
+            Vector<Node> nodeArr = TakeAction(ActionNode);
+            for (int i = 0; i < nodeArr.size(); i++) {
+                if (nodeArr.get(i) != null) {
+                    PriorityQueue.add(nodeArr.get(i));
+                }
+            }
+            ExpandedNodes++;
+        }
+        return null;
+    }
+
+    //BestCost for the goal state
+    public Node Greedy2(Node node) {
+        int ExpandedNodes = 0;
+        PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
+                new Comparator<Node>(){
+
+                    //override compare method
+                    public int compare(Node i, Node j){
+                        if(i.Cost > j.Cost){
+                            return 1;
+                        }
+
+                        else if (i.Cost < j.Cost){
+                            return -1;
+                        }
+
+                        else{
+                            return 0;
+                        }
+                    }
+                }
+
+        );
+        PriorityQueue.add(node);
+        while (PriorityQueue.size() > 0) {
+            //loop over TakeAction output and add them to Queue
+            Node ActionNode = PriorityQueue.poll();
+            if (CheckGameOver(ActionNode)) {
+                continue;
+            }
+            if (CheckGoal(ActionNode)) {
+                ActionNode.ExpandedNodes = ExpandedNodes;
+                return ActionNode;
+            }
+            Vector<Node> nodeArr = TakeAction(ActionNode);
+            for (int i = 0; i < nodeArr.size(); i++) {
+                if (nodeArr.get(i) != null) {
+                    PriorityQueue.add(nodeArr.get(i));
+                }
+            }
+            ExpandedNodes++;
+        }
+        return null;
     }
 
     //A star Search for the goal state
-    public void AstarSearch() {
+    public Node AStar1(Node node) {
+        int ExpandedNodes = 0;
+        PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
+                new Comparator<Node>(){
+
+                    //override compare method
+                    public int compare(Node i, Node j){
+                        if(i.Heuristic+i.TotalCost > j.Heuristic+j.TotalCost){
+                            return 1;
+                        }
+
+                        else if (i.Heuristic+i.TotalCost < j.Heuristic+j.TotalCost){
+                            return -1;
+                        }
+
+                        else{
+                            return 0;
+                        }
+                    }
+                }
+
+        );
+        PriorityQueue.add(node);
+        while (PriorityQueue.size() > 0) {
+            //loop over TakeAction output and add them to Queue
+            Node ActionNode = PriorityQueue.poll();
+            if (CheckGameOver(ActionNode)) {
+                continue;
+            }
+            if (CheckGoal(ActionNode)) {
+                ActionNode.ExpandedNodes = ExpandedNodes;
+                return ActionNode;
+            }
+            Vector<Node> nodeArr = TakeAction(ActionNode);
+            for (int i = 0; i < nodeArr.size(); i++) {
+                if (nodeArr.get(i) != null) {
+                    PriorityQueue.add(nodeArr.get(i));
+                }
+            }
+            ExpandedNodes++;
+        }
+        return null;
+    }
+
+    public Node AStar2(Node node) {
+        int ExpandedNodes = 0;
+        PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
+                new Comparator<Node>(){
+
+                    //override compare method
+                    public int compare(Node i, Node j){
+                        if(i.Heuristic+i.Cost > j.Heuristic+j.Cost){
+                            return 1;
+                        }
+
+                        else if (i.Heuristic+i.Cost < j.Heuristic+j.Cost){
+                            return -1;
+                        }
+
+                        else{
+                            return 0;
+                        }
+                    }
+                }
+
+        );
+        PriorityQueue.add(node);
+        while (PriorityQueue.size() > 0) {
+            //loop over TakeAction output and add them to Queue
+            Node ActionNode = PriorityQueue.poll();
+            if (CheckGameOver(ActionNode)) {
+                continue;
+            }
+            if (CheckGoal(ActionNode)) {
+                ActionNode.ExpandedNodes = ExpandedNodes;
+                return ActionNode;
+            }
+            Vector<Node> nodeArr = TakeAction(ActionNode);
+            for (int i = 0; i < nodeArr.size(); i++) {
+                if (nodeArr.get(i) != null) {
+                    PriorityQueue.add(nodeArr.get(i));
+                }
+            }
+            ExpandedNodes++;
+        }
+        return null;
     }
 
     public void PrintResults() {

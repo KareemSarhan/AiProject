@@ -184,6 +184,25 @@ public class Matrix {
             case "DF":
                 Goal = Search.DepthFirst(Head);
                 break;
+            case "ID":
+                Goal = Search.IterativeDeepening(Head);
+                break;
+            case "UC":
+                Goal = Search.UniformCost(Head);
+                break;
+            case "GR1":
+                Goal = Search.Greedy1(Head);
+                break;
+            case "GR2":
+                Goal = Search.Greedy2(Head);
+                break;
+            case "AS1":
+                Goal = Search.AStar1(Head);
+                break;
+            case "AS2":
+                Goal = Search.AStar2(Head);
+                break;
+
         }
         if (Goal == null) {
             System.out.println("No Solution");

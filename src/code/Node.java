@@ -10,6 +10,11 @@ public class Node implements Cloneable {
     public int CountDeadAgents;
     public int ExpandedNodes;
     public Node ParentNode;
+    public int Depth;
+    public int TotalCost;
+    public int Cost;
+    public int Heuristic;
+
     public Node(String gridString) {
         GridString = gridString;
         Damage = 0;
