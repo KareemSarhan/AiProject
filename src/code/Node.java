@@ -14,6 +14,7 @@ public class Node implements Cloneable {
     public int TotalCost;
     public int Cost;
     public int Heuristic;
+    public boolean IsSolution;
 
     public Node(String gridString) {
         GridString = gridString;
@@ -35,6 +36,10 @@ public class Node implements Cloneable {
         TakenActions=takenActions;
         CountDeadHostages=0;
         CountDeadAgents=0;
+    }
+
+    public Node() {
+
     }
 
     @Override
