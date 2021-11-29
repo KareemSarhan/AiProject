@@ -3,8 +3,8 @@ package code;
 import java.util.Arrays;
 import java.util.Vector;
 
-public class Matrix {
-    public static void main(String[] args) {
+public class Matrix  extends GenericSearchProblem{
+    public static void main(String[] args){
         System.out.println("Welcome to the Matrix.");
         //System.out.println(code.Matrix.genGrid());
         // code.Matrix.printGrid("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80");
@@ -173,62 +173,8 @@ public class Matrix {
         
     public static String solve(String grid, String strategy, boolean visualize)
     {
-        grid += ";";
-        Node Head = new Node(grid);
-        SearchProblem Search = new SearchProblem();
-        Node Goal = null;
-        switch(strategy) {
-            case "BF":
-                Goal = Search.BreadthFirst(Head);
-                System.out.println("Breadth First");
-                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
-                break;
-            case "DF":
-                Goal = Search.DepthLimited(Head,Integer.MAX_VALUE);
-                System.out.println("Depth First");
-                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
-                break;
-            case "ID":
-                Goal = Search.IterativeDeepening(Head);
-                System.out.println("Iterative Deepening");
-                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
-                break;
-            case "UC":
-                Goal = Search.UniformCost(Head);
-                System.out.println("Uniform Cost");
-                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
-                break;
-            case "GR1":
-                Goal = Search.Greedy1(Head);
-                System.out.println("Greedy 1");
-                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
-                break;
-            case "GR2":
-                Goal = Search.Greedy2(Head);
-                System.out.println("Greedy 2");
-                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
-                break;
-            case "AS1":
-                Goal = Search.AStar1(Head);
-                System.out.println("A* 1");
-                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
-                break;
-            case "AS2":
-                Goal = Search.AStar2(Head);
-                System.out.println("A* 2");
-                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
-                break;
+        return GenericSearchProblem.genericSearchProcedure(grid,strategy);
 
-        }
-        if (!Goal.IsSolution) {
-            System.out.println("No Solution");
-            return "No Solution";
-        }
-        System.out.println("Solution Found");
-        System.out.println("Plan: " + Goal.TakenActions);
-        System.out.println("DeadHostages: " + Goal.CountDeadHostages);
-        System.out.println("DeadAgents: " + Goal.CountDeadAgents);
-        return Goal.TakenActions+";"+Goal.CountDeadHostages+";"+Goal.CountDeadAgents+";"+Goal.ExpandedNodes;
     }
 
     /**

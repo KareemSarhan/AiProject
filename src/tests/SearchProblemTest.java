@@ -3,16 +3,16 @@ package tests;
 import code.Actions;
 import code.Matrix;
 import code.Node;
-import code.SearchProblem;
+import code.GenericSearchProblem;
 import org.junit.Test;
 
 
 import java.util.Vector;
 
+import static code.GenericSearchProblem.*;
 import static org.junit.Assert.*;
 
 public class SearchProblemTest {
-    SearchProblem s = new SearchProblem();
     Matrix matrix = new Matrix();
     String grid0 = "5,5;2;4,3;2,1;2,0,0,4,0,3,0,1;3,1,3,2;4,4,3,3,3,3,4,4;4,0,17,1,2,54,0,0,46,4,1,22";
     String grid1 = "5,5;1;1,4;1,0;0,4;0,0,2,2;3,4,4,2,4,2,3,4;0,2,32,0,1,38";
@@ -31,49 +31,49 @@ public class SearchProblemTest {
     public void getSubStringTest() {
         String s1 = "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
         String s2 = "5,5";
-        assertEquals(s2, s.GetSubString(s1, 0, 1));
+        assertEquals(s2, GetSubString(s1, 0, 1));
     }
 
     @Test
     public void getSubStringTest2() {
         String s1 = "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
         String s2 = "2";
-        assertEquals(s2, s.GetSubString(s1, 1, 2));
+        assertEquals(s2, GetSubString(s1, 1, 2));
     }
 
     @Test
     public void getSubStringTest3() {
         String s1 = "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
         String s2 = "1,4";
-        assertEquals(s2, s.GetSubString(s1, 3, 4));
+        assertEquals(s2, GetSubString(s1, 3, 4));
     }
 
     @Test
     public void getNeoPositionTest() {
         String ActualGrid = "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
         String NeoPosition = "0,4";
-        assertEquals(NeoPosition, s.GetNeoPosition(ActualGrid));
+        assertEquals(NeoPosition, GetNeoPosition(ActualGrid));
     }
 
     @Test
     public void getNeoPositionTest2() {
         String ActualGrid = "5,5;2;0,40;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
         String NeoPosition = "0,40";
-        assertEquals(NeoPosition, s.GetNeoPosition(ActualGrid));
+        assertEquals(NeoPosition, GetNeoPosition(ActualGrid));
     }
 
     @Test
     public void getGridSizeTest() {
         String ActualGrid = "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
         String ExpectedResult = "5,5";
-        assertEquals(ExpectedResult, s.GetGridSize(ActualGrid));
+        assertEquals(ExpectedResult, GetGridSize(ActualGrid));
     }
 
     @Test
     public void getGridSizeTest2() {
         String ActualGrid = "5,50;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80";
         String ExpectedResult = "5,50";
-        assertEquals(ExpectedResult, s.GetGridSize(ActualGrid));
+        assertEquals(ExpectedResult, GetGridSize(ActualGrid));
     }
 
     @Test
@@ -177,11 +177,11 @@ public class SearchProblemTest {
         expectedArr.add(expectedFly);
 
 
-        assertEquals(expectedArr, s.TakeAction(actual));
+        assertEquals(expectedArr, TakeAction(actual));
     }
 
     @Test
-    public void TakeActionTest2() {
+    public void TakeActionsTest2() {
         // size;carry;neo;TB;agents;pills;pads;hostages,damage;
         Node actual = new Node("5,5;2;1,3;1,3;2,3;1,2;0,3,4,3,4,3,0,3;;30",
                 20);
@@ -218,11 +218,11 @@ public class SearchProblemTest {
         expectedDrop.ConcatAction(Actions.drop);
         expectedArr.add(expectedDrop);
 
-        assertEquals(expectedArr, s.TakeAction(actual));
+        assertEquals(expectedArr, TakeAction(actual));
     }
 
     @Test
-    public void TakeActionTest3() {
+    public void TakeActionsTest3() {
         Node actual = new Node("5,5;2;2,2;4,4;0,0,1,0,4,0,0,4,3,4;2,2,3,1,1,4;1,2,4,2,4,2,1,2;0,2,80,1,3,20,2,3,10;",
                 20);
         Vector<Node> expectedArr = new Vector<Node>();
@@ -267,11 +267,11 @@ public class SearchProblemTest {
         expectedDrop.ConcatAction(Actions.drop);
         //expectedArr.add(expectedDrop);
 
-        assertEquals(expectedArr, s.TakeAction(actual));
+        assertEquals(expectedArr, TakeAction(actual));
     }
 
     @Test
-    public void TakeActionTest4() {
+    public void TakeActionsTest4() {
         Node actual = new Node("5,5;2;3,1;3,4;0,0,1,3,2,1,3,3;4,1;0,2,3,2,3,2,0,2;3,0,10,3,1,30;",
                 20);
         Vector<Node> expectedArr = new Vector<Node>();
@@ -317,7 +317,7 @@ public class SearchProblemTest {
         expectedDrop.ConcatAction(Actions.drop);
         //expectedArr.add(expectedDrop);
 
-        assertEquals(expectedArr, s.TakeAction(actual));
+        assertEquals(expectedArr, TakeAction(actual));
     }
 
     @Test
@@ -369,43 +369,35 @@ public class SearchProblemTest {
         expectedDrop.ConcatAction(Actions.drop);
         //expectedArr.add(expectedDrop);
 
-        assertEquals(expectedArr, s.TakeAction(actual));
-    }
-
-    @Test
-    public void TakeActionTest6() {
-    }
-
-    @Test
-    public void TakeActionTest7() {
+        assertEquals(expectedArr, TakeAction(actual));
     }
 
     @Test
     public void CanMoveUpTest() {
         Node n = new Node("5,5;2;4,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(false, s.CanMoveUp(n));
+        assertEquals(false, CanMoveUp(n));
     }
 
     @Test
     public void CanMoveUpTest1() {
         Node n = new Node("5,5;2;4,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(true, s.CanMoveUp(n));
+        assertEquals(true, CanMoveUp(n));
     }
 
     @Test
     public void CanMoveUpTest2() {
         Node n = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(false, s.CanMoveUp(n));
+        assertEquals(false, CanMoveUp(n));
     }
 
     @Test
     public void CanMoveUpTest3() {
         Node n = new Node("5,5;2;4,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,3,4,100",
                 0);
-        assertEquals(false, s.CanMoveUp(n));
+        assertEquals(false, CanMoveUp(n));
     }
 
     @Test
@@ -415,7 +407,7 @@ public class SearchProblemTest {
         Node n1 = new Node("5,5;2;0,4;0,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
         n1.ConcatAction(Actions.up);
-        assertEquals(n1, s.MoveUp(n));
+        assertEquals(n1, MoveUp(n));
     }
 
     @Test
@@ -426,35 +418,35 @@ public class SearchProblemTest {
                 0);
         n1.ConcatAction(Actions.up);
 
-        assertEquals(n1, s.MoveUp(n));
+        assertEquals(n1, MoveUp(n));
     }
 
     @Test
     public void CanMoveDownTest() {
         Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(true, s.CanMoveDown(n));
+        assertEquals(true, CanMoveDown(n));
     }
 
     @Test
     public void CanMoveDownTest1() {
         Node n = new Node("5,5;2;2,3;1,4;0,1,1,1,2,2,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(false, s.CanMoveDown(n));
+        assertEquals(false, CanMoveDown(n));
     }
 
     @Test
     public void CanMoveDownTest2() {
         Node n = new Node("5,5;2;4,3;1,4;0,1,1,1,2,2,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(false, s.CanMoveDown(n));
+        assertEquals(false, CanMoveDown(n));
     }
 
     @Test
     public void CanMoveDownTest3() {
         Node n = new Node("5,5;2;3,4;1,4;0,1,1,1,2,2,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,100",
                 0);
-        assertEquals(false, s.CanMoveDown(n));
+        assertEquals(false, CanMoveDown(n));
     }
 
     @Test
@@ -464,7 +456,7 @@ public class SearchProblemTest {
         Node n2 = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
         n2.ConcatAction(Actions.down);
-        assertEquals(n2, s.MoveDown(n));
+        assertEquals(n2, MoveDown(n));
 //        assertEquals(n2.TakenActions,sp.MoveDown(n).TakenActions );
 //        assertEquals(n2.Damage,sp.MoveDown(n).Damage );
     }
@@ -476,49 +468,49 @@ public class SearchProblemTest {
         Node n1 = new Node("5,5;2;4,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
         n1.ConcatAction(Actions.down);
-        assertEquals(n1, s.MoveDown(n));
+        assertEquals(n1, MoveDown(n));
     }
 
     @Test
     public void CanMoveLeftTest() {
         Node n = new Node("5,5;2;4,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(true, s.CanMoveLeft(n));
+        assertEquals(true, CanMoveLeft(n));
     }
 
     @Test
     public void CanMoveLeftTest1() {
         Node n = new Node("5,5;2;3,2;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(false, s.CanMoveLeft(n));
+        assertEquals(false, CanMoveLeft(n));
     }
 
     @Test
     public void CanMoveLeftTest2() {
         Node n = new Node("5,5;2;4,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,3,100",
                 0);
-        assertEquals(false, s.CanMoveLeft(n));
+        assertEquals(false, CanMoveLeft(n));
     }
 
     @Test
     public void CanMoveLeftTest3() {
         Node n = new Node("5,5;2;1,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,3,100",
                 0);
-        assertEquals(false, s.CanMoveLeft(n));
+        assertEquals(false, CanMoveLeft(n));
     }
 
     @Test
     public void CanMoveLeftTest4() {
         Node n = new Node("5,5;2;1,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,3,100",
                 0);
-        assertEquals(true, s.CanMoveLeft(n));
+        assertEquals(true, CanMoveLeft(n));
     }
 
     @Test
     public void CanMoveLeftTest5() {
         Node actual = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
                 20);
-        assertEquals(false, s.CanMoveLeft(actual));
+        assertEquals(false, CanMoveLeft(actual));
     }
 
     @Test
@@ -529,7 +521,7 @@ public class SearchProblemTest {
                 0);
         n1.ConcatAction(Actions.left);
 
-        assertEquals(n1, s.MoveLeft(n));
+        assertEquals(n1, MoveLeft(n));
     }
 
     @Test
@@ -539,42 +531,42 @@ public class SearchProblemTest {
         Node n1 = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
         n1.ConcatAction(Actions.left);
-        assertEquals(n1, s.MoveLeft(n));
+        assertEquals(n1, MoveLeft(n));
     }
 
     @Test
     public void CanMoveRightTest() {
         Node n = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(false, s.CanMoveRight(n));
+        assertEquals(false, CanMoveRight(n));
     }
 
     @Test
     public void CanMoveRightTest1() {
         Node n = new Node("5,5;2;0,2;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(true, s.CanMoveRight(n));
+        assertEquals(true, CanMoveRight(n));
     }
 
     @Test
     public void CanMoveRightTest2() {
         Node n = new Node("5,5;2;4,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,100",
                 0);
-        assertEquals(false, s.CanMoveRight(n));
+        assertEquals(false, CanMoveRight(n));
     }
 
     @Test
     public void CanMoveRightTest3() {
         Node n = new Node("5,5;2;2,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,100",
                 0);
-        assertEquals(true, s.CanMoveRight(n));
+        assertEquals(true, CanMoveRight(n));
     }
 
     @Test
     public void CanMoveRightTest4() {
         Node n = new Node("5,5;2;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,100",
                 0);
-        assertEquals(false, s.CanMoveRight(n));
+        assertEquals(false, CanMoveRight(n));
     }
 
 
@@ -585,7 +577,7 @@ public class SearchProblemTest {
         Node n1 = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
         n1.ConcatAction(Actions.right);
-        assertEquals(n1, s.MoveRight(n));
+        assertEquals(n1, MoveRight(n));
     }
 
     @Test
@@ -595,35 +587,35 @@ public class SearchProblemTest {
         Node n1 = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
         n1.ConcatAction(Actions.right);
-        assertEquals(n1, s.MoveRight(n));
+        assertEquals(n1, MoveRight(n));
     }
 
     @Test
     public void CanKillTest() {
         Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(false, s.CanKill(n));
+        assertEquals(false, CanKill(n));
     }
 
     @Test
     public void CanKillTest1() {
         Node n = new Node("5,5;2;0,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(true, s.CanKill(n));
+        assertEquals(true, CanKill(n));
     }
 
     @Test
     public void CanKillTest2() {
         Node n = new Node("5,5;2;1,1;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
-        assertEquals(true, s.CanKill(n));
+        assertEquals(true, CanKill(n));
     }
 
     @Test
     public void CanKillTest3() {
         Node n = new Node("5,5;2;1,1;1,4;5,5,2,2,4,4,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,1,2,100",
                 0);
-        assertEquals(true, s.CanKill(n));
+        assertEquals(true, CanKill(n));
     }
 
     //2 Agents to be killed
@@ -635,7 +627,7 @@ public class SearchProblemTest {
                 0);
         expected.ConcatAction(Actions.kill);
         expected.CountDeadAgents =2;
-        assertEquals(expected, s.Kill(actual));
+        assertEquals(expected, Kill(actual));
     }
 
 
@@ -650,7 +642,7 @@ public class SearchProblemTest {
         expected.ConcatAction(Actions.kill);
         expected.CountDeadAgents =4;
         expected.CountDeadHostages=2;
-        assertEquals(expected, s.Kill(n));
+        assertEquals(expected, Kill(n));
     }
 
     //2 Mutants to be killed.
@@ -664,7 +656,7 @@ public class SearchProblemTest {
         expected.ConcatAction(Actions.kill);
         expected.CountDeadHostages=2;
         expected.CountDeadAgents=2;
-        assertEquals(expected, s.Kill(n));
+        assertEquals(expected, Kill(n));
     }
 
     @Test
@@ -675,7 +667,7 @@ public class SearchProblemTest {
                 0);
         expected.ConcatAction(Actions.kill);
         expected.CountDeadAgents = 2;
-        assertEquals(expected, s.Kill(actual));
+        assertEquals(expected, Kill(actual));
     }
 
     @Test
@@ -685,7 +677,7 @@ public class SearchProblemTest {
         Node expected = new Node("5,5;1;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;3,1,80,4,2,90;30;",
                 0);
         expected.ConcatAction(Actions.carry);
-        assertEquals(expected, s.CarryHostage(actual));
+        assertEquals(expected, CarryHostage(actual));
     }
 
     @Test
@@ -693,7 +685,7 @@ public class SearchProblemTest {
         Node n = new Node("5,5;2;1,0;4,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
 
-        assertEquals(false, s.CanCarryHostage(n));
+        assertEquals(false, CanCarryHostage(n));
     }
 
     @Test
@@ -701,7 +693,7 @@ public class SearchProblemTest {
         Node n = new Node("5,5;2;0,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
 
-        assertEquals(true, s.CanCarryHostage(n));
+        assertEquals(true, CanCarryHostage(n));
     }
 
     @Test
@@ -709,7 +701,7 @@ public class SearchProblemTest {
         Node n = new Node("5,5;2;3,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
 
-        assertEquals(true, s.CanCarryHostage(n));
+        assertEquals(true, CanCarryHostage(n));
     }
 
     @Test
@@ -717,7 +709,7 @@ public class SearchProblemTest {
         Node n = new Node("5,5;2;1,0;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
 
-        assertEquals(true, s.CanTakePill(n));
+        assertEquals(true, CanTakePill(n));
     }
 
     @Test
@@ -725,7 +717,7 @@ public class SearchProblemTest {
         Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
 
-        assertEquals(false, s.CanTakePill(n));
+        assertEquals(false, CanTakePill(n));
     }
 
     @Test
@@ -735,35 +727,35 @@ public class SearchProblemTest {
         Node n = new Node("5,5;2;2,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80",
                 0);
 
-        assertEquals(true, s.CanTakePill(n));
+        assertEquals(true, CanTakePill(n));
     }
 
     @Test
     public void CanDropTest() {
         Node n = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80;80",
                 0);
-        assertEquals(true, s.CanDropHostage(n));
+        assertEquals(true, CanDropHostage(n));
     }
 
     @Test
     public void CanDropTest1() {
         Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
-        assertEquals(false, s.CanDropHostage(n));
+        assertEquals(false, CanDropHostage(n));
     }
 
     @Test
     public void CanDropTest2() {
         Node actual = new Node("5,5;2;1,3;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;12",
                 20);
-        assertEquals(false, s.CanDropHostage(actual));
+        assertEquals(false, CanDropHostage(actual));
     }
 
     @Test
     public void CanDropTest3() {
         Node actual = new Node("5,5;2;1,4;1,4;0,1,1,2,2,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 20);
-        assertEquals(false, s.CanDropHostage(actual));
+        assertEquals(false, CanDropHostage(actual));
     }
 
     @Test
@@ -773,8 +765,8 @@ public class SearchProblemTest {
         Node actual = new Node("5,5;2;2,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,0;",
                 0);
         expected.ConcatAction(Actions.takePill);
-        assertEquals(expected, s.TakePill(actual));
-//        assertEquals(expected.getDamage(),s.TakePill(actual).getDamage());
+        assertEquals(expected, TakePill(actual));
+//        assertEquals(expected.getDamage(),TakePill(actual).getDamage());
     }
 
     @Test
@@ -784,7 +776,7 @@ public class SearchProblemTest {
         Node actual = new Node("5,5;2;2,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,0;100,30",
                 20);
         expected.ConcatAction(Actions.takePill);
-        assertEquals(expected, s.TakePill(actual));
+        assertEquals(expected, TakePill(actual));
     }
 
 
@@ -795,7 +787,7 @@ public class SearchProblemTest {
         Node Expected = new Node("5,5;7;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;0,0,30,3,0,80,4,4,80;",
                 0);
         Expected.ConcatAction(Actions.drop);
-        assertEquals(Expected, s.DropHostage(Actual));
+        assertEquals(Expected, DropHostage(Actual));
     }
 
     @Test
@@ -805,7 +797,7 @@ public class SearchProblemTest {
         Node Expected = new Node("5,5;11;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;0,0,30,3,0,80,4,4,80;",
                 0);
         Expected.ConcatAction(Actions.drop);
-        assertEquals(Expected, s.DropHostage(Actual));
+        assertEquals(Expected, DropHostage(Actual));
     }
 
     @Test
@@ -813,7 +805,7 @@ public class SearchProblemTest {
     public void CheckGoalTest() {
         Node actual = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;;",
                 0);
-        assertEquals(true, s.CheckGoal(actual));
+        assertEquals(true, goalTest(actual));
     }
 
     @Test
@@ -821,7 +813,7 @@ public class SearchProblemTest {
     public void CheckGoalTest1() {
         Node actual = new Node("5,5;2;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;;",
                 0);
-        assertEquals(false, s.CheckGoal(actual));
+        assertEquals(false, goalTest(actual));
     }
 
     @Test
@@ -829,7 +821,7 @@ public class SearchProblemTest {
     public void CheckGoalTest2() {
         Node actual = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;;80",
                 0);
-        assertEquals(false, s.CheckGoal(actual));
+        assertEquals(false, goalTest(actual));
     }
 
     @Test
@@ -837,28 +829,28 @@ public class SearchProblemTest {
     public void CheckGoalTest3() {
         Node actual = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80;",
                 0);
-        assertEquals(false, s.CheckGoal(actual));
+        assertEquals(false, goalTest(actual));
     }
 
     @Test
     public void CanFlyTest() {
         Node n = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
-        assertEquals(false, s.CanFly(n));
+        assertEquals(false, CanFly(n));
     }
 
     @Test
     public void CanFlyTest1() {
         Node n = new Node("5,5;2;0,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
-        assertEquals(true, s.CanFly(n));
+        assertEquals(true, CanFly(n));
     }
 
     @Test
     public void CanFlyTest2() {
         Node n = new Node("5,5;2;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80;",
                 0);
-        assertEquals(true, s.CanFly(n));
+        assertEquals(true, CanFly(n));
     }
 
     @Test
@@ -868,7 +860,7 @@ public class SearchProblemTest {
         Node Expected = new Node("5,5;2;0,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;0,0,30,3,0,80,4,4,80;",
                 0);
         Expected.ConcatAction(Actions.fly);
-        assertEquals(Expected, s.Fly(Actual));
+        assertEquals(Expected, Fly(Actual));
     }
 
     @Test
@@ -878,7 +870,7 @@ public class SearchProblemTest {
         Node Expected = new Node("5,5;2;4,3;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;4,3,0,3,0,3,4,3;0,0,30,3,0,80,4,4,80;",
                 0);
         Expected.ConcatAction(Actions.fly);
-        assertEquals(Expected, s.Fly(Actual));
+        assertEquals(Expected, Fly(Actual));
     }
 
     @Test
@@ -887,7 +879,7 @@ public class SearchProblemTest {
                 0);
         Node expected = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,32,3,0,72,4,4,82;",
                 0);
-        assertEquals(expected, s.UpdateTimeStep(actual));
+        assertEquals(expected, UpdateTimeStep(actual));
     }
 
     @Test
@@ -897,7 +889,7 @@ public class SearchProblemTest {
         Node expected = new Node("5,5;2;1,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;;14,20,100",
                 0);
         expected.CountDeadHostages=1;
-        assertEquals(expected, s.UpdateTimeStep(actual));
+        assertEquals(expected, UpdateTimeStep(actual));
     }
 
     @Test
@@ -906,7 +898,7 @@ public class SearchProblemTest {
                 0);
         Node expected = new Node("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,32,3,0,82,4,4,82;14",
                 0);
-        assertEquals(expected, s.UpdateTimeStep(actual));
+        assertEquals(expected, UpdateTimeStep(actual));
     }
 
 }

@@ -2,12 +2,73 @@ package code;
 
 import java.util.*;
 
-public class SearchProblem {
-    Queue<Node> Queue = new LinkedList<>();
-    Stack<Node> Stack = new Stack<>();
-    HashSet<String> VisitedHashSet = new HashSet<String>();
+public abstract class GenericSearchProblem {
+    //Set of all actions
+    static Actions[] actions = Actions.values();
 
-    public void SetHeuristic(Node node) {
+    //initial State at the beginning
+    static Node initialState;
+
+    static HashSet<String> VisitedHashSet = new HashSet<String>();
+    public static String genericSearchProcedure(String grid,String Strategy) {
+        grid += ";";
+        initialState = new Node(grid);
+        Node Goal = null;
+        switch(Strategy) {
+            case "BF":
+                Goal = BreadthFirst(initialState);
+                System.out.println("Breadth First");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
+                break;
+            case "DF":
+                Goal = DepthLimited(initialState,Integer.MAX_VALUE);
+                System.out.println("Depth First");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
+                break;
+            case "ID":
+                Goal = IterativeDeepening(initialState);
+                System.out.println("Iterative Deepening");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
+                break;
+            case "UC":
+                Goal = UniformCost(initialState);
+                System.out.println("Uniform Cost");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
+                break;
+            case "GR1":
+                Goal = Greedy1(initialState);
+                System.out.println("Greedy 1");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
+                break;
+            case "GR2":
+                Goal = Greedy2(initialState);
+                System.out.println("Greedy 2");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
+                break;
+            case "AS1":
+                Goal = AStar1(initialState);
+                System.out.println("A* 1");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
+                break;
+            case "AS2":
+                Goal = AStar2(initialState);
+                System.out.println("A* 2");
+                System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
+                break;
+
+        }
+        if (!Goal.IsSolution) {
+            System.out.println("No Solution");
+            return "No Solution";
+        }
+        System.out.println("Solution Found");
+        System.out.println("Plan: " + Goal.TakenActions);
+        System.out.println("DeadHostages: " + Goal.CountDeadHostages);
+        System.out.println("DeadAgents: " + Goal.CountDeadAgents);
+        return Goal.TakenActions+";"+Goal.CountDeadHostages+";"+Goal.CountDeadAgents+";"+Goal.ExpandedNodes;
+    }
+
+        public static void SetHeuristic(Node node) {
         String GridString = node.GridString;
         String[] Hostages = GetSubString(GridString, 7, 8).split(",");
         int HostagesCount = Hostages.length / 3;
@@ -21,7 +82,7 @@ public class SearchProblem {
     }
 
     //Check if node passed is in a goal state.
-    public boolean CheckGoal(Node node) {
+    public static boolean goalTest(Node node) {
         boolean IsNoRemainHostages = GetSubString(node.GridString, 7, 8).isEmpty();
         boolean IsNoRemainCarriedHostages = GetSubString(node.GridString, 8, 9).isEmpty();
         boolean IsAtTeleBooth = GetSubString(node.GridString, 2, 3).equals(GetSubString(node.GridString, 3, 4));
@@ -29,12 +90,12 @@ public class SearchProblem {
     }
 
     //Check if node passed is in an end state.
-    public boolean CheckGameOver(Node node) {
+    public static boolean CheckGameOver(Node node) {
         boolean IsNeoDead = node.Damage >= 100;
         return IsNeoDead;
     }
 
-    public String GetAbsoluteGrid(String grid) {
+    public static String GetAbsoluteGrid(String grid) {
 
         String NewGrid = GetSubString(grid, 0, 7);
         String Hostages = GetSubString(grid, 7, 8);
@@ -57,7 +118,7 @@ public class SearchProblem {
         return NewGrid;
     }
 
-    public String GetSubString(String grid, int FirstSimiColon, int LastSimiColon) {
+    public static String GetSubString(String grid, int FirstSimiColon, int LastSimiColon) {
         grid += ';';
         int SemicolonCount = 0;
         int subStringStart = 0;
@@ -80,23 +141,23 @@ public class SearchProblem {
         return Output;
     }
 
-    public String UpdateNeoPos(String grid, String position, int subStringStart, int subStringEnd) {
+    public static String UpdateNeoPos(String grid, String position, int subStringStart, int subStringEnd) {
         return GetSubString(grid, 0, subStringStart) + ";" + position + ";" + GetSubString(grid, subStringEnd, 9);
     }
 
-    public String GetNeoPosition(String grid) {
+    public static String GetNeoPosition(String grid) {
 
         String NeoPosition = GetSubString(grid, 2, 3);
         return NeoPosition;
     }
 
-    public String GetGridSize(String grid) {
+    public static String GetGridSize(String grid) {
         String SizeMN = GetSubString(grid, 0, 1);
 
         return SizeMN;
     }
 
-    public String[] ExistInPadsArr(String[] Key, String[] Arr) {
+    public static String[] ExistInPadsArr(String[] Key, String[] Arr) {
         for (int i = 0; i < Arr.length; i += 2) {
             if ((Key[0].equals(Arr[i]) && Key[1].equals(Arr[i + 1]))) {
                 if (Key[0].equals(Arr[i + 2]) && Key[1].equals(Arr[i + 3])) {
@@ -109,7 +170,7 @@ public class SearchProblem {
     }
 
 
-    public Boolean CanMoveUp(Node node) {
+    public static Boolean CanMoveUp(Node node) {
         String[] position = GetNeoPosition(node.GridString).split(",");
         String newPositionUp = String.valueOf(Integer.parseInt(position[0]) - 1);
         String[] AgentsArr = GetSubString(node.GridString, 4, 5).split(",");
@@ -129,7 +190,7 @@ public class SearchProblem {
         return true;
     }
 
-    public Boolean CanMoveDown(Node node) {
+    public static Boolean CanMoveDown(Node node) {
         String[] position = GetNeoPosition(node.GridString).split(",");
         String newPositionDown = String.valueOf(Integer.parseInt(position[0]) + 1);
         String[] AgentsArr = GetSubString(node.GridString, 4, 5).split(",");
@@ -149,7 +210,7 @@ public class SearchProblem {
         return true;
     }
 
-    public Boolean CanMoveRight(Node node) {
+    public static Boolean CanMoveRight(Node node) {
         String[] position = GetNeoPosition(node.GridString).split(",");
         String newPositionRight = String.valueOf(Integer.parseInt(position[1]) + 1);
         String[] AgentsArr = GetSubString(node.GridString, 4, 5).split(",");
@@ -170,7 +231,7 @@ public class SearchProblem {
         return true;
     }
 
-    public Boolean CanMoveLeft(Node node) {
+    public static Boolean CanMoveLeft(Node node) {
         String[] position = GetNeoPosition(node.GridString).split(",");
         String newPositionLeft = String.valueOf(Integer.parseInt(position[1]) - 1);
         String[] AgentsArr = GetSubString(node.GridString, 4, 5).split(",");
@@ -190,7 +251,7 @@ public class SearchProblem {
         return true;
     }
 
-    public boolean CanCarryHostage(Node node) {
+    public static boolean CanCarryHostage(Node node) {
         String HostagesString = GetSubString(node.GridString, 7, 8);
         int count = Integer.parseInt(GetSubString(node.GridString, 1, 2));
         if (count == 0)
@@ -206,7 +267,7 @@ public class SearchProblem {
         return false;
     }
 
-    public boolean CanTakePill(Node node) {
+    public static boolean CanTakePill(Node node) {
         String pillsString = GetSubString(node.GridString, 5, 6);
         if (pillsString.isEmpty())
             return false;
@@ -219,7 +280,7 @@ public class SearchProblem {
         return false;
     }
 
-    public boolean CanDropHostage(Node node) {
+    public static boolean CanDropHostage(Node node) {
         String CarriedHostagesString = GetSubString(node.GridString, 8, 9);
         if (CarriedHostagesString.isEmpty())
             return false;
@@ -229,7 +290,7 @@ public class SearchProblem {
         return h.length() > 0 && !CarriedHostagesArr[0].equals(" ") && Integer.parseInt(GetNeoPosition(node.GridString).substring(0, 1)) == Integer.parseInt(GetSubString(node.GridString, 3, 4).substring(0, 1)) && Integer.parseInt(GetNeoPosition(node.GridString).substring(2, 3)) == Integer.parseInt(GetSubString(node.GridString, 3, 4).substring(2, 3));
     }
 
-    public boolean CanFly(Node node) {
+    public static boolean CanFly(Node node) {
         String FlyString = GetSubString(node.GridString, 6, 7);
         if (FlyString.isEmpty())
             return false;
@@ -242,7 +303,7 @@ public class SearchProblem {
         return false;
     }
 
-    public boolean CanKill(Node node) {
+    public static boolean CanKill(Node node) {
         String agentsString = GetSubString(node.GridString, 4, 5);
         String[] agents = new String[]{};
         if (!agentsString.isEmpty()) {
@@ -299,7 +360,7 @@ public class SearchProblem {
         return false;
     }
 
-    public Node UpdateTimeStep(Node node) {
+    public static Node UpdateTimeStep(Node node) {
         node.GridString = node.GridString.replace("]", "").replace("[", "").replace(" ", "");
         int NewDeadHostage = 0;
         String HostageString = GetSubString(node.getGridString(), 7, 8);
@@ -346,7 +407,7 @@ public class SearchProblem {
         return node;
     }
 
-    public Node MoveUp(Node node) {
+    public static Node MoveUp(Node node) {
         String[] position = GetNeoPosition(node.GridString).split(",");
         position[0] = String.valueOf(Integer.parseInt(position[0]) - 1);
         if (Integer.parseInt(position[0]) >= 0) {
@@ -357,7 +418,7 @@ public class SearchProblem {
         return node;
     }
 
-    public Node MoveDown(Node node) {
+    public static Node MoveDown(Node node) {
         String[] position = GetNeoPosition(node.GridString).split(",");
         position[0] = String.valueOf(Integer.parseInt(position[0]) + 1);
         if (Integer.parseInt(position[0]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[0])) {
@@ -368,7 +429,7 @@ public class SearchProblem {
         return node;
     }
 
-    public Node MoveRight(Node node) {
+    public static Node MoveRight(Node node) {
         String[] position = GetNeoPosition(node.GridString).split(",");
         position[1] = String.valueOf(Integer.parseInt(position[1]) + 1);
         if (Integer.parseInt(position[1]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[1])) {
@@ -379,7 +440,7 @@ public class SearchProblem {
         return node;
     }
 
-    public Node MoveLeft(Node node) {
+    public static Node MoveLeft(Node node) {
         String[] position = GetNeoPosition(node.GridString).split(",");
         position[1] = String.valueOf(Integer.parseInt(position[1]) - 1);
         if (Integer.parseInt(position[1]) >= 0) {
@@ -391,7 +452,7 @@ public class SearchProblem {
     }
 
     //All agents in the neighbouring cells should die
-    public Node Kill(Node node) {
+    public static Node Kill(Node node) {
         int NewDamage = node.getDamage() + 20;
         int NewDeadAgents = node.CountDeadAgents;
         if (NewDamage > 100) {
@@ -470,7 +531,7 @@ public class SearchProblem {
         return node;
     }
 
-    public Node Fly(Node node) {
+    public static Node Fly(Node node) {
         String NewNeoPos = "";
         String flyArr = GetSubString(node.GridString, 6, 7);
         String[] newPos = ExistInPadsArr(GetNeoPosition(node.GridString).split(","), flyArr.split(","));
@@ -482,7 +543,7 @@ public class SearchProblem {
     }
 
     //loop on the hostage array and Carried hostage array and increase them by 2
-    public Node TakePill(Node node) {
+    public static Node TakePill(Node node) {
         String CarriedHostageString = GetSubString(node.GridString, 8, 9);
         String[] CarriedHostagesArr = new String[]{};
         if (!CarriedHostageString.isEmpty()) {
@@ -539,7 +600,7 @@ public class SearchProblem {
         return node;
     }
 
-    public Node CarryHostage(Node node) {
+    public static Node CarryHostage(Node node) {
         String[] HostagesArr = GetSubString(node.GridString, 7, 8).split(",");
         int count = 0;
         String CarriedHostageString = GetSubString(node.GridString, 8, 9);
@@ -575,7 +636,7 @@ public class SearchProblem {
         return node;
     }
 
-    public Node DropHostage(Node node) {
+    public static Node DropHostage(Node node) {
         int CarriedHostagesCount = GetSubString(node.GridString, 8, 9).split(",").length;
         int CarryLimit = Integer.parseInt(GetSubString(node.GridString, 1, 2)) + CarriedHostagesCount;
         node.setGridString(GetSubString(node.GridString, 0, 1) + ";" + CarryLimit + ";" + GetSubString(node.GridString, 2, 8) + ";");
@@ -583,7 +644,7 @@ public class SearchProblem {
         return node;
     }
 
-    public Vector<Node> TakeAction(Node node) {
+    public static Vector<Node> TakeAction(Node node) {
         node.GridString = node.GridString.replace("]", "").replace("[", "").replace("[,", "").replace(" ", "");
         Vector<Node> nodeArr = new Vector<Node>();
         if (VisitedHashSet.contains(GetAbsoluteGrid(node.GridString))) {
@@ -624,7 +685,8 @@ public class SearchProblem {
     //removes all the carried hostages from the node which is saved at the last part of the grid string and resets CarryLimit
     // breadth first search for the goal state
 
-    public Node BreadthFirst(Node node) {
+    public static Node BreadthFirst(Node node) {
+        Queue<Node> Queue = new LinkedList<Node>();
         int ExpandedNodes = 0;
         Queue.add(node);
         while (Queue.size() > 0) {
@@ -633,7 +695,7 @@ public class SearchProblem {
             if (CheckGameOver(ActionNode)) {
                 continue;
             }
-            if (CheckGoal(ActionNode)) {
+            if (goalTest(ActionNode)) {
                 ActionNode.ExpandedNodes = ExpandedNodes;
                 ActionNode.IsSolution = true;
                 return ActionNode;
@@ -653,7 +715,8 @@ public class SearchProblem {
 
     //Depth first search for the goal state if DepthLimit is Integer.Max.
     //Limited Depth search for the goal state
-    public Node DepthLimited(Node node, int DepthLimit) {
+    public static Node DepthLimited(Node node, int DepthLimit) {
+        Stack<Node> Stack = new Stack<Node>();
         int ExpandedNodes = 0;
         Stack.add(node);
         while (Stack.size() > 0) {
@@ -662,7 +725,7 @@ public class SearchProblem {
             if (CheckGameOver(ActionNode)) {
                 continue;
             }
-            if (CheckGoal(ActionNode)) {
+            if (goalTest(ActionNode)) {
                 ActionNode.ExpandedNodes = ExpandedNodes;
                 ActionNode.IsSolution = true;
                 return ActionNode;
@@ -683,9 +746,10 @@ public class SearchProblem {
     }
     //Iterative Deepening search for the goal state
 
-    public Node IterativeDeepening(Node node) {
+    public static Node IterativeDeepening(Node node) {
+        Stack<Node> Stack = new Stack<Node>();
         int ExpandedNodes = 0;
-        int DepthLimit = 1;
+        int DepthLimit = 0;
         while (true) {
             VisitedHashSet.clear();
             Stack.clear();
@@ -700,7 +764,7 @@ public class SearchProblem {
     }
     //UniformCost Search for the goal state
 
-    public Node UniformCost(Node node) {
+    public static Node UniformCost(Node node) {
         int ExpandedNodes = 0;
         PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
                 new Comparator<Node>() {
@@ -725,7 +789,7 @@ public class SearchProblem {
             if (CheckGameOver(ActionNode)) {
                 continue;
             }
-            if (CheckGoal(ActionNode)) {
+            if (goalTest(ActionNode)) {
                 ActionNode.ExpandedNodes = ExpandedNodes;
                 ActionNode.IsSolution = true;
                 return ActionNode;
@@ -744,7 +808,7 @@ public class SearchProblem {
     }
     //GreedySearch for the goal state
 
-    public Node Greedy1(Node node) {
+    public static Node Greedy1(Node node) {
         int ExpandedNodes = 0;
         PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
                 new Comparator<Node>() {
@@ -769,7 +833,7 @@ public class SearchProblem {
             if (CheckGameOver(ActionNode)) {
                 continue;
             }
-            if (CheckGoal(ActionNode)) {
+            if (goalTest(ActionNode)) {
                 ActionNode.ExpandedNodes = ExpandedNodes;
                 ActionNode.IsSolution = true;
                 return ActionNode;
@@ -788,7 +852,7 @@ public class SearchProblem {
     }
     //BestCost for the goal state
 
-    public Node Greedy2(Node node) {
+    public static Node Greedy2(Node node) {
         int ExpandedNodes = 0;
         PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
                 new Comparator<Node>() {
@@ -813,7 +877,7 @@ public class SearchProblem {
             if (CheckGameOver(ActionNode)) {
                 continue;
             }
-            if (CheckGoal(ActionNode)) {
+            if (goalTest(ActionNode)) {
                 ActionNode.ExpandedNodes = ExpandedNodes;
                 ActionNode.IsSolution = true;
                 return ActionNode;
@@ -832,7 +896,7 @@ public class SearchProblem {
     }
     //A star Search for the goal state
 
-    public Node AStar1(Node node) {
+    public static Node AStar1(Node node) {
         int ExpandedNodes = 0;
         PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
                 new Comparator<Node>() {
@@ -857,7 +921,7 @@ public class SearchProblem {
             if (CheckGameOver(ActionNode)) {
                 continue;
             }
-            if (CheckGoal(ActionNode)) {
+            if (goalTest(ActionNode)) {
                 ActionNode.ExpandedNodes = ExpandedNodes;
                 ActionNode.IsSolution = true;
                 return ActionNode;
@@ -875,7 +939,7 @@ public class SearchProblem {
         return EmptyNode;
     }
 
-    public Node AStar2(Node node) {
+    public static Node AStar2(Node node) {
         int ExpandedNodes = 0;
         PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
                 new Comparator<Node>() {
@@ -900,7 +964,7 @@ public class SearchProblem {
             if (CheckGameOver(ActionNode)) {
                 continue;
             }
-            if (CheckGoal(ActionNode)) {
+            if (goalTest(ActionNode)) {
                 ActionNode.ExpandedNodes = ExpandedNodes;
                 ActionNode.IsSolution = true;
                 return ActionNode;
