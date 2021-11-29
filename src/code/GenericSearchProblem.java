@@ -9,7 +9,7 @@ public abstract class GenericSearchProblem {
     //initial State at the beginning
     static Node initialState;
 
-    static HashSet<String> VisitedHashSet = new HashSet<String>();
+    static HashSet<String> VisitedHashSet = new HashSet<>();
     public static String genericSearchProcedure(String grid,String Strategy) {
         grid += ";";
         initialState = new Node(grid);
@@ -57,6 +57,7 @@ public abstract class GenericSearchProblem {
                 break;
 
         }
+        assert Goal != null;
         if (!Goal.IsSolution) {
             System.out.println("No Solution");
             return "No Solution";
@@ -77,10 +78,6 @@ public abstract class GenericSearchProblem {
         node.Heuristic = CarriedHostagesCount * 2 + HostagesCount;
     }
 
-    public String FixString(String grid) {
-        return grid.replaceAll("\n", "").replace(" ", "").replace(",,,", ",").replace(",,", "").replace(";,", ";").replace(",;", ";");
-    }
-
     //Check if node passed is in a goal state.
     public static boolean goalTest(Node node) {
         boolean IsNoRemainHostages = GetSubString(node.GridString, 7, 8).isEmpty();
@@ -91,8 +88,7 @@ public abstract class GenericSearchProblem {
 
     //Check if node passed is in an end state.
     public static boolean CheckGameOver(Node node) {
-        boolean IsNeoDead = node.Damage >= 100;
-        return IsNeoDead;
+        return node.Damage >= 100;
     }
 
     public static String GetAbsoluteGrid(String grid) {
@@ -137,8 +133,7 @@ public abstract class GenericSearchProblem {
             }
         }
 
-        String Output = grid.substring(subStringStart, subStringEnd);
-        return Output;
+        return grid.substring(subStringStart, subStringEnd);
     }
 
     public static String UpdateNeoPos(String grid, String position, int subStringStart, int subStringEnd) {
@@ -147,14 +142,12 @@ public abstract class GenericSearchProblem {
 
     public static String GetNeoPosition(String grid) {
 
-        String NeoPosition = GetSubString(grid, 2, 3);
-        return NeoPosition;
+        return GetSubString(grid, 2, 3);
     }
 
     public static String GetGridSize(String grid) {
-        String SizeMN = GetSubString(grid, 0, 1);
 
-        return SizeMN;
+        return GetSubString(grid, 0, 1);
     }
 
     public static String[] ExistInPadsArr(String[] Key, String[] Arr) {
@@ -401,8 +394,7 @@ public abstract class GenericSearchProblem {
 
         }
 
-        String NewGridString = GetSubString(node.getGridString(), 0, 7) + ";" + NewHostageString + ";" + NewCarriedHostageString;
-        node.GridString = NewGridString;
+        node.GridString = GetSubString(node.getGridString(), 0, 7) + ";" + NewHostageString + ";" + NewCarriedHostageString;
         node.CountDeadHostages = NewDeadHostage + node.CountDeadHostages;
         return node;
     }
@@ -532,9 +524,10 @@ public abstract class GenericSearchProblem {
     }
 
     public static Node Fly(Node node) {
-        String NewNeoPos = "";
+        String NewNeoPos;
         String flyArr = GetSubString(node.GridString, 6, 7);
         String[] newPos = ExistInPadsArr(GetNeoPosition(node.GridString).split(","), flyArr.split(","));
+        assert newPos != null;
         NewNeoPos = newPos[0] + "," + newPos[1];
         node.setGridString(UpdateNeoPos(node.GridString, NewNeoPos, 2, 3));
         SetHeuristic(node);
@@ -592,8 +585,7 @@ public abstract class GenericSearchProblem {
         }
         String newHostages = Arrays.toString(HostagesArr).replace("[", "").replace("]", "").replace(" ", "").replace(",,,", "");
         String newCarried = Arrays.toString(CarriedHostagesArr).replace("[", "").replace("]", "").replace(" ", "");
-        String NewGrid = GetSubString(node.GridString, 0, 5) + ";" + newPills.toString().replace("[", "").replace("]", "") + ";" + GetSubString(node.GridString, 6, 7) + ";" + newHostages + ";" + newCarried;
-        node.GridString = NewGrid;
+        node.GridString = GetSubString(node.GridString, 0, 5) + ";" + newPills.toString().replace("[", "").replace("]", "") + ";" + GetSubString(node.GridString, 6, 7) + ";" + newHostages + ";" + newCarried;
         node.Damage = NewNeoDamage;
         SetHeuristic(node);
         node.ConcatAction(Actions.takePill);
@@ -612,9 +604,7 @@ public abstract class GenericSearchProblem {
         }
 
         String damage = "";
-        for (int i = 0; i < CarriedHostagesArr.length; i++) {
-            newCarriedHostages[i] = CarriedHostagesArr[i];
-        }
+        System.arraycopy(CarriedHostagesArr, 0, newCarriedHostages, 0, CarriedHostagesArr.length);
         String newHostages = "";
         for (int i = 0; i < HostagesArr.length; i += 3) {
             if (HostagesArr[i].equals(GetNeoPosition(node.GridString).substring(0, 1)) && HostagesArr[i + 1].equals(GetNeoPosition(node.GridString).substring(2, 3))) {
@@ -646,7 +636,7 @@ public abstract class GenericSearchProblem {
 
     public static Vector<Node> TakeAction(Node node) {
         node.GridString = node.GridString.replace("]", "").replace("[", "").replace("[,", "").replace(" ", "");
-        Vector<Node> nodeArr = new Vector<Node>();
+        Vector<Node> nodeArr = new Vector<>();
         if (VisitedHashSet.contains(GetAbsoluteGrid(node.GridString))) {
             return nodeArr;
         }
@@ -686,7 +676,8 @@ public abstract class GenericSearchProblem {
     // breadth first search for the goal state
 
     public static Node BreadthFirst(Node node) {
-        Queue<Node> Queue = new LinkedList<Node>();
+        VisitedHashSet.clear();
+        Queue<Node> Queue = new LinkedList<>();
         int ExpandedNodes = 0;
         Queue.add(node);
         while (Queue.size() > 0) {
@@ -702,9 +693,9 @@ public abstract class GenericSearchProblem {
             }
             Vector<Node> nodeArr = TakeAction(ActionNode);
             ExpandedNodes++;
-            for (int i = 0; i < nodeArr.size(); i++) {
-                if (nodeArr.get(i) != null) {
-                    Queue.add(nodeArr.get(i));
+            for (Node value : nodeArr) {
+                if (value != null) {
+                    Queue.add(value);
                 }
             }
         }
@@ -716,7 +707,8 @@ public abstract class GenericSearchProblem {
     //Depth first search for the goal state if DepthLimit is Integer.Max.
     //Limited Depth search for the goal state
     public static Node DepthLimited(Node node, int DepthLimit) {
-        Stack<Node> Stack = new Stack<Node>();
+        VisitedHashSet.clear();
+        Stack<Node> Stack = new Stack<>();
         int ExpandedNodes = 0;
         Stack.add(node);
         while (Stack.size() > 0) {
@@ -733,9 +725,9 @@ public abstract class GenericSearchProblem {
             if (ActionNode.Depth < DepthLimit) {
                 Vector<Node> nodeArr = TakeAction(ActionNode);
                 ExpandedNodes++;
-                for (int i = 0; i < nodeArr.size(); i++) {
-                    if (nodeArr.get(i) != null) {
-                        Stack.add(nodeArr.get(i));
+                for (Node value : nodeArr) {
+                    if (value != null) {
+                        Stack.add(value);
                     }
                 }
             }
@@ -747,7 +739,7 @@ public abstract class GenericSearchProblem {
     //Iterative Deepening search for the goal state
 
     public static Node IterativeDeepening(Node node) {
-        Stack<Node> Stack = new Stack<Node>();
+        Stack<Node> Stack = new Stack<>();
         int ExpandedNodes = 0;
         int DepthLimit = 0;
         while (true) {
@@ -765,21 +757,11 @@ public abstract class GenericSearchProblem {
     //UniformCost Search for the goal state
 
     public static Node UniformCost(Node node) {
+        VisitedHashSet.clear();
         int ExpandedNodes = 0;
-        PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
-                new Comparator<Node>() {
-
-                    //override compare method
-                    public int compare(Node i, Node j) {
-                        if (i.TotalCost > j.TotalCost) {
-                            return 1;
-                        } else if (i.TotalCost < j.TotalCost) {
-                            return -1;
-                        } else {
-                            return 0;
-                        }
-                    }
-                }
+        //override compare method
+        PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
+                Comparator.comparingInt(i -> i.TotalCost)
 
         );
         PriorityQueue.add(node);
@@ -796,9 +778,9 @@ public abstract class GenericSearchProblem {
             }
             Vector<Node> nodeArr = TakeAction(ActionNode);
             ExpandedNodes++;
-            for (int i = 0; i < nodeArr.size(); i++) {
-                if (nodeArr.get(i) != null) {
-                    PriorityQueue.add(nodeArr.get(i));
+            for (Node value : nodeArr) {
+                if (value != null) {
+                    PriorityQueue.add(value);
                 }
             }
         }
@@ -809,21 +791,11 @@ public abstract class GenericSearchProblem {
     //GreedySearch for the goal state
 
     public static Node Greedy1(Node node) {
+        VisitedHashSet.clear();
         int ExpandedNodes = 0;
-        PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
-                new Comparator<Node>() {
-
-                    //override compare method
-                    public int compare(Node i, Node j) {
-                        if (i.Heuristic > j.Heuristic) {
-                            return 1;
-                        } else if (i.Heuristic < j.Heuristic) {
-                            return -1;
-                        } else {
-                            return 0;
-                        }
-                    }
-                }
+        //override compare method
+        PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
+                Comparator.comparingInt(i -> i.Heuristic)
 
         );
         PriorityQueue.add(node);
@@ -840,9 +812,9 @@ public abstract class GenericSearchProblem {
             }
             Vector<Node> nodeArr = TakeAction(ActionNode);
             ExpandedNodes++;
-            for (int i = 0; i < nodeArr.size(); i++) {
-                if (nodeArr.get(i) != null) {
-                    PriorityQueue.add(nodeArr.get(i));
+            for (Node value : nodeArr) {
+                if (value != null) {
+                    PriorityQueue.add(value);
                 }
             }
         }
@@ -853,21 +825,11 @@ public abstract class GenericSearchProblem {
     //BestCost for the goal state
 
     public static Node Greedy2(Node node) {
+        VisitedHashSet.clear();
         int ExpandedNodes = 0;
-        PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
-                new Comparator<Node>() {
-
-                    //override compare method
-                    public int compare(Node i, Node j) {
-                        if (i.Cost > j.Cost) {
-                            return 1;
-                        } else if (i.Cost < j.Cost) {
-                            return -1;
-                        } else {
-                            return 0;
-                        }
-                    }
-                }
+        //override compare method
+        PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
+                Comparator.comparingInt(i -> i.Cost)
 
         );
         PriorityQueue.add(node);
@@ -884,9 +846,9 @@ public abstract class GenericSearchProblem {
             }
             Vector<Node> nodeArr = TakeAction(ActionNode);
             ExpandedNodes++;
-            for (int i = 0; i < nodeArr.size(); i++) {
-                if (nodeArr.get(i) != null) {
-                    PriorityQueue.add(nodeArr.get(i));
+            for (Node value : nodeArr) {
+                if (value != null) {
+                    PriorityQueue.add(value);
                 }
             }
         }
@@ -894,24 +856,14 @@ public abstract class GenericSearchProblem {
         EmptyNode.ExpandedNodes = ExpandedNodes;
         return EmptyNode;
     }
-    //A star Search for the goal state
 
+    //A* Search for the goal state
     public static Node AStar1(Node node) {
+        VisitedHashSet.clear();
         int ExpandedNodes = 0;
-        PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
-                new Comparator<Node>() {
-
-                    //override compare method
-                    public int compare(Node i, Node j) {
-                        if (i.Heuristic + i.TotalCost > j.Heuristic + j.TotalCost) {
-                            return 1;
-                        } else if (i.Heuristic + i.TotalCost < j.Heuristic + j.TotalCost) {
-                            return -1;
-                        } else {
-                            return 0;
-                        }
-                    }
-                }
+        //override compare method
+        PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
+                Comparator.comparingInt(i -> i.Heuristic + i.TotalCost)
 
         );
         PriorityQueue.add(node);
@@ -928,9 +880,9 @@ public abstract class GenericSearchProblem {
             }
             Vector<Node> nodeArr = TakeAction(ActionNode);
             ExpandedNodes++;
-            for (int i = 0; i < nodeArr.size(); i++) {
-                if (nodeArr.get(i) != null) {
-                    PriorityQueue.add(nodeArr.get(i));
+            for (Node value : nodeArr) {
+                if (value != null) {
+                    PriorityQueue.add(value);
                 }
             }
         }
@@ -940,21 +892,11 @@ public abstract class GenericSearchProblem {
     }
 
     public static Node AStar2(Node node) {
+        VisitedHashSet.clear();
         int ExpandedNodes = 0;
-        PriorityQueue<Node> PriorityQueue = new PriorityQueue<Node>(20,
-                new Comparator<Node>() {
-
-                    //override compare method
-                    public int compare(Node i, Node j) {
-                        if (i.Heuristic + i.Cost > j.Heuristic + j.Cost) {
-                            return 1;
-                        } else if (i.Heuristic + i.Cost < j.Heuristic + j.Cost) {
-                            return -1;
-                        } else {
-                            return 0;
-                        }
-                    }
-                }
+        //override compare method
+        PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
+                Comparator.comparingInt(i -> i.Heuristic + i.Cost)
 
         );
         PriorityQueue.add(node);
@@ -971,9 +913,9 @@ public abstract class GenericSearchProblem {
             }
             Vector<Node> nodeArr = TakeAction(ActionNode);
             ExpandedNodes++;
-            for (int i = 0; i < nodeArr.size(); i++) {
-                if (nodeArr.get(i) != null) {
-                    PriorityQueue.add(nodeArr.get(i));
+            for (Node value : nodeArr) {
+                if (value != null) {
+                    PriorityQueue.add(value);
                 }
             }
         }
