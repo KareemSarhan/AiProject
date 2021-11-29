@@ -98,7 +98,7 @@ public class TestMatrixPublic {
     }
 
     @Test(timeout = 60000)
-    public void testaz10() throws Exception {
+    public void testa10() throws Exception {
         String solution = Matrix.solve(grid10, "BF", false);
         solution = solution.replace(" ", "");
         assertTrue("The output actions do not lead to a goal state.", applyPlan(grid10, solution));
@@ -174,7 +174,7 @@ public class TestMatrixPublic {
     }
 
     @Test(timeout = 60000)
-    public void testbz10() throws Exception {
+    public void testb10() throws Exception {
         String solution = Matrix.solve(grid10, "DF", false);
         solution = solution.replace(" ", "");
         assertTrue("The output actions do not lead to a goal state.", applyPlan(grid10, solution));
@@ -285,6 +285,13 @@ public class TestMatrixPublic {
     }
 
     @Test(timeout = 10000)
+    public void testd4() throws Exception {
+        String solution = Matrix.solve(grid4, "ID", false);
+        solution = solution.replace(" ", "");
+        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid3, solution));
+    }
+
+    @Test(timeout = 10000)
     public void testd5() throws Exception {
         String solution = Matrix.solve(grid5, "ID", false);
         solution = solution.replace(" ", "");
@@ -303,7 +310,7 @@ public class TestMatrixPublic {
         solution = solution.replace(" ", "");
         assertTrue("The output actions do not lead to a goal state.", applyPlan(grid6, solution));
     }
-    @Test(timeout = 10000)
+    @Test(timeout = 40000)
     public void testd8() throws Exception {
         String solution = Matrix.solve(grid8, "ID", false);
         solution = solution.replace(" ", "");
@@ -315,7 +322,7 @@ public class TestMatrixPublic {
         solution = solution.replace(" ", "");
         assertTrue("The output actions do not lead to a goal state.", applyPlan(grid6, solution));
     }
-    @Test(timeout = 10000)
+    @Test(timeout = 40000)
     public void testd10() throws Exception {
         String solution = Matrix.solve(grid10, "ID", false);
         solution = solution.replace(" ", "");
