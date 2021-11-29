@@ -84,6 +84,7 @@ public class Node implements Cloneable {
             TakenActions+=action;
         else
             TakenActions+=","+action;
+        /*
         switch (action)
         {
             case up:
@@ -94,25 +95,23 @@ public class Node implements Cloneable {
                 Cost+=3;
                 break;
             case carry:
+            case takePill:
+            case drop:
                 TotalCost+=0;
                 Cost+=0;
-                break;
-            case drop:
-                TotalCost+=1;
-                Cost+=1;
                 break;
             case fly:
                 TotalCost+=2;
                 Cost+=2;
-                break;
-            case takePill:
-                TotalCost+=4;
-                Cost+=4;
                 break;
             case kill:
                 TotalCost+=5;
                 Cost+=5;
                 break;
         }
+        */
+        int temp = TotalCost;
+        TotalCost = CountDeadHostages*100 + CountDeadAgents;
+        Cost = TotalCost - temp;
     }
 }

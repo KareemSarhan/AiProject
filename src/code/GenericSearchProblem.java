@@ -92,7 +92,6 @@ public abstract class GenericSearchProblem {
     }
 
     public static String GetAbsoluteGrid(String grid) {
-
         String NewGrid = GetSubString(grid, 0, 7);
         String Hostages = GetSubString(grid, 7, 8);
         if (Hostages.isEmpty()) {
@@ -104,14 +103,14 @@ public abstract class GenericSearchProblem {
             NewHostageArr[i] = HostageArr[i];
             NewHostageArr[i + 1] = HostageArr[i + 1];
             if (HostageArr[i + 2].equals("100") || HostageArr[i + 2].equals("99") || HostageArr[i + 2].equals("98")) {
-                NewHostageArr[i + 2] = "T";
+                NewHostageArr[i + 2] = HostageArr[i + 2];
             } else {
-                NewHostageArr[i + 2] = "F";
+                NewHostageArr[i + 2] = HostageArr[i + 2];
             }
             NewHostageArr[i + 2] = NewHostageArr[i + 2];
         }
         NewGrid += ";" + String.join(",", NewHostageArr);
-        return NewGrid;
+        return grid;
     }
 
     public static String GetSubString(String grid, int FirstSimiColon, int LastSimiColon) {
@@ -637,10 +636,10 @@ public abstract class GenericSearchProblem {
     public static Vector<Node> TakeAction(Node node) {
         node.GridString = node.GridString.replace("]", "").replace("[", "").replace("[,", "").replace(" ", "");
         Vector<Node> nodeArr = new Vector<>();
-        if (VisitedHashSet.contains(GetAbsoluteGrid(node.GridString))) {
+        if (VisitedHashSet.contains(node.GridString)) {
             return nodeArr;
         }
-        VisitedHashSet.add(GetAbsoluteGrid(node.GridString));
+        VisitedHashSet.add(node.GridString);
 
         if (CanMoveUp(node)) {
             nodeArr.add(UpdateTimeStep(MoveUp(node.clone())));
