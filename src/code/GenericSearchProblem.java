@@ -9,7 +9,7 @@ public abstract class GenericSearchProblem {
     //initial State at the beginning
     static Node initialState;
 
-    static HashSet<String> VisitedHashSet = new HashSet<>();
+    static HashSet<String> VisitedHashSet;
     public static String genericSearchProcedure(String grid,String Strategy) {
         grid += ";";
         initialState = new Node(grid);
@@ -676,7 +676,7 @@ public abstract class GenericSearchProblem {
     // breadth first search for the goal state
 
     public static Node BreadthFirst(Node node) {
-        VisitedHashSet.clear();
+        VisitedHashSet = new HashSet<>();
         Queue<Node> Queue = new LinkedList<>();
         int ExpandedNodes = 0;
         Queue.add(node);
@@ -707,7 +707,7 @@ public abstract class GenericSearchProblem {
     //Depth first search for the goal state if DepthLimit is Integer.Max.
     //Limited Depth search for the goal state
     public static Node DepthLimited(Node node, int DepthLimit) {
-        VisitedHashSet.clear();
+        VisitedHashSet = new HashSet<>();
         Stack<Node> Stack = new Stack<>();
         int ExpandedNodes = 0;
         Stack.add(node);
@@ -739,6 +739,7 @@ public abstract class GenericSearchProblem {
     //Iterative Deepening search for the goal state
 
     public static Node IterativeDeepening(Node node) {
+        VisitedHashSet = new HashSet<>();
         Stack<Node> Stack = new Stack<>();
         int ExpandedNodes = 0;
         int DepthLimit = 0;
@@ -757,7 +758,7 @@ public abstract class GenericSearchProblem {
     //UniformCost Search for the goal state
 
     public static Node UniformCost(Node node) {
-        VisitedHashSet.clear();
+        VisitedHashSet = new HashSet<>();
         int ExpandedNodes = 0;
         //override compare method
         PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
@@ -791,7 +792,7 @@ public abstract class GenericSearchProblem {
     //GreedySearch for the goal state
 
     public static Node Greedy1(Node node) {
-        VisitedHashSet.clear();
+        VisitedHashSet = new HashSet<>();
         int ExpandedNodes = 0;
         //override compare method
         PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
@@ -825,7 +826,7 @@ public abstract class GenericSearchProblem {
     //BestCost for the goal state
 
     public static Node Greedy2(Node node) {
-        VisitedHashSet.clear();
+        VisitedHashSet = new HashSet<>();
         int ExpandedNodes = 0;
         //override compare method
         PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
@@ -859,7 +860,7 @@ public abstract class GenericSearchProblem {
 
     //A* Search for the goal state
     public static Node AStar1(Node node) {
-        VisitedHashSet.clear();
+        VisitedHashSet = new HashSet<>();
         int ExpandedNodes = 0;
         //override compare method
         PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
@@ -892,7 +893,7 @@ public abstract class GenericSearchProblem {
     }
 
     public static Node AStar2(Node node) {
-        VisitedHashSet.clear();
+        VisitedHashSet = new HashSet<>();
         int ExpandedNodes = 0;
         //override compare method
         PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
