@@ -4,12 +4,7 @@ import java.util.Arrays;
 import java.util.Vector;
 
 public class Matrix  extends GenericSearchProblem{
-    public static void main(String[] args){
-        System.out.println("Welcome to the Matrix.");
-        //System.out.println(code.Matrix.genGrid());
-        // code.Matrix.printGrid("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80");
-        //code.Matrix.solve("5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80","BF",false);
-    }
+    public static void main(String[] args) {}
     /**
      * genGrid() generates a random grid. The dimensions of the grid,
      * the starting position of Neo and the telephone booth,
@@ -31,7 +26,7 @@ public class Matrix  extends GenericSearchProblem{
      * PillX1,PillY1, ...,PillXg,PillYg;
      * StartPadX1,StartPadY1,FinishPadX1,FinishPadY1,...,
      * StartPadXl,StartPadYl,FinishPadXl,FinishPadYl;
-     * HostageX1,HostageY1,HostageDamage1, ...,HostageXw,HostageYw,HostageDamagew
+     * HostageX1,HostageY1,HostageDamage1, ...,HostageXw,HostageYw,HostageDamageW
      * where:
      * 	M and N represent the width and height of the grid respectively.
      * 	C is the maximum number of members Neo can carry at a time.
@@ -52,7 +47,7 @@ public class Matrix  extends GenericSearchProblem{
      * 	instantly.
      * 	HostageXi, HostageYi represent the x and y position of hostage i where 1 <= i <= w and
      * 	w is the total number of hostages.
-     * 	HostageDamagei represents the damage done to hostage i where 1 <= i <= w and w is the total
+     * 	HostageDamageI represents the damage done to hostage i where 1 <= i <= w and w is the total
      * 	number of hostages.
      * 	For example, if HostageX = 1, HostageY = 2, HostageDamage = 3, then the hostage is
      * 	in cell (1, 2) and has 3 damage.
@@ -77,13 +72,13 @@ public class Matrix  extends GenericSearchProblem{
                 emptySlots.add(new int[]{i,j});
             }
         }
-        String grid = "";
-        grid += gridX+","+gridY;
-        grid += ";" + carryLimit;
+        StringBuilder grid = new StringBuilder();
+        grid.append(gridX).append(",").append(gridY);
+        grid.append(";").append(carryLimit);
         int[] neoStartCell = emptySlots.remove(getRandom(0,emptySlots.size()));
-        grid += ";" + neoStartCell[0]+","+neoStartCell[1];
+        grid.append(";").append(neoStartCell[0]).append(",").append(neoStartCell[1]);
         int[] telephoneBoothCell = emptySlots.remove(getRandom(0,emptySlots.size()));
-        grid += ";" + telephoneBoothCell[0]+","+telephoneBoothCell[1];
+        grid.append(";").append(telephoneBoothCell[0]).append(",").append(telephoneBoothCell[1]);
         int[][] pillCells = new int[numOfPills][2];
         for (int i = 0; i < numOfPills; i++) {
             pillCells[i] = emptySlots.remove(getRandom(0,emptySlots.size()));
@@ -97,7 +92,6 @@ public class Matrix  extends GenericSearchProblem{
         for (int i = 0; i < numOfAgents; i++) {
             agentsCells[i] = emptySlots.remove(getRandom(0,emptySlots.size()));
         }
-        // TODO: 10/31/2021 Check if next line is right
         int numOfPads = getRandom(2,emptySlots.size()-1)/2;
         int[][] padsCells = new int[numOfPads][4];
         for (int i = 0; i < numOfPads; i++) {
@@ -108,28 +102,32 @@ public class Matrix  extends GenericSearchProblem{
             padsCells[i][2] = padEndCell[0];
             padsCells[i][3] = padEndCell[1];
         }
-        grid +=";";
+        grid.append(";");
         for (int i = 0; i < numOfAgents; i++) {
-            grid += agentsCells[i][0] + "," +agentsCells[i][1] ;
-            if (i < numOfAgents-1) {grid +=  ",";
+            grid.append(agentsCells[i][0]).append(",").append(agentsCells[i][1]);
+            if (i < numOfAgents-1) {
+                grid.append(",");
             }
         }
-        grid +=";";
+        grid.append(";");
         for (int i = 0; i < numOfPills; i++) {
-            grid += pillCells[i][0] + "," +pillCells[i][1] ;
-            if (i < numOfPills-1) {grid +=  ",";
+            grid.append(pillCells[i][0]).append(",").append(pillCells[i][1]);
+            if (i < numOfPills-1) {
+                grid.append(",");
             }
         }
-        grid +=";";
+        grid.append(";");
         for (int i = 0; i < numOfPads; i++) {
-            grid += padsCells[i][0] + "," +padsCells[i][1] + "," +padsCells[i][2] + "," +padsCells[i][3] ;
-            if (i < numOfPads-1) {grid +=  ",";
+            grid.append(padsCells[i][0]).append(",").append(padsCells[i][1]).append(",").append(padsCells[i][2]).append(",").append(padsCells[i][3]);
+            if (i < numOfPads-1) {
+                grid.append(",");
             }
         }
-        grid +=";";
+        grid.append(";");
         for (int i = 0; i < numOfHostages; i++) {
-            grid += hostageCells[i][0] + "," +hostageCells[i][1] + "," +damagePerHostage[i] ;
-            if (i < numOfHostages-1) {grid +=  ",";
+            grid.append(hostageCells[i][0]).append(",").append(hostageCells[i][1]).append(",").append(damagePerHostage[i]);
+            if (i < numOfHostages-1) {
+                grid.append(",");
             }
         }
 
@@ -142,7 +140,7 @@ public class Matrix  extends GenericSearchProblem{
         System.out.println("hostages" + Arrays.deepToString(hostageCells));
         System.out.println("hostagesDmg" + Arrays.toString(damagePerHostage));
 
-        return grid;
+        return grid.toString();
     }
 
     private static int getRandom(int i, int i1) {
@@ -179,7 +177,7 @@ public class Matrix  extends GenericSearchProblem{
 
     /**
      * Method visualize
-     * Prints a 2d table like representation of the grid with Neo representing Neo's position, TB for telephone booth, A for agents , H(dmg) for hostages with thier damage, P for pads.
+     * Prints a 2d table like representation of the grid with Neo representing Neo's position, TB for telephone booth, A for agents , H(dmg) for hostages with their damage, P for pads.
      * @param grid string representation of the grid
      * example input: "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80"
      */
@@ -187,8 +185,8 @@ public class Matrix  extends GenericSearchProblem{
     {
         String[] gridArr = grid.split(";");
         Vector<String[]> gridVec = new Vector<>();
-        for (int i = 0; i < gridArr.length; i++) {
-            String[] tempVec = gridArr[i].split(",");
+        for (String s : gridArr) {
+            String[] tempVec = s.split(",");
             gridVec.add(tempVec);
         }
         String[][] gridView = new String[Integer.parseInt(gridVec.get(0)[0])][Integer.parseInt(gridVec.get(0)[1])];
