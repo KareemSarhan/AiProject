@@ -11,8 +11,9 @@ public abstract class GenericSearchProblem {
 
     static HashSet<String> VisitedHashSet;
     public static String genericSearchProcedure(String grid,String Strategy) {
-        grid += ";";
-        initialState = new Node(grid);
+        initialState = new Node(grid+";");
+        System.out.println(Arrays.toString(actions));
+        System.out.println(initialState.GridString);
         Node Goal = null;
         switch(Strategy) {
             case "BF":
@@ -312,6 +313,9 @@ public abstract class GenericSearchProblem {
             int HostageX = Integer.parseInt(Hostages[i]);
             int HostagesY = Integer.parseInt(Hostages[i + 1]);
             int HostageDamage = Integer.parseInt(Hostages[i + 2]);
+            if ((HostageX == NeoX && HostagesY == NeoY) && HostageDamage >= 98) {
+                return false;
+            }
             if (HostageDamage == 100) {
                 if (HostageX + 1 == NeoX && HostagesY == NeoY) {
                     return true;
