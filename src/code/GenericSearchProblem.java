@@ -91,28 +91,6 @@ public abstract class GenericSearchProblem {
         return node.Damage >= 100;
     }
 
-    public static String GetAbsoluteGrid(String grid) {
-        String NewGrid = GetSubString(grid, 0, 7);
-        String Hostages = GetSubString(grid, 7, 8);
-        if (Hostages.isEmpty()) {
-            return NewGrid + ";";
-        }
-        String[] HostageArr = GetSubString(grid, 7, 8).split(",");
-        String[] NewHostageArr = new String[HostageArr.length];
-        for (int i = 0; i < HostageArr.length; i += 3) {
-            NewHostageArr[i] = HostageArr[i];
-            NewHostageArr[i + 1] = HostageArr[i + 1];
-            if (HostageArr[i + 2].equals("100") || HostageArr[i + 2].equals("99") || HostageArr[i + 2].equals("98")) {
-                NewHostageArr[i + 2] = HostageArr[i + 2];
-            } else {
-                NewHostageArr[i + 2] = HostageArr[i + 2];
-            }
-            NewHostageArr[i + 2] = NewHostageArr[i + 2];
-        }
-        NewGrid += ";" + String.join(",", NewHostageArr);
-        return grid;
-    }
-
     public static String GetSubString(String grid, int FirstSimiColon, int LastSimiColon) {
         grid += ';';
         int SemicolonCount = 0;
@@ -739,12 +717,10 @@ public abstract class GenericSearchProblem {
 
     public static Node IterativeDeepening(Node node) {
         VisitedHashSet = new HashSet<>();
-        Stack<Node> Stack = new Stack<>();
         int ExpandedNodes = 0;
         int DepthLimit = 0;
         while (true) {
             VisitedHashSet.clear();
-            Stack.clear();
             Node ActionNode = DepthLimited(node.clone(), DepthLimit);
             ExpandedNodes += ActionNode.ExpandedNodes;
             if (ActionNode.IsSolution) {
