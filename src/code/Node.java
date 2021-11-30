@@ -13,24 +13,25 @@ public class Node implements Cloneable {
     public int Cost;
     public int Heuristic;
     public boolean IsSolution;
+    public String Action;
 
     public Node(String gridString) {
         GridString = gridString;
         Damage = 0;
         TakenActions="";
+        Action="";
         CountDeadHostages=0;
         CountDeadAgents=0;
-    }
-    public Node(String gridString, int damage) {
-        GridString = gridString;
-        Damage = damage;
-        TakenActions="";
-        CountDeadHostages=0;
-        CountDeadAgents=0;
+        ParentNode = new Node();
     }
 
     public Node() {
-
+        GridString = "";
+        Damage = 0;
+        TakenActions="";
+        Action="";
+        CountDeadHostages=0;
+        CountDeadAgents=0;
     }
 
     @Override
@@ -80,36 +81,13 @@ public class Node implements Cloneable {
     public void ConcatAction(Actions action)
     {
         Depth++;
-        if (TakenActions.length() == 0)
-            TakenActions+=action;
-        else
-            TakenActions+=","+action;
-        /*
-        switch (action)
-        {
-            case up:
-            case down:
-            case left:
-            case right:
-                TotalCost+=3;
-                Cost+=3;
-                break;
-            case carry:
-            case takePill:
-            case drop:
-                TotalCost+=0;
-                Cost+=0;
-                break;
-            case fly:
-                TotalCost+=2;
-                Cost+=2;
-                break;
-            case kill:
-                TotalCost+=5;
-                Cost+=5;
-                break;
+        Action = action.toString();
+        if (TakenActions.length() == 0) {
+            TakenActions += action;
         }
-        */
+        else {
+            TakenActions += "," + action;
+        }
         int temp = TotalCost;
         TotalCost = CountDeadHostages*100 + CountDeadAgents;
         Cost = TotalCost - temp;

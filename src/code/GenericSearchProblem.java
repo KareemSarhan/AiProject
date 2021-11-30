@@ -12,7 +12,6 @@ public abstract class GenericSearchProblem {
     static HashSet<String> VisitedHashSet;
     public static String genericSearchProcedure(String grid,String Strategy) {
         initialState = new Node(grid+";");
-        System.out.println(Arrays.toString(actions));
         System.out.println(initialState.GridString);
         Node Goal = null;
         switch(Strategy) {
@@ -142,6 +141,9 @@ public abstract class GenericSearchProblem {
 
 
     public static Boolean CanMoveUp(Node node) {
+        if (node.Action.equals(Actions.down.toString())) {
+            return false;
+        }
         String[] position = GetNeoPosition(node.GridString).split(",");
         String newPositionUp = String.valueOf(Integer.parseInt(position[0]) - 1);
         String[] AgentsArr = GetSubString(node.GridString, 4, 5).split(",");
@@ -162,6 +164,9 @@ public abstract class GenericSearchProblem {
     }
 
     public static Boolean CanMoveDown(Node node) {
+        if (node.Action.equals(Actions.up.toString())) {
+            return false;
+        }
         String[] position = GetNeoPosition(node.GridString).split(",");
         String newPositionDown = String.valueOf(Integer.parseInt(position[0]) + 1);
         String[] AgentsArr = GetSubString(node.GridString, 4, 5).split(",");
@@ -182,6 +187,9 @@ public abstract class GenericSearchProblem {
     }
 
     public static Boolean CanMoveRight(Node node) {
+        if (node.Action.equals(Actions.left.toString())) {
+            return false;
+        }
         String[] position = GetNeoPosition(node.GridString).split(",");
         String newPositionRight = String.valueOf(Integer.parseInt(position[1]) + 1);
         String[] AgentsArr = GetSubString(node.GridString, 4, 5).split(",");
@@ -203,6 +211,9 @@ public abstract class GenericSearchProblem {
     }
 
     public static Boolean CanMoveLeft(Node node) {
+        if (node.Action.equals(Actions.right.toString())) {
+            return false;
+        }
         String[] position = GetNeoPosition(node.GridString).split(",");
         String newPositionLeft = String.valueOf(Integer.parseInt(position[1]) - 1);
         String[] AgentsArr = GetSubString(node.GridString, 4, 5).split(",");
@@ -223,6 +234,9 @@ public abstract class GenericSearchProblem {
     }
 
     public static boolean CanCarryHostage(Node node) {
+        if (node.Action.equals(Actions.carry.toString())||node.Action.equals(Actions.drop.toString())||node.Action.equals(Actions.fly.toString())||node.Action.equals(Actions.kill.toString())||node.Action.equals(Actions.takePill.toString())) {
+            return false;
+        }
         String HostagesString = GetSubString(node.GridString, 7, 8);
         int count = Integer.parseInt(GetSubString(node.GridString, 1, 2));
         if (count == 0)
@@ -239,6 +253,9 @@ public abstract class GenericSearchProblem {
     }
 
     public static boolean CanTakePill(Node node) {
+        if (node.Action.equals(Actions.carry.toString())||node.Action.equals(Actions.drop.toString())||node.Action.equals(Actions.fly.toString())||node.Action.equals(Actions.kill.toString())||node.Action.equals(Actions.takePill.toString())) {
+            return false;
+        }
         String pillsString = GetSubString(node.GridString, 5, 6);
         if (pillsString.isEmpty())
             return false;
@@ -252,6 +269,9 @@ public abstract class GenericSearchProblem {
     }
 
     public static boolean CanDropHostage(Node node) {
+        if (node.Action.equals(Actions.carry.toString())||node.Action.equals(Actions.drop.toString())||node.Action.equals(Actions.fly.toString())||node.Action.equals(Actions.kill.toString())||node.Action.equals(Actions.takePill.toString())) {
+            return false;
+        }
         String CarriedHostagesString = GetSubString(node.GridString, 8, 9);
         if (CarriedHostagesString.isEmpty())
             return false;
@@ -262,6 +282,9 @@ public abstract class GenericSearchProblem {
     }
 
     public static boolean CanFly(Node node) {
+        if (node.Action.equals(Actions.carry.toString())||node.Action.equals(Actions.drop.toString())||node.Action.equals(Actions.fly.toString())||node.Action.equals(Actions.kill.toString())||node.Action.equals(Actions.takePill.toString())) {
+            return false;
+        }
         String FlyString = GetSubString(node.GridString, 6, 7);
         if (FlyString.isEmpty())
             return false;
@@ -275,6 +298,9 @@ public abstract class GenericSearchProblem {
     }
 
     public static boolean CanKill(Node node) {
+        if (node.Action.equals(Actions.kill.toString())) {
+            return false;
+        }
         String agentsString = GetSubString(node.GridString, 4, 5);
         String[] agents = new String[]{};
         if (!agentsString.isEmpty()) {
@@ -408,6 +434,7 @@ public abstract class GenericSearchProblem {
         if (Integer.parseInt(position[1]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[1])) {
             node.setGridString(UpdateNeoPos(node.GridString, position[0] + ',' + position[1], 2, 3));
         }
+
         node.ConcatAction(Actions.right);
         SetHeuristic(node);
         return node;
@@ -623,6 +650,21 @@ public abstract class GenericSearchProblem {
         }
         VisitedHashSet.add(node.GridString);
 
+        if (CanCarryHostage(node)) {
+            nodeArr.add(UpdateTimeStep(CarryHostage(node.clone())));
+        }
+        if (CanDropHostage(node)) {
+            nodeArr.add(UpdateTimeStep(DropHostage(node.clone())));
+        }
+        if (CanTakePill(node)) {
+            nodeArr.add(TakePill(node.clone()));
+        }
+        if (CanKill(node)) {
+            nodeArr.add(UpdateTimeStep(Kill(node.clone())));
+        }
+        if (CanFly(node)) {
+            nodeArr.add(UpdateTimeStep(Fly(node.clone())));
+        }
         if (CanMoveUp(node)) {
             nodeArr.add(UpdateTimeStep(MoveUp(node.clone())));
         }
@@ -634,21 +676,6 @@ public abstract class GenericSearchProblem {
         }
         if (CanMoveLeft(node)) {
             nodeArr.add(UpdateTimeStep(MoveLeft(node.clone())));
-        }
-        if (CanKill(node)) {
-            nodeArr.add(UpdateTimeStep(Kill(node.clone())));
-        }
-        if (CanCarryHostage(node)) {
-            nodeArr.add(UpdateTimeStep(CarryHostage(node.clone())));
-        }
-        if (CanDropHostage(node)) {
-            nodeArr.add(UpdateTimeStep(DropHostage(node.clone())));
-        }
-        if (CanFly(node)) {
-            nodeArr.add(UpdateTimeStep(Fly(node.clone())));
-        }
-        if (CanTakePill(node)) {
-            nodeArr.add(TakePill(node.clone()));
         }
         return nodeArr;
     }
