@@ -11,7 +11,15 @@ public class Node implements Cloneable {
     public int Depth;
     public int TotalCost;
     public int Cost;
-    public int Heuristic;
+    public int AliveNotCarriedHostages;
+    public int AliveCarriedHostages;
+    public int AliveAgents;
+    public int WillBeKilledHostages;
+    public int AccumulativeAliveAgents;
+    public int CarriedHostages;
+    public int OriginalTotalHostages;
+    public int Heuristic1;
+    public int Heuristic2;
     public boolean IsSolution;
     public String Action;
 
@@ -31,6 +39,7 @@ public class Node implements Cloneable {
         TakenActions="";
         Action="";
         CountDeadHostages=0;
+        OriginalTotalHostages=0;
         CountDeadAgents=0;
     }
 
@@ -78,7 +87,7 @@ public class Node implements Cloneable {
         return Damage;
     }
 
-    public void ConcatAction(Actions action)
+    public void UpdateNode(Actions action)
     {
         Depth++;
         Action = action.toString();
@@ -88,8 +97,8 @@ public class Node implements Cloneable {
         else {
             TakenActions += "," + action;
         }
-        int temp = TotalCost;
+        Cost = CountDeadHostages*100 + CountDeadAgents - TotalCost;
         TotalCost = CountDeadHostages*100 + CountDeadAgents;
-        Cost = TotalCost - temp;
+
     }
 }

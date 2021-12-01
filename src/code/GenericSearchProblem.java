@@ -8,49 +8,67 @@ public abstract class GenericSearchProblem {
 
     //initial State at the beginning
     static Node initialState;
+    static boolean UseHeuristic = false;
 
     static HashSet<String> VisitedHashSet;
-    public static String genericSearchProcedure(String grid,String Strategy) {
+    public static Node InitialState(String grid) {
         initialState = new Node(grid+";");
+        //count number of hostages
+        int numOfHostages = GetSubString(grid, 7, 8).split(",").length / 3;
+        int numOfAgents = GetSubString(grid, 4, 5).split(",").length / 2;
+        initialState.AccumulativeAliveAgents = numOfAgents;
+        initialState.OriginalTotalHostages = numOfHostages;
+        return initialState;
+    }
+    public static String genericSearchProcedure(String grid,String Strategy) {
+        InitialState(grid);
         System.out.println(initialState.GridString);
         Node Goal = null;
         switch(Strategy) {
             case "BF":
+                UseHeuristic = false;
                 Goal = BreadthFirst(initialState);
                 System.out.println("Breadth First");
                 System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
             case "DF":
+                UseHeuristic = false;
                 Goal = DepthLimited(initialState,Integer.MAX_VALUE);
                 System.out.println("Depth First");
                 System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
             case "ID":
+                UseHeuristic = false;
                 Goal = IterativeDeepening(initialState);
                 System.out.println("Iterative Deepening");
                 System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
             case "UC":
+                UseHeuristic = false;
                 Goal = UniformCost(initialState);
                 System.out.println("Uniform Cost");
                 System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
             case "GR1":
+                UseHeuristic = true;
                 Goal = Greedy1(initialState);
                 System.out.println("Greedy 1");
                 System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
             case "GR2":
+                UseHeuristic = true;
                 Goal = Greedy2(initialState);
                 System.out.println("Greedy 2");
                 System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
             case "AS1":
+                UseHeuristic = true;
                 Goal = AStar1(initialState);
                 System.out.println("A* 1");
                 System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
                 break;
             case "AS2":
+                UseHeuristic = true;
                 Goal = AStar2(initialState);
                 System.out.println("A* 2");
                 System.out.println("ExpandedNodes: " + Goal.ExpandedNodes);
@@ -68,16 +86,152 @@ public abstract class GenericSearchProblem {
         System.out.println("DeadAgents: " + Goal.CountDeadAgents);
         return Goal.TakenActions+";"+Goal.CountDeadHostages+";"+Goal.CountDeadAgents+";"+Goal.ExpandedNodes;
     }
-
-        public static void SetHeuristic(Node node) {
-        String GridString = node.GridString;
-        String[] Hostages = GetSubString(GridString, 7, 8).split(",");
-        int HostagesCount = Hostages.length / 3;
-        String[] CarriedHostages = GetSubString(GridString, 8, 9).split(",");
-        int CarriedHostagesCount = CarriedHostages.length;
-        node.Heuristic = CarriedHostagesCount * 2 + HostagesCount;
+    public static int GetShortestPathToPads(Node node)
+    {
+        // for Pads
+        String PadsString = GetSubString(node.GridString, 6, 7);
+        int NeoX = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[0]);
+        int NeoY = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[1]);
+        if (PadsString.isEmpty()) {
+            return Integer.MAX_VALUE;
+        }
+        else
+        {
+            String[] PadsArr = PadsString.split(",");
+            int min = Integer.MAX_VALUE;
+            for (int i = 0; i < PadsArr.length; i+=2) {
+                int x = Integer.parseInt(PadsArr[i]);
+                int y = Integer.parseInt(PadsArr[i+1]);
+                int distance = Math.abs(NeoX - x) + Math.abs(NeoY - y);
+                if (distance < min) {
+                    min = distance;
+                }
+            }
+            return min;
+        }
+    }
+    public static int GetShortestPathToPills(Node node)
+    {
+        // for Pills
+        String PillsString = GetSubString(node.GridString, 5, 6);
+        int NeoX = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[0]);
+        int NeoY = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[1]);
+        if (PillsString.isEmpty()) {
+            return Integer.MAX_VALUE;
+        }
+        else
+        {
+            String[] PillsArr = PillsString.split(",");
+            int min = Integer.MAX_VALUE;
+            for (int i = 0; i < PillsArr.length; i+=2) {
+                int x = Integer.parseInt(PillsArr[i]);
+                int y = Integer.parseInt(PillsArr[i+1]);
+                int distance = Math.abs(NeoX - x) + Math.abs(NeoY - y);
+                if (distance < min) {
+                    min = distance;
+                }
+            }
+            return min;
+        }
+    }
+    public static int GetShortestPathToTelephoneBooth(Node node)
+    {
+        // for TelephoneBooth
+        String TelephoneBoothString = GetSubString(node.GridString, 3, 4);
+        int NeoX = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[0]);
+        int NeoY = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[1]);
+        if (TelephoneBoothString.isEmpty()) {
+            return Integer.MAX_VALUE;
+        }
+        else
+        {
+            String[] TelephoneBoothArr = TelephoneBoothString.split(",");
+            int min = Integer.MAX_VALUE;
+            for (int i = 0; i < TelephoneBoothArr.length; i++) {
+                int x = Integer.parseInt(TelephoneBoothArr[i]);
+                int y = Integer.parseInt(TelephoneBoothArr[i]);
+                int distance = Math.abs(NeoX - x) + Math.abs(NeoY - y);
+                if (distance < min) {
+                    min = distance;
+                }
+            }
+            return min;
+        }
     }
 
+    public static int CarriedHostagesWithGuaranteedDeath(Node node) {
+        int count = 0;
+        // for CarriedHostages
+        String CarriedHostagesString = GetSubString(node.GridString, 8, 9);
+        if (CarriedHostagesString.isEmpty()) {
+            count = 0;
+        }
+        else {
+            int shortestPathToPill = GetShortestPathToPills(node);
+            int shortestPathToTelephoneBooth = GetShortestPathToTelephoneBooth(node);
+            int shortestPathToPads = GetShortestPathToPads(node);
+            String[] CarriedHostages = CarriedHostagesString.split(",");
+            for (int i = 0; i < CarriedHostages.length; i++) {
+                if(!CarriedHostages[i].equals("100"))
+                {
+                    if((shortestPathToPads > shortestPathToPill && shortestPathToPads > shortestPathToTelephoneBooth))
+                    {
+                        int min = Math.min(shortestPathToPill, shortestPathToTelephoneBooth);
+                        if ((min)*2 >= 100-Integer.parseInt(CarriedHostages[i])) {
+                            count++;
+                         //   System.out.println("min: " + min + " CarriedHostages: " + CarriedHostages[i]);
+                        }
+                        }
+                    }
+                }
+            }
+        return count;
+
+
+    }
+    public static int GetShortestPathToHostage(Node node, int hostageX, int hostageY)
+    {
+        int NeoX = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[0]);
+        int NeoY = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[1]);
+        int distance = Math.abs(NeoX - hostageX) + Math.abs(NeoY - hostageY);
+        return distance;
+    }
+
+    public static int HostagesWithGuaranteedDeath(Node node) {
+        int count = 0;
+        // for CarriedHostages
+        int NeoX = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[0]);
+        int NeoY = Integer.parseInt(GetSubString(node.GridString, 2, 3).split(",")[1]);
+        String HostagesString = GetSubString(node.GridString, 7, 8);
+        if (HostagesString.isEmpty()) {
+            count = 0;
+        }
+        else {
+            int shortestPathToPill = GetShortestPathToPills(node);
+            int shortestPathToPads = GetShortestPathToPads(node);
+            String[] Hostages = HostagesString.split(",");
+            for (int i = 0; i < Hostages.length; i+=3) {
+                if(!Hostages[i+2].equals("100"))
+                {
+                    if (!(NeoX == Integer.parseInt(Hostages[i]) && NeoY == Integer.parseInt(Hostages[i+1]))) {
+                        int shortestPathToHostage = GetShortestPathToHostage(node, Integer.parseInt(Hostages[i]), Integer.parseInt(Hostages[i + 1]));
+                        if ((shortestPathToPads > shortestPathToPill && shortestPathToPads > shortestPathToHostage)) {
+                            int min = Math.min(shortestPathToPill, shortestPathToHostage);
+                            if ((min) * 2 >= 98 - Integer.parseInt(Hostages[i + 2])) {
+                              //  System.out.println("ShortestPathToHostage: " + shortestPathToHostage + " ShortestPathToPads: " + shortestPathToPads + " ShortestPathToPill: " + shortestPathToPill);
+                              //  System.out.println("NeoX: " + NeoX + " NeoY: " + NeoY + " HostageX: " + Integer.parseInt(Hostages[i]) + " HostageY: " + Integer.parseInt(Hostages[i + 1]) + " HostageHealth: " + Integer.parseInt(Hostages[i + 2]));
+                              //  System.out.println("min: " + min + " CarriedHostages: " + Hostages[i + 2]);
+                                count++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+
+
+    }
     //Check if node passed is in a goal state.
     public static boolean goalTest(Node node) {
         boolean IsNoRemainHostages = GetSubString(node.GridString, 7, 8).isEmpty();
@@ -365,17 +519,20 @@ public abstract class GenericSearchProblem {
         int NewDeadHostage = 0;
         String HostageString = GetSubString(node.getGridString(), 7, 8);
         String NewHostageString = "";
+        int aliveNotCarriedHostage = 0;
         if (!HostageString.isEmpty()) {
             String[] HostageArr = HostageString.split(",");
             for (int i = 0; i < HostageArr.length; i += 3) {
                 int damage = Integer.parseInt(HostageArr[i + 2]);
                 damage += 2;
-                if (damage == 102)
+                if (damage == 102) {
                     HostageArr[i + 2] = 100 + "";
+                }
                 else if (damage >= 100) {
                     HostageArr[i + 2] = 100 + "";
                     NewDeadHostage++;
                 } else {
+                    aliveNotCarriedHostage++;
                     HostageArr[i + 2] = Integer.toString(damage);
                 }
             }
@@ -383,26 +540,32 @@ public abstract class GenericSearchProblem {
         }
         String CarriedHostageString = GetSubString(node.getGridString(), 8, 9);
         String NewCarriedHostageString = "";
+        int aliveCarriedHostage = 0;
         if (!CarriedHostageString.isEmpty()) {
             String[] CarriedHostageArr = CarriedHostageString.split(",");
             for (int i = 0; i < CarriedHostageArr.length; i += 1) {
                 int damage = Integer.parseInt(CarriedHostageArr[i]);
                 damage += 2;
-                if (damage == 102)
+                if (damage == 102) {
                     CarriedHostageArr[i] = 100 + "";
+                }
                 else if (damage >= 100) {
                     CarriedHostageArr[i] = 100 + "";
                     NewDeadHostage++;
                 } else {
+                    aliveCarriedHostage++;
                     CarriedHostageArr[i] = Integer.toString(damage);
                 }
             }
             NewCarriedHostageString = Arrays.toString(CarriedHostageArr).replace("[", "").replace("]", "").replace(" ", "");
 
         }
-
+        node.AliveNotCarriedHostages=aliveNotCarriedHostage;
         node.GridString = GetSubString(node.getGridString(), 0, 7) + ";" + NewHostageString + ";" + NewCarriedHostageString;
         node.CountDeadHostages = NewDeadHostage + node.CountDeadHostages;
+        node.AccumulativeAliveAgents += NewDeadHostage;
+        node.AliveCarriedHostages=aliveCarriedHostage;
+
         return node;
     }
 
@@ -412,8 +575,15 @@ public abstract class GenericSearchProblem {
         if (Integer.parseInt(position[0]) >= 0) {
             node.setGridString(UpdateNeoPos(node.GridString, position[0] + ',' + position[1], 2, 3));
         }
-        node.ConcatAction(Actions.up);
-        SetHeuristic(node);
+        node.UpdateNode(Actions.up);
+        if (UseHeuristic) {
+            node.Heuristic1 = CarriedHostagesWithGuaranteedDeath(node)*100;
+            node.Heuristic2 = HostagesWithGuaranteedDeath(node)*100;
+            if (node.Heuristic1 > 0) {
+                
+              //  System.out.println("Heuristic1: " + node.Heuristic1);
+            }
+        }
         return node;
     }
 
@@ -423,8 +593,15 @@ public abstract class GenericSearchProblem {
         if (Integer.parseInt(position[0]) < Integer.parseInt(GetGridSize(node.GridString).split(",")[0])) {
             node.setGridString(UpdateNeoPos(node.GridString, position[0] + ',' + position[1], 2, 3));
         }
-        node.ConcatAction(Actions.down);
-        SetHeuristic(node);
+        node.UpdateNode(Actions.down);
+        if (UseHeuristic) {
+            node.Heuristic1 = CarriedHostagesWithGuaranteedDeath(node)*100;
+            node.Heuristic2 = HostagesWithGuaranteedDeath(node)*100;
+            if (node.Heuristic1 > 0) {
+                
+                //System.out.println("Heuristic1: " + node.Heuristic1);
+            }
+        }
         return node;
     }
 
@@ -435,8 +612,15 @@ public abstract class GenericSearchProblem {
             node.setGridString(UpdateNeoPos(node.GridString, position[0] + ',' + position[1], 2, 3));
         }
 
-        node.ConcatAction(Actions.right);
-        SetHeuristic(node);
+        node.UpdateNode(Actions.right);
+        if (UseHeuristic) {
+            node.Heuristic1 = CarriedHostagesWithGuaranteedDeath(node)*100;
+            node.Heuristic2 = HostagesWithGuaranteedDeath(node)*100;
+            if (node.Heuristic1 > 0) {
+                
+                //System.out.println("Heuristic1: " + node.Heuristic1);
+            }
+        }
         return node;
     }
 
@@ -446,8 +630,15 @@ public abstract class GenericSearchProblem {
         if (Integer.parseInt(position[1]) >= 0) {
             node.setGridString(UpdateNeoPos(node.GridString, position[0] + ',' + position[1], 2, 3));
         }
-        node.ConcatAction(Actions.left);
-        SetHeuristic(node);
+        node.UpdateNode(Actions.left);
+        if (UseHeuristic) {
+            node.Heuristic1 = CarriedHostagesWithGuaranteedDeath(node)*100;
+            node.Heuristic2 = HostagesWithGuaranteedDeath(node)*100;
+            if (node.Heuristic1 > 0) {
+                
+                //System.out.println("Heuristic1: " + node.Heuristic1);
+            }
+        }
         return node;
     }
 
@@ -465,6 +656,7 @@ public abstract class GenericSearchProblem {
         if (!AgentsString.isEmpty()) {
             AgentsArr = AgentsString.split(",");
         }
+        int AliveAgents = 0;
         for (int i = 0; i < AgentsArr.length; i += 2) {
             //if(!AgentsArr[i].isEmpty()) {
             if ((Integer.parseInt(AgentsArr[i]) == NeoX - 1 && Integer.parseInt(AgentsArr[i + 1]) == NeoY)) {
@@ -521,13 +713,21 @@ public abstract class GenericSearchProblem {
             }
         }
         String NewAgentsString = Arrays.toString(AgentsArr).replace("[", "").replace("]", "").replace(" ", "").replace(",,", "");
-        String NewHostageString = Arrays.toString(HostageArr).replace(", , , ", "").replace("[", "").replace("]", "").replace(" ", "");
+        String NewHostageString = Arrays.toString(HostageArr).replace(", , , ", "").replace("[", "").replace("]", "").replace(" ", "").replace(",,", "");
         String NewGrid = GetSubString(node.GridString, 0, 4) + ";" + NewAgentsString + ";" + GetSubString(node.GridString, 5, 7) + ";" + NewHostageString + ";" + GetSubString(node.GridString, 8, 9);
-        node.GridString = NewGrid.replace(";,;", ";;");
+        node.GridString = NewGrid.replace(";,;", ";;").replace(";,,;", ";;").replace(",;", ";").replace(",,", "").replace(" ", "");
         node.Damage = NewDamage;
         node.CountDeadAgents = NewDeadAgents;
-        SetHeuristic(node);
-        node.ConcatAction(Actions.kill);
+        node.AliveAgents = AliveAgents;
+        node.UpdateNode(Actions.kill);
+        if (UseHeuristic) {
+            node.Heuristic1 = CarriedHostagesWithGuaranteedDeath(node)*100;
+            node.Heuristic2 = HostagesWithGuaranteedDeath(node)*100;
+            if (node.Heuristic1 > 0) {
+                
+                //ln("Heuristic1: " + node.Heuristic1);
+            }
+        }
         return node;
     }
 
@@ -538,8 +738,15 @@ public abstract class GenericSearchProblem {
         assert newPos != null;
         NewNeoPos = newPos[0] + "," + newPos[1];
         node.setGridString(UpdateNeoPos(node.GridString, NewNeoPos, 2, 3));
-        SetHeuristic(node);
-        node.ConcatAction(Actions.fly);
+        node.UpdateNode(Actions.fly);
+        if (UseHeuristic) {
+            node.Heuristic1 = CarriedHostagesWithGuaranteedDeath(node)*100;
+            node.Heuristic2 = HostagesWithGuaranteedDeath(node)*100;
+            if (node.Heuristic1 > 0) {
+                
+              //  System.out.println("Heuristic1: " + node.Heuristic1);
+            }
+        }
         return node;
     }
 
@@ -593,10 +800,18 @@ public abstract class GenericSearchProblem {
         }
         String newHostages = Arrays.toString(HostagesArr).replace("[", "").replace("]", "").replace(" ", "").replace(",,,", "");
         String newCarried = Arrays.toString(CarriedHostagesArr).replace("[", "").replace("]", "").replace(" ", "");
-        node.GridString = GetSubString(node.GridString, 0, 5) + ";" + newPills.toString().replace("[", "").replace("]", "") + ";" + GetSubString(node.GridString, 6, 7) + ";" + newHostages + ";" + newCarried;
+        node.GridString = GetSubString(node.GridString, 0, 5) + ";" + newPills.toString().replace("[", "").replace("]", "").replace(" ","") + ";" + GetSubString(node.GridString, 6, 7) + ";" + newHostages + ";" + newCarried;
         node.Damage = NewNeoDamage;
-        SetHeuristic(node);
-        node.ConcatAction(Actions.takePill);
+        node.UpdateNode(Actions.takePill);
+        if (UseHeuristic) {
+            
+            node.Heuristic1 = CarriedHostagesWithGuaranteedDeath(node)*100;
+            node.Heuristic2 = HostagesWithGuaranteedDeath(node)*100;
+            if (node.Heuristic1 > 0) {
+                //
+               // System.out.print(node.Heuristic1);
+            }
+        }
         return node;
     }
 
@@ -622,15 +837,23 @@ public abstract class GenericSearchProblem {
                 HostagesArr[i] = "";
                 HostagesArr[i + 1] = "";
                 HostagesArr[i + 2] = "";
-                newHostages = Arrays.toString(HostagesArr).replace(", , , ", "");
+                newHostages = Arrays.toString(HostagesArr).replace(", , , ", "").replace(",,","");
                 break;
             }
         }
         newCarriedHostages[newCarriedHostages.length - 1] = damage;
-        String GridString = GetSubString(node.GridString, 0, 1) + ';' + count + ';' + GetSubString(node.GridString, 2, 7) + ";" + newHostages.replace("[", "").replace("]", "").replace(" ", "") + ';' + Arrays.toString(newCarriedHostages).replace("]", "").replace("[", "") + ";";
+        String GridString = GetSubString(node.GridString, 0, 1) + ';' + count + ';' + GetSubString(node.GridString, 2, 7) + ";" + newHostages.replace(",,","").replace("[", "").replace("]", "").replace(" ", "") + ';' + Arrays.toString(newCarriedHostages).replace("]", "").replace("[", "") ;
         node.GridString = GridString.replace(" ", "");
-        SetHeuristic(node);
-        node.ConcatAction(Actions.carry);
+        node.CarriedHostages =  newCarriedHostages.length;
+        node.UpdateNode(Actions.carry);
+        if (UseHeuristic) {
+            node.Heuristic1 = CarriedHostagesWithGuaranteedDeath(node)*100;
+            node.Heuristic2 = HostagesWithGuaranteedDeath(node)*100;
+            if (node.Heuristic1 > 0) {
+                
+              //  System.out.println("Heuristic1: " + node.Heuristic1);
+            }
+        }
         return node;
     }
 
@@ -638,12 +861,21 @@ public abstract class GenericSearchProblem {
         int CarriedHostagesCount = GetSubString(node.GridString, 8, 9).split(",").length;
         int CarryLimit = Integer.parseInt(GetSubString(node.GridString, 1, 2)) + CarriedHostagesCount;
         node.setGridString(GetSubString(node.GridString, 0, 1) + ";" + CarryLimit + ";" + GetSubString(node.GridString, 2, 8) + ";");
-        node.ConcatAction(Actions.drop);
+        node.CarriedHostages= 0;
+        node.UpdateNode(Actions.drop);
+        if (UseHeuristic) {
+            node.Heuristic1 = CarriedHostagesWithGuaranteedDeath(node)*100;
+            node.Heuristic2 = HostagesWithGuaranteedDeath(node)*100;
+            if (node.Heuristic1 > 0) {
+                
+             //   System.out.println("Heuristic1: " + node.Heuristic1);
+            }
+        }
         return node;
     }
 
     public static Vector<Node> TakeAction(Node node) {
-        node.GridString = node.GridString.replace("]", "").replace("[", "").replace("[,", "").replace(" ", "");
+        node.GridString = node.GridString.replace("]", "").replace("[", "").replace("[,", "").replace(" ", "").replace(",,", "");
         Vector<Node> nodeArr = new Vector<>();
         if (VisitedHashSet.contains(node.GridString)) {
             return nodeArr;
@@ -802,7 +1034,7 @@ public abstract class GenericSearchProblem {
         int ExpandedNodes = 0;
         //override compare method
         PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
-                Comparator.comparingInt(i -> i.Heuristic)
+                Comparator.comparingInt(i -> i.Cost)
 
         );
         PriorityQueue.add(node);
@@ -836,7 +1068,40 @@ public abstract class GenericSearchProblem {
         int ExpandedNodes = 0;
         //override compare method
         PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
-                Comparator.comparingInt(i -> i.Cost)
+                Comparator.comparingInt(i -> i.Heuristic1)
+
+        );
+        PriorityQueue.add(node);
+        while (PriorityQueue.size() > 0) {
+            //loop over TakeAction output and add them to Queue
+            Node ActionNode = PriorityQueue.poll();
+            if (CheckGameOver(ActionNode)) {
+                continue;
+            }
+            if (goalTest(ActionNode)) {
+                ActionNode.ExpandedNodes = ExpandedNodes;
+                ActionNode.IsSolution = true;
+                return ActionNode;
+            }
+            Vector<Node> nodeArr = TakeAction(ActionNode);
+            ExpandedNodes++;
+            for (Node value : nodeArr) {
+                if (value != null) {
+                    PriorityQueue.add(value);
+                }
+            }
+        }
+        Node EmptyNode = new Node();
+        EmptyNode.ExpandedNodes = ExpandedNodes;
+        return EmptyNode;
+    }
+
+    public static Node Greedy3(Node node) {
+        VisitedHashSet = new HashSet<>();
+        int ExpandedNodes = 0;
+        //override compare method
+        PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
+                Comparator.comparingInt(i -> i.Heuristic1)
 
         );
         PriorityQueue.add(node);
@@ -870,7 +1135,7 @@ public abstract class GenericSearchProblem {
         int ExpandedNodes = 0;
         //override compare method
         PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
-                Comparator.comparingInt(i -> i.Heuristic + i.TotalCost)
+                Comparator.comparingInt(i -> i.Heuristic1 + i.TotalCost)
 
         );
         PriorityQueue.add(node);
@@ -903,7 +1168,7 @@ public abstract class GenericSearchProblem {
         int ExpandedNodes = 0;
         //override compare method
         PriorityQueue<Node> PriorityQueue = new PriorityQueue<>(20,
-                Comparator.comparingInt(i -> i.Heuristic + i.Cost)
+                Comparator.comparingInt(i -> i.Heuristic2 + i.Cost)
 
         );
         PriorityQueue.add(node);
