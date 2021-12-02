@@ -20,7 +20,7 @@ public abstract class GenericSearchProblem {
         initialState.OriginalTotalHostages = numOfHostages;
         return initialState;
     }
-    public static String genericSearchProcedure(String grid,String Strategy) {
+    public static Node genericSearchProcedure(String grid, String Strategy) {
         InitialState(grid);
         System.out.println(initialState.GridString);
         Node Goal = null;
@@ -75,16 +75,12 @@ public abstract class GenericSearchProblem {
                 break;
 
         }
-        assert Goal != null;
-        if (!Goal.IsSolution) {
-            System.out.println("No Solution");
-            return "No Solution";
-        }
+
         System.out.println("Solution Found");
         System.out.println("Plan: " + Goal.TakenActions);
         System.out.println("DeadHostages: " + Goal.CountDeadHostages);
         System.out.println("DeadAgents: " + Goal.CountDeadAgents);
-        return Goal.TakenActions+";"+Goal.CountDeadHostages+";"+Goal.CountDeadAgents+";"+Goal.ExpandedNodes;
+        return Goal;
     }
     public static int GetShortestPathToPads(Node node)
     {

@@ -1,6 +1,7 @@
 package code;
 
 import java.util.Arrays;
+import java.util.Stack;
 import java.util.Vector;
 
 public class Matrix  extends GenericSearchProblem{
@@ -171,7 +172,28 @@ public class Matrix  extends GenericSearchProblem{
         
     public static String solve(String grid, String strategy, boolean visualize)
     {
-        return GenericSearchProblem.genericSearchProcedure(grid,strategy);
+        Node Goal = GenericSearchProblem.genericSearchProcedure(grid,strategy);
+        assert Goal != null;
+        if (!Goal.IsSolution) {
+            System.out.println("No Solution");
+            return "No Solution";
+        }
+        if (visualize)
+        {
+            Node Temp = Goal.clone();
+            Stack Nodes = new Stack();
+            while(Temp!=null && Temp.GridString!="")
+            {
+                Nodes.push(new String[]{Temp.GridString, String.valueOf(Temp.Damage), String.valueOf(Temp.Depth)});
+                Temp = Temp.ParentNode;
+            }
+            while (!Nodes.isEmpty())
+            {
+                Visualize((String[]) Nodes.pop());
+            }
+        }
+
+        return Goal.TakenActions+";"+Goal.CountDeadHostages+";"+Goal.CountDeadAgents+";"+Goal.ExpandedNodes;
 
     }
 
@@ -181,46 +203,78 @@ public class Matrix  extends GenericSearchProblem{
      * @param grid string representation of the grid
      * example input: "5,5;2;0,4;1,4;0,1,1,1,2,1,3,1,3,3,3,4;1,0,2,4;0,3,4,3,4,3,0,3;0,0,30,3,0,80,4,4,80"
      */
-    public static void Visualize(String grid)
+    public static void Visualize(String[] Vis)
     {
-        String[] gridArr = grid.split(";");
-        Vector<String[]> gridVec = new Vector<>();
-        for (String s : gridArr) {
-            String[] tempVec = s.split(",");
-            gridVec.add(tempVec);
+        String grid = Vis[0];
+        String NeoDmg=Vis[1];
+        String Turn =Vis[2];
+        String[][] gridView = new String[Integer.parseInt(GetSubString(grid,0,1).split(",")[0])][Integer.parseInt(GetSubString(grid,0,1).split(",")[1])];
+        for (int i = 0; i < gridView.length; i++) {
+            for (int j = 0; j < gridView[0].length; j++) {
+                gridView[i][j] = "null    ";
+            }
         }
-        String[][] gridView = new String[Integer.parseInt(gridVec.get(0)[0])][Integer.parseInt(gridVec.get(0)[1])];
-        gridView[Integer.parseInt(gridVec.get(2)[0])][Integer.parseInt(gridVec.get(2)[1])] = "Neo";
-        gridView[Integer.parseInt(gridVec.get(3)[0])][Integer.parseInt(gridVec.get(3)[1])] = "TB";
-        gridView[Integer.parseInt(gridVec.get(3)[0])][Integer.parseInt(gridVec.get(3)[1])] = "TB";
-        String[] tempAgents = gridVec.get(4);
+        String[] NeoPos = GetSubString(grid,2,3).split(",");
+        String[] TB = GetSubString(grid,3,4).split(",");
+        gridView[Integer.parseInt(TB[0])][Integer.parseInt(TB[1])] = "TB      ";
+        String tempAgentsString = GetSubString(grid,4,5);
+        if (!tempAgentsString.isEmpty()) {
+            String[] tempAgents = tempAgentsString.split(",");
 
-        for (int i = 0; i < tempAgents.length; i = i +2) {
-            gridView[Integer.parseInt(tempAgents[i])][Integer.parseInt(tempAgents[i+1])] = "A";
+            for (int i = 0; i < tempAgents.length; i = i + 2) {
+                gridView[Integer.parseInt(tempAgents[i])][Integer.parseInt(tempAgents[i + 1])] = "A       ";
+            }
         }
-        String[] tempPills = gridVec.get(5);
-        for (int i = 0; i < tempPills.length; i = i +2) {
-            gridView[Integer.parseInt(tempPills[i])][Integer.parseInt(tempPills[i+1])] = "P";
+        String PillsString = GetSubString(grid,5,6);
+        if (!PillsString.isEmpty()) {
+            String[] tempPills = PillsString.split(",");
+            for (int i = 0; i < tempPills.length; i = i + 2) {
+                gridView[Integer.parseInt(tempPills[i])][Integer.parseInt(tempPills[i + 1])] = "Pill    ";
+            }
         }
-        String[] tempPads = gridVec.get(6);
-        System.out.println(Arrays.toString(tempPads));
-        for (int i = 0; i < tempPads.length/2; i = i +4) {
-            gridView[Integer.parseInt(tempPads[i])][Integer.parseInt(tempPads[i+1])] = "Pad (" + tempPads[(i+2)] +","+tempPads[(i+3)]+")";
-            gridView[Integer.parseInt(tempPads[i+2])][Integer.parseInt(tempPads[i+3])] = "Pad (" + tempPads[i] +","+tempPads[(i+1)]+")";
+        String PadsString = GetSubString(grid,6,7);
+        if (!PadsString.isEmpty()) {
+            String[] tempPads = PadsString.split(",");
+            for (int i = 0; i < tempPads.length / 2; i = i + 4) {
+                gridView[Integer.parseInt(tempPads[i])][Integer.parseInt(tempPads[i + 1])] = "P(" + tempPads[(i + 2)] + "-" + tempPads[(i + 3)] + ")  ";
+                gridView[Integer.parseInt(tempPads[i + 2])][Integer.parseInt(tempPads[i + 3])] = "P(" + tempPads[i] + "-" + tempPads[(i + 1)] + ")  ";
+            }
         }
-        String[] tempHostages = gridVec.get(7);
-        for (int i = 0; i < tempPads.length; i = i +3) {
-            gridView[Integer.parseInt(tempHostages[i])][Integer.parseInt(tempHostages[i+1])] = "H (" +(tempHostages[i+2])+")";
+        String HostagesString = GetSubString(grid,7,8);
+        if (!HostagesString.isEmpty()) {
+            String[] tempHostages = HostagesString.split(",");
+            for (int i = 0; i < tempHostages.length; i = i + 3) {
+                if (tempHostages[i+2].length()==1)
+                gridView[Integer.parseInt(tempHostages[i])][Integer.parseInt(tempHostages[i + 1])] = "H(00" + (tempHostages[i + 2]) + ")  ";
+                else if (tempHostages[i+2].length()==2)
+                    gridView[Integer.parseInt(tempHostages[i])][Integer.parseInt(tempHostages[i + 1])] = "H(0" + (tempHostages[i + 2]) + ")  ";
+                else
+                    gridView[Integer.parseInt(tempHostages[i])][Integer.parseInt(tempHostages[i + 1])] = "H(" + (tempHostages[i + 2]) + ")  ";
+
+            }
         }
-        /*
-        Different views
-        System.out.println(Arrays.deepToString(gridView));
-        System.out.println(Arrays.deepToString(gridView).replace("], ", "]\n"));
-        */
         System.out.println();
+        System.out.println("--------------------------------------------");
+        System.out.println("NeoDmg: " + NeoDmg);
+        System.out.println("Turn: " + Turn);
+
+        if ((gridView[Integer.parseInt(NeoPos[0])][Integer.parseInt(NeoPos[1])]) == ("null    ")) {
+            gridView[Integer.parseInt(NeoPos[0])][Integer.parseInt(NeoPos[1])] = "N       ";
+        }
+        else {
+            gridView[Integer.parseInt(NeoPos[0])][Integer.parseInt(NeoPos[1])] = gridView[Integer.parseInt(NeoPos[0])][Integer.parseInt(NeoPos[1])].replaceFirst("  ", "+N");
+        }
         System.out.println(Arrays.deepToString(gridView)
-                .replace("],", "\n").replace(",", "\t")
+                .replace("],", "\n").replace(",", "")
                 .replaceAll("[\\[\\]]", " "));
+        String HostagesCarriedString = GetSubString(grid,8,9);
+        if (!HostagesCarriedString.isEmpty()) {
+            String[] tempCarriedHostages = HostagesCarriedString.split(",");
+            System.out.print("CarriedHostages: ");
+            for (int i = 0; i < tempCarriedHostages.length; i = i + 1) {
+                System.out.print("H("+tempCarriedHostages[i]+")  ");
+            }
+        }
     }
 
 

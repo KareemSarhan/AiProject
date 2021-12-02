@@ -252,8 +252,9 @@ public class OurTestMatrixPublic {
     }
     @Test(timeout = 400000)
     public void testUCz10() {
-        String solution = Matrix.solve(grid10, "UC", false);
+        String solution = Matrix.solve(grid10, "UC", true);
         solution = solution.replace(" ", "");
+        System.out.println(solution);
         assertTrue("The output actions do not lead to a goal state.", applyPlan(grid9, solution));
     }
 
