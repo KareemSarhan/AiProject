@@ -203,7 +203,7 @@ public class OurTestMatrixPublic {
     }
 
     @Test(timeout = 10000)
-    public void testUC3() throws Exception {
+    public void testUC3() {
         String solution = Matrix.solve(grid3, "UC", false);
         solution = solution.replace(" ", "");
         assertTrue("The output actions do not lead to a goal state.", applyPlan(grid3, solution));
@@ -547,14 +547,14 @@ public class OurTestMatrixPublic {
     }
 
     @Test(timeout = 400000)
-    public void test1AS9() throws Exception {
+    public void test1AS9() {
         String solution = Matrix.solve(grid9, "AS1", false);
         solution = solution.replace(" ", "");
         assertTrue("The output actions do not lead to a goal state.", applyPlan(grid9, solution));
     }
 
     @Test(timeout = 400000)
-    public void test1ASz10() throws Exception {
+    public void test1ASz10() {
         String solution = Matrix.solve(grid10, "AS1", false);
         solution = solution.replace(" ", "");
         assertTrue("The output actions do not lead to a goal state.", applyPlan(grid10, solution));
@@ -562,21 +562,21 @@ public class OurTestMatrixPublic {
 
 
     @Test(timeout = 10000)
-    public void test2AS0() throws Exception {
+    public void test2AS0() {
         String solution = Matrix.solve(grid0, "AS2", false);
         solution = solution.replace(" ", "");
         assertTrue("The output actions do not lead to a goal state.", applyPlan(grid0, solution));
     }
 
     @Test(timeout = 10000)
-    public void test2AS1() throws Exception {
+    public void test2AS1() {
         String solution = Matrix.solve(grid1, "AS2", false);
         solution = solution.replace(" ", "");
         assertTrue("The output actions do not lead to a goal state.", applyPlan(grid1, solution));
     }
 
     @Test(timeout = 10000)
-    public void test2AS2() throws Exception {
+    public void test2AS2() {
         String solution = Matrix.solve(grid2, "AS2", false);
         solution = solution.replace(" ", "");
         assertTrue("The output actions do not lead to a goal state.", applyPlan(grid2, solution));
@@ -641,139 +641,140 @@ public class OurTestMatrixPublic {
     static class TH {
         int m;
         int n;
-        int x10;
-        int x11;
-        int x00;
-        int x01;
-        int m1;
-        int m2;
-        int m3;
-        ArrayList<String> xyz;
-        ArrayList<String> xyzw;
-        ArrayList<String> m4;
-        HashMap<String,String> m5;
-        HashMap<String,Integer> m7;
-        HashMap<String,Integer> m6;
-        ArrayList<String> m10;
-        int CurruntDeadHostages;
-        boolean ll;
+        int TBX;
+        int TBY;
+        int NeoX;
+        int NeoY;
+        int CarryLimit;
+        int CarriedCount;
+        int NeoDMG;
+        ArrayList<String> AgentsArrList;
+        ArrayList<String> AgentHostages;
+        ArrayList<String> PillArrList;
+        HashMap<String,String> Pads;
+        HashMap<String,Integer> HostagesAndDmgs;
+        HashMap<String,Integer> CarriedHostages;
+        ArrayList<String> DeadHostages;
+        int CurrentKilled;
+        boolean NeoDead;
 
-        public TH(int m, int n, int x10, int x11, int x00, int x01, int m1,
-                  ArrayList<String> xyz,ArrayList<String> m4,
-                  HashMap<String, String> m5, HashMap<String, Integer> m7) {
+        public TH(int m, int n, int TBX, int TBY, int NeoX, int NeoY, int CarryLimit,
+                  ArrayList<String> AgentsArrList, ArrayList<String> PillArrList,
+                  HashMap<String, String> PadsHashMap, HashMap<String, Integer> HostagesDmgsHashMap) {
+            //m,n,TBX,TBY,NeoX, NeoY,CarryLimit, AgentsArrList,PillArrList,PadsHashMap,HostagesDmgsHashMap
             this.m = m;
             this.n = n;
-            this.x10 = x10;
-            this.x11 = x11;
-            this.x00 = x00;
-            this.x01 = x01;
-            this.m1 = m1;
-            this.m2 = 0;
-            this.m3 = 0;
-            this.xyz = xyz;
-            this.xyzw = new ArrayList<>();
-            this.m4 = m4;
-            this.m5 = m5;
-            this.m7 = m7;
-            this.m6 = new HashMap<>();
-            this.m10 = new ArrayList<>();
-            this.CurruntDeadHostages = 0;
-            this.ll = false;
+            this.TBX = TBX;
+            this.TBY = TBY;
+            this.NeoX = NeoX;
+            this.NeoY = NeoY;
+            this.CarryLimit = CarryLimit;
+            this.CarriedCount = 0;
+            this.NeoDMG = 0;
+            this.AgentsArrList = AgentsArrList;
+            this.AgentHostages = new ArrayList<>();
+            this.PillArrList = PillArrList;
+            this.Pads = PadsHashMap;
+            this.HostagesAndDmgs = HostagesDmgsHashMap;
+            this.CarriedHostages = new HashMap<>();
+            this.DeadHostages = new ArrayList<>();
+            this.CurrentKilled = 0;
+            this.NeoDead = false;
         }
 
-        public String f1(int x, int y) {
+        public String CellString(int x, int y) {
             return x+","+y;
         }
 
-        public boolean f12(int x, int y) {
+        public boolean IsNotOutsideBounds(int x, int y) {
             return x >= 0 && x <= m && y >= 0 && y <= n;
         }
 
-        public ArrayList<String> f52(int x, int y) {
+        public ArrayList<String> GetSurroundingCells(int x, int y) {
             ArrayList<String> result = new ArrayList<>();
-            if(f12(x-1,y))
+            if(IsNotOutsideBounds(x-1,y))
                 result.add((x-1)+","+y);
-            if(f12(x+1,y))
+            if(IsNotOutsideBounds(x+1,y))
                 result.add((x+1)+","+y);
-            if(f12(x,y-1))
+            if(IsNotOutsideBounds(x,y-1))
                 result.add(x+","+(y-1));
-            if(f12(x,y+1))
+            if(IsNotOutsideBounds(x,y+1))
                 result.add(x+","+(y+1));
             return result;
         }
 
-        public boolean f42(int x, int y) {
-            String ln = f1(x,y);
-            return this.xyz.contains(ln) || this.xyzw.contains(ln)
-                    || (this.m7.containsKey(ln) && this.m7.get(ln) > 97);
+        public boolean CheckIfAgentInCell(int x, int y) {
+            String CellString = CellString(x,y);
+            return this.AgentsArrList.contains(CellString) || this.AgentHostages.contains(CellString)
+                    || (this.HostagesAndDmgs.containsKey(CellString) && this.HostagesAndDmgs.get(CellString) > 97);
         }
 
-        public boolean f2() {
-            if(f42(x00 - 1, x01)) return false;
-            if(x00 - 1 >= 0)
-                x00--;
-            ll2();
+        public boolean MoveUp() {
+            if(CheckIfAgentInCell(NeoX - 1, NeoY)) return false;
+            if(NeoX - 1 >= 0)
+                NeoX--;
+            updateTimeStep();
             return true;
         }
 
-        public boolean f3() {
-            if(f42(x00 + 1, x01)) return false;
-            if(x00 + 1 < this.m)
-                x00++;
-            ll2();
-            return true;
-
-        }
-
-        public boolean applyLeft() {
-            if(f42(x00, x01 - 1)) return false;
-            if(x01 - 1 >= 0)
-                x01--;
-            ll2();
+        public boolean MoveDown() {
+            if(CheckIfAgentInCell(NeoX + 1, NeoY)) return false;
+            if(NeoX + 1 < this.m)
+                NeoX++;
+            updateTimeStep();
             return true;
 
         }
 
-        public boolean f4() {
-            if(f42(x00, x01 + 1)) return false;
-            if(x01 + 1 < this.n)
-                x01++;
-            ll2();
+        public boolean MoveLeft() {
+            if(CheckIfAgentInCell(NeoX, NeoY - 1)) return false;
+            if(NeoY - 1 >= 0)
+                NeoY--;
+            updateTimeStep();
+            return true;
+
+        }
+
+        public boolean MoveRight() {
+            if(CheckIfAgentInCell(NeoX, NeoY + 1)) return false;
+            if(NeoY + 1 < this.n)
+                NeoY++;
+            updateTimeStep();
             return true;
         }
 
-        public boolean f100() {
-            ArrayList<String> acdc = f52(x00,x01);
-            if(acdc.size()>0) {
-                for(String led:acdc) {
-                    if(xyz.contains(led)) {
-                        xyz.remove(led);
-                        this.CurruntDeadHostages++;
+        public boolean Kill() {
+            ArrayList<String> SurroundingCells = GetSurroundingCells(NeoX, NeoY);
+            if(SurroundingCells.size()>0) {
+                for(String Cell:SurroundingCells) {
+                    if(AgentsArrList.contains(Cell)) {
+                        AgentsArrList.remove(Cell);
+                        this.CurrentKilled++;
                     }
-                    if(xyzw.contains(led)) {
-                        xyzw.remove(led);
-                        this.CurruntDeadHostages++;
+                    if(AgentHostages.contains(Cell)) {
+                        AgentHostages.remove(Cell);
+                        this.CurrentKilled++;
                     }
                 }
-                m3 +=20;
-                if(m3 == 100)
-                    ll = true;
+                NeoDMG +=20;
+                if(NeoDMG == 100)
+                    NeoDead = true;
 
-                ll2();
+                updateTimeStep();
                 return true;
             }
             return false;
 
         }
 
-        public boolean f209() {
-            String floyd = f1(x00,x01);
-            if(m2 <= m1) {
-                if(m7.containsKey(floyd)) {
-                    m2++;
-                    m6.put(floyd, m7.get(floyd));
-                    m7.remove(floyd);
-                    ll2();
+        public boolean CarryHostage() {
+            String cellString = CellString(NeoX, NeoY);
+            if(CarriedCount <= CarryLimit) {
+                if(HostagesAndDmgs.containsKey(cellString)) {
+                    CarriedCount++;
+                    CarriedHostages.put(cellString, HostagesAndDmgs.get(cellString));
+                    HostagesAndDmgs.remove(cellString);
+                    updateTimeStep();
                     return true;
                 }
             }
@@ -781,84 +782,84 @@ public class OurTestMatrixPublic {
             return false;
         }
 
-        public boolean f220() {
-            if(x00 == x10 && x01 == x11 && m2 >0) {
-                m2 = 0;
-                m6.clear();
-                ll2();
+        public boolean Drop() {
+            if(NeoX == TBX && NeoY == TBY && CarriedCount >0) {
+                CarriedCount = 0;
+                CarriedHostages.clear();
+                updateTimeStep();
                 return true;
             }
             return false;
         }
 
-        public boolean f320() {
-            String floyd = f1(x00,x01);
-            if(this.m5.containsKey(floyd)) {
-                String tofloyd = this.m5.get(floyd);
-                String [] s = tofloyd.split(",");
-                x00 = Integer.parseInt(s[0]);
-                x01 = Integer.parseInt(s[1]);
-                ll2();
+        public boolean Fly() {
+            String Cell = CellString(NeoX, NeoY);
+            if(this.Pads.containsKey(Cell)) {
+                String toPad = this.Pads.get(Cell);
+                String [] toPadArr = toPad.split(",");
+                NeoX = Integer.parseInt(toPadArr[0]);
+                NeoY = Integer.parseInt(toPadArr[1]);
+                updateTimeStep();
                 return true;
             }
             return false;
 
         }
 
-        public boolean f32() {
-            if(this.m4.contains(f1(x00,x01))) {
-                m3 = Math.max(m3 - 20, 0);
-                for(String abc: m7.keySet()) {
-                    int beatles = Math.max(m7.get(abc) - 20, 0);
-                    m7.put(abc,beatles);
+        public boolean takePill() {
+            if(this.PillArrList.contains(CellString(NeoX, NeoY))) {
+                NeoDMG = Math.max(NeoDMG - 20, 0);
+                for(String abc: HostagesAndDmgs.keySet()) {
+                    int beatles = Math.max(HostagesAndDmgs.get(abc) - 20, 0);
+                    HostagesAndDmgs.put(abc,beatles);
                 }
-                for(String abc: m6.keySet()) {
-                    if(m6.get(abc)<100) {
-                        int beatles = Math.max(m6.get(abc) - 20, 0);
-                        m6.put(abc,beatles);
+                for(String abc: CarriedHostages.keySet()) {
+                    if(CarriedHostages.get(abc)<100) {
+                        int beatles = Math.max(CarriedHostages.get(abc) - 20, 0);
+                        CarriedHostages.put(abc,beatles);
                     }
                 }
-                this.m4.remove(f1(x00,x01));
+                this.PillArrList.remove(CellString(NeoX, NeoY));
                 return true;
             }
             return false;
         }
 
-        public void ll2() {
+        public void updateTimeStep() {
 
-            HashMap<String,Integer> newm7 = new HashMap<>();
+            HashMap<String,Integer> RemHostages = new HashMap<>();
 
-            for(String abc: m6.keySet()) {
-                int beatles = m6.get(abc)+2;
-                if(beatles >= 100)  {
-                    this.edu(abc);
-                    m6.put(abc,100);
+            for(String Carried: CarriedHostages.keySet()) {
+                int newDmg = CarriedHostages.get(Carried)+2;
+                if(newDmg >= 100)  {
+                    this.AddDeadHostage(Carried);
+                    CarriedHostages.put(Carried,100);
                 }
                 else
-                    m6.put(abc,beatles);
+                    CarriedHostages.put(Carried,newDmg);
             }
 
-            for(String abc: m7.keySet()) {
-                int beatles = m7.get(abc)+2;
-                if(beatles >= 100) {
-                    this.edu(abc);
-                    xyzw.add(abc);
+            for(String hostage: HostagesAndDmgs.keySet()) {
+                int newDmg = HostagesAndDmgs.get(hostage)+2;
+                if(newDmg >= 100) {
+                    this.AddDeadHostage(hostage);
+                    AgentHostages.add(hostage);
                 }
                 else
-                    newm7.put(abc,beatles);
+                    RemHostages.put(hostage,newDmg);
             }
-            this.m7 = newm7;
+            this.HostagesAndDmgs = RemHostages;
         }
 
-        public void edu(String abc) {
-            if(!this.m10.contains(abc))
-                this.m10.add(abc);
+        public void AddDeadHostage(String killed) {
+            if(!this.DeadHostages.contains(killed))
+                this.DeadHostages.add(killed);
         }
 
-        public boolean grace() {
-            return !this.ll && this.m3<100 && this.m7.size() == 0
-                    && this.xyzw.size() == 0 && this.x00 == this.x10
-                    && this.x01 == this.x11;
+        public boolean GoalTest() {
+            return !this.NeoDead && this.NeoDMG <100 && this.HostagesAndDmgs.size() == 0
+                    && this.AgentHostages.size() == 0 && this.NeoX == this.TBX
+                    && this.NeoY == this.TBY;
         }
     }
 
@@ -871,94 +872,93 @@ public class OurTestMatrixPublic {
         plan = plan.replace("\r", "");
         plan = plan.replace("\n\r", "");
         plan = plan.replace("\t", "");
-        int DeadAgents = Integer.parseInt(solutionArray[1]);
-        int DeadHostages = Integer.parseInt(solutionArray[2]);
+        int DeadHostages = Integer.parseInt(solutionArray[1]);
+        int Killed = Integer.parseInt(solutionArray[2]);
 
-        String[] actions = plan.split(",");
-
+        String[] TakenActions = plan.split(",");
         String[] gridArray=  grid.split(";");
         String[] dimensions = gridArray[0].split(",");
         int m = Integer.parseInt(dimensions[0]);
         int n = Integer.parseInt(dimensions[1]);
 
-        int capacity = Integer.parseInt(gridArray[1]);
+        int CarryLimit = Integer.parseInt(gridArray[1]);
 
         String[] neo = gridArray[2].split(",");
-        int x00 = Integer.parseInt(neo[0]);
-        int x01 = Integer.parseInt(neo[1]);
+        int NeoX = Integer.parseInt(neo[0]);
+        int NeoY = Integer.parseInt(neo[1]);
 
         String[] booth = gridArray[3].split(",");
-        int x10 = Integer.parseInt(booth[0]);
-        int x11 = Integer.parseInt(booth[1]);
+        int TBX = Integer.parseInt(booth[0]);
+        int TBY = Integer.parseInt(booth[1]);
 
-        String[] ag = gridArray[4].split(",");
-        ArrayList<String> xyz = new ArrayList<>();
-        for(int i = 0;i< ag.length -1; i+=2) {
-            xyz.add(ag[i]+","+ag[i+1]);
+        String[] Agents = gridArray[4].split(",");
+        ArrayList<String> AgentsArrList = new ArrayList<>();
+        for(int i = 0;i< Agents.length -1; i+=2) {
+            AgentsArrList.add(Agents[i]+","+Agents[i+1]);
         }
 
-        String[] pl = gridArray[5].split(",");
-        ArrayList<String> m4 = new ArrayList<>();
-        for(int i = 0;i< pl.length -1; i+=2) {
-            m4.add(pl[i]+","+pl[i+1]);
+        String[] Pills = gridArray[5].split(",");
+        ArrayList<String> PillArrList = new ArrayList<>();
+        for(int i = 0;i< Pills.length -1; i+=2) {
+            PillArrList.add(Pills[i]+","+Pills[i+1]);
         }
 
-        String[] pas = gridArray[6].split(",");
-        HashMap<String,String> m5 = new HashMap<>();
-        for(int i = 0;i< pas.length -3; i+=4) {
-            m5.put(pas[i]+","+pas[i+1],pas[i+2]+","+pas[i+3]);
+        String[] Pads = gridArray[6].split(",");
+        HashMap<String,String> PadsHashMap = new HashMap<>();
+        for(int i = 0;i< Pads.length -3; i+=4) {
+            PadsHashMap.put(Pads[i]+","+Pads[i+1],Pads[i+2]+","+Pads[i+3]);
         }
 
-        String[] hstg = gridArray[7].split(",");
-        HashMap<String,Integer> m7 = new HashMap<>();
-        for(int i = 0;i< hstg.length -2; i+=3) {
-            m7.put(hstg[i]+","+hstg[i+1],Integer.parseInt(hstg[i+2]));
+        String[] Hostages = gridArray[7].split(",");
+        HashMap<String,Integer> HostagesDmgsHashMap = new HashMap<>();
+        for(int i = 0;i< Hostages.length -2; i+=3) {
+            HostagesDmgsHashMap.put(Hostages[i]+","+Hostages[i+1],Integer.parseInt(Hostages[i+2]));
         }
 
-        TH s = new TH(m,n,x10,x11,x00, x01,capacity, xyz,m4,m5,m7);
-        boolean linkin;
+        TH s = new TH(m,n,TBX,TBY,NeoX, NeoY, CarryLimit, AgentsArrList,PillArrList,PadsHashMap,HostagesDmgsHashMap);
+        boolean AllGood;
 
-        for (String action : actions) {
+        for (String action : TakenActions) {
 
             switch (action) {
                 case "up":
-                    linkin = s.f2();
+                    AllGood = s.MoveUp();
                     break;
                 case "down":
-                    linkin = s.f3();
+                    AllGood = s.MoveDown();
                     break;
                 case "right":
-                    linkin = s.f4();
+                    AllGood = s.MoveRight();
                     break;
                 case "left":
-                    linkin = s.applyLeft();
+                    AllGood = s.MoveLeft();
                     break;
                 case "carry":
-                    linkin = s.f209();
+                    AllGood = s.CarryHostage();
                     break;
                 case "drop":
-                    linkin = s.f220();
+                    AllGood = s.Drop();
                     break;
                 case "fly":
-                    linkin = s.f320();
+                    AllGood = s.Fly();
                     break;
                 case "takePill":
-                    linkin = s.f32();
+                    AllGood = s.takePill();
                     break;
                 case "kill":
-                    linkin = s.f100();
+                    AllGood = s.Kill();
                     break;
                 default:
-                    linkin = false;
+                    AllGood = false;
                     break;
 
             }
 
-            if (!linkin)
+            if (!AllGood)
                 return false;
 
 
         }
-        return s.grace() && s.CurruntDeadHostages == DeadHostages && s.m10.size() == DeadAgents;
+        return s.GoalTest() && s.DeadHostages.size() == DeadHostages && s.CurrentKilled == Killed ;
     }
 }
