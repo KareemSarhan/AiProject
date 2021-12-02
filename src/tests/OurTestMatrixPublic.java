@@ -255,7 +255,7 @@ public class OurTestMatrixPublic {
         String solution = Matrix.solve(grid10, "UC", true);
         solution = solution.replace(" ", "");
         System.out.println(solution);
-        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid9, solution));
+        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid10, solution));
     }
 
     @Test(timeout = 10000)
@@ -290,7 +290,7 @@ public class OurTestMatrixPublic {
     public void testID4() {
         String solution = Matrix.solve(grid4, "ID", false);
         solution = solution.replace(" ", "");
-        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid3, solution));
+        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid4, solution));
     }
 
     @Test(timeout = 10000)
@@ -311,27 +311,27 @@ public class OurTestMatrixPublic {
     public void testID7() {
         String solution = Matrix.solve(grid7, "ID", false);
         solution = solution.replace(" ", "");
-        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid6, solution));
+        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid7, solution));
     }
     @Ignore
     @Test(timeout = 1)
     public void testID8() {
         String solution = Matrix.solve(grid8, "ID", false);
         solution = solution.replace(" ", "");
-        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid6, solution));
+        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid8, solution));
     }
     @Ignore
     @Test(timeout = 1)
     public void testID9() {
         String solution = Matrix.solve(grid9, "ID", false);
         solution = solution.replace(" ", "");
-        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid6, solution));
+        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid9, solution));
     }
     @Test(timeout = 40000)
     public void testIDz10() {
         String solution = Matrix.solve(grid10, "ID", false);
         solution = solution.replace(" ", "");
-        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid6, solution));
+        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid10, solution));
     }
 
     @Test(timeout = 10000)
@@ -406,7 +406,7 @@ public class OurTestMatrixPublic {
     public void test1GRz10() {
         String solution = Matrix.solve(grid10, "GR1", false);
         solution = solution.replace(" ", "");
-        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid9, solution));
+        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid10, solution));
     }
 
     @Test(timeout = 10000)
@@ -482,7 +482,7 @@ public class OurTestMatrixPublic {
     public void test2GRz10() {
         String solution = Matrix.solve(grid10, "GR2", false);
         solution = solution.replace(" ", "");
-        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid9, solution));
+        assertTrue("The output actions do not lead to a goal state.", applyPlan(grid10, solution));
     }
     @Test(timeout = 10000)
     public void test1AS0() {
@@ -655,7 +655,7 @@ public class OurTestMatrixPublic {
         HashMap<String,Integer> m7;
         HashMap<String,Integer> m6;
         ArrayList<String> m10;
-        int m23;
+        int CurruntDeadHostages;
         boolean ll;
 
         public TH(int m, int n, int x10, int x11, int x00, int x01, int m1,
@@ -677,7 +677,7 @@ public class OurTestMatrixPublic {
             this.m7 = m7;
             this.m6 = new HashMap<>();
             this.m10 = new ArrayList<>();
-            this.m23 = 0;
+            this.CurruntDeadHostages = 0;
             this.ll = false;
         }
 
@@ -748,11 +748,11 @@ public class OurTestMatrixPublic {
                 for(String led:acdc) {
                     if(xyz.contains(led)) {
                         xyz.remove(led);
-                        this.m23++;
+                        this.CurruntDeadHostages++;
                     }
                     if(xyzw.contains(led)) {
                         xyzw.remove(led);
-                        this.m23++;
+                        this.CurruntDeadHostages++;
                     }
                 }
                 m3 +=20;
@@ -866,8 +866,13 @@ public class OurTestMatrixPublic {
     public static boolean applyPlan(String grid, String solution) {
         String[] solutionArray  = solution.split(";");
         String plan = solutionArray[0];
-        int blue = Integer.parseInt(solutionArray[1]);
-        int doors = Integer.parseInt(solutionArray[2]);
+        plan = plan.replace(" ", "");
+        plan = plan.replace("\n", "");
+        plan = plan.replace("\r", "");
+        plan = plan.replace("\n\r", "");
+        plan = plan.replace("\t", "");
+        int DeadAgents = Integer.parseInt(solutionArray[1]);
+        int DeadHostages = Integer.parseInt(solutionArray[2]);
 
         String[] actions = plan.split(",");
 
@@ -954,6 +959,6 @@ public class OurTestMatrixPublic {
 
 
         }
-        return s.grace() && s.m23 == doors && s.m10.size() == blue;
+        return s.grace() && s.CurruntDeadHostages == DeadHostages && s.m10.size() == DeadAgents;
     }
 }

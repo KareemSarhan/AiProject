@@ -818,11 +818,11 @@ public class CMSTestMatrixPublic {
         int blue = Integer.parseInt(solutionArray[1]);
         int doors = Integer.parseInt(solutionArray[2]);
 
-        plan.replace(" ", "");
-        plan.replace("\n", "");
-        plan.replace("\r", "");
-        plan.replace("\n\r", "");
-        plan.replace("\t", "");
+        plan = plan.replace(" ", "");
+        plan = plan.replace("\n", "");
+        plan = plan.replace("\r", "");
+        plan = plan.replace("\n\r", "");
+        plan = plan.replace("\t", "");
 
         String[] actions = plan.split(",");
 
